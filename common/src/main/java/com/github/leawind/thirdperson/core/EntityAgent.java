@@ -86,7 +86,6 @@ public class EntityAgent {
 	 */
 	public void reset () {
 		ThirdPerson.LOGGER.debug("Reset EntityAgent");
-		ThirdPersonStatus.lastPartialTick = minecraft.getFrameTime();
 		smoothOpacity.set(0d);
 		wasAiming = false;
 	}
@@ -127,8 +126,8 @@ public class EntityAgent {
 	/**
 	 * 获取相机实体不透明度
 	 */
-	public float getSmoothOpacity () {
-		return smoothOpacity.get(ThirdPersonStatus.lastPartialTick).floatValue();
+	public float getSmoothOpacity (float partialTick) {
+		return smoothOpacity.get(partialTick).floatValue();
 	}
 
 	/**
@@ -138,7 +137,7 @@ public class EntityAgent {
 	@PerformanceSensitive
 	public void onRenderTickStart (double now, double period, float partialTick) {
 		if (ThirdPersonStatus.isRenderingInThirdPerson() && isControlled() && !ThirdPersonStatus.shouldCameraTurnWithEntity()) {
-			var targetRotation = getRotateTarget().getRotation();
+			var targetRotation = getRotateTarget().getRotation(partialTick);
 			smoothRotation.setTarget(targetRotation);
 			switch (smoothRotationType) {
 				case HARD -> setRawRotation(targetRotation);
@@ -166,7 +165,7 @@ public class EntityAgent {
 			case HARD, EXP -> {
 			}
 			case LINEAR, EXP_LINEAR -> {
-				smoothRotation.setTarget(getRotateTarget().getRotation());
+				smoothRotation.setTarget(getRotateTarget().getRotation(0));
 				smoothRotation.update(ThirdPersonConstants.VANILLA_CLIENT_TICK_TIME);
 			}
 		}

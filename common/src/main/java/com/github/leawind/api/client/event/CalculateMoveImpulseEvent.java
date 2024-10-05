@@ -8,6 +8,7 @@ public class CalculateMoveImpulseEvent implements ModEvent {
 	public final KeyboardInput input;
 	public final float         impulseMultiplier;
 
+
 	public CalculateMoveImpulseEvent (KeyboardInput input, float impulseMultiplier) {
 		this.input             = input;
 		this.impulseMultiplier = impulseMultiplier;

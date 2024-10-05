@@ -89,11 +89,9 @@ public class CameraAgent {
 		smoothDistance.set(0D);
 		smoothFovDivisor.set(1D);
 		if (ThirdPerson.ENTITY_AGENT.isCameraEntityExist()) {
-			smoothRotateCenter.set(getRotateCenterTarget(ThirdPersonStatus.lastPartialTick));
-		}
-		if (ThirdPerson.ENTITY_AGENT.isCameraEntityExist()) {
+			smoothRotateCenter.set(getRotateCenterTarget(1));
 			var entity = ThirdPerson.ENTITY_AGENT.getRawCameraEntity();
-			relativeRotation.set(-entity.getViewXRot(ThirdPersonStatus.lastPartialTick), entity.getViewYRot(ThirdPersonStatus.lastPartialTick) - 180);
+			relativeRotation.set(-entity.getXRot(), entity.getYRot() - 180);
 		}
 	}
 
@@ -399,7 +397,7 @@ public class CameraAgent {
 	/**
 	 * 预测玩家可能想要射击的目标实体
 	 */
-	public @NotNull Optional<Entity> predictTargetEntity () {
+	public @NotNull Optional<Entity> predictTargetEntity (float partialTick) {
 		var config = ThirdPerson.getConfig();
 		// 候选目标实体
 		List<Entity> candidateTargets = Lists.newArrayList();
@@ -420,9 +418,9 @@ public class CameraAgent {
 					continue;
 				}
 				if (!target.is(playerEntity)) {
-					var targetPos      = target.getPosition(ThirdPersonStatus.lastPartialTick);
+					var targetPos      = target.getPosition(partialTick);
 					var bottomY        = LMath.toVector3d(targetPos.with(Direction.Axis.Y, target.getBoundingBox().minY));
-					var vectorToBottom = bottomY.copy().sub(ThirdPerson.ENTITY_AGENT.getRawEyePosition(ThirdPersonStatus.lastPartialTick));
+					var vectorToBottom = bottomY.copy().sub(ThirdPerson.ENTITY_AGENT.getRawEyePosition(partialTick));
 					if (LMath.rotationDegreeFromDirection(vectorToBottom).x() < cameraRot.x()) {
 						continue;
 					}
@@ -452,8 +450,6 @@ public class CameraAgent {
 		var    config      = ThirdPerson.getConfig();
 		double aspectRatio = (double)mc.getWindow().getWidth() / mc.getWindow().getHeight();
 		// 垂直视野角度一半(弧度制）
-		// NOW 使用 GameRenderer.getFov
-		//     fov = mc.options.fov().get();
 		double fov                = ((GameRendererInvoker)mc.gameRenderer).invokeGetFov(getRawCamera(), partialTick, true);
 		double verticalRadianHalf = Math.toRadians(fov) / 2;
 		double heightHalf         = Math.tan(verticalRadianHalf) * ThirdPersonConstants.VANILLA_NEAR_PLANE_DISTANCE;

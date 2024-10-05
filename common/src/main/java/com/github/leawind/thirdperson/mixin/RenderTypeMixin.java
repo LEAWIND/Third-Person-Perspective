@@ -8,6 +8,7 @@ import com.github.leawind.util.annotation.VersionSensitive;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -49,13 +50,14 @@ public class RenderTypeMixin extends RenderStateShard {
 	 * 对盔甲和鞘翅使用自定义的 RenderType 提供器，实现半透明效果
 	 * <p>
 	 * see ModelPartCubeMixin#compile(float)
+	 * <p>
 	 *
-	 * @see EntityAgent#getSmoothOpacity()
+	 * @see EntityAgent#getSmoothOpacity(float)
 	 */
 	@VersionSensitive
 	@Inject(method="armorCutoutNoCull", at=@At(value="HEAD", target="Ljava/util/function/Function;apply(Ljava/lang/Object;)Ljava/lang/Object;"), cancellable=true)
 	private static void setTransparencyState (ResourceLocation resourceLocation, @NotNull CallbackInfoReturnable<RenderType> ci) {
-		if (ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson() && ThirdPersonStatus.useCameraEntityOpacity()) {
+		if (ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson() && ThirdPersonStatus.useCameraEntityOpacity(Minecraft.getInstance().getFrameTime())) {
 			ci.setReturnValue(ARMOR_CUTOUT_NO_CULL_TRANSLUCENT.apply(resourceLocation));
 			ci.cancel();
 		}

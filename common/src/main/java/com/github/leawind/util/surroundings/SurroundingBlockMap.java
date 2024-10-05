@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * TODO remove
  */
 public final class SurroundingBlockMap {
-	private static Pattern IGNORED_CHARS_PATTERN = Pattern.compile("[\\s\\n|]");
+	private static final Pattern IGNORED_CHARS_PATTERN = Pattern.compile("[\\s\\n|]");
 
 	/**
 	 * Example

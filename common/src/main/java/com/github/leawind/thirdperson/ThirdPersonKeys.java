@@ -19,7 +19,6 @@ public final class ThirdPersonKeys {
 			if (config.is_mod_enabled) {
 				ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.CAMERA_ROTATION);
 			} else {
-				ThirdPersonStatus.lastPartialTick = Minecraft.getInstance().getFrameTime();
 				ThirdPerson.mc.gameRenderer.checkEntityPostEffect(null);
 				ThirdPersonEvents.resetPlayer();
 			}

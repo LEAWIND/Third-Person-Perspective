@@ -33,7 +33,7 @@ public class LevelRendererMixin {
 	private void renderEntity_tail (Entity entity, double x, double y, double z, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, CallbackInfo ci) {
 		if (multiBufferSource instanceof MultiBufferSource.BufferSource) {
 			if (ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson() && entity == ThirdPerson.ENTITY_AGENT.getRawCameraEntity()) {
-				if (ThirdPersonStatus.useCameraEntityOpacity() && ThirdPersonStatus.shouldRenderCameraEntity()) {
+				if (ThirdPersonStatus.useCameraEntityOpacity(partialTick) && ThirdPersonStatus.shouldRenderCameraEntity(partialTick)) {
 					((MultiBufferSource.BufferSource)multiBufferSource).endLastBatch();
 				}
 			}

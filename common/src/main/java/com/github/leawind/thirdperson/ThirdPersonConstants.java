@@ -29,7 +29,7 @@ public final class ThirdPersonConstants {
 	/**
 	 * 渲染相机实体的不透明度下限阈值，当不透明度低于这个值时，将不渲染实体。
 	 *
-	 * @see EntityAgent#getSmoothOpacity()
+	 * @see EntityAgent#getSmoothOpacity(float)
 	 */
 	public static final float               RENDERED_OPACITY_THRESHOLD_MIN           = 0.01F;
 	/**

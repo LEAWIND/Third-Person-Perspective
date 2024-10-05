@@ -3,6 +3,7 @@ package com.github.leawind.thirdperson.mixin;
 
 import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.thirdperson.ThirdPersonStatus;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,8 +13,9 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class ModelPartCubeMixin {
 	@ModifyVariable(at=@At("HEAD"), method="compile", index=8, argsOnly=true)
 	private float compile (float opacity) {
-		if (ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson() && ThirdPersonStatus.useCameraEntityOpacity()) {
-			return Math.min(opacity, ThirdPerson.ENTITY_AGENT.getSmoothOpacity());
+		float partialTick = Minecraft.getInstance().getFrameTime();
+		if (ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson() && ThirdPersonStatus.useCameraEntityOpacity(partialTick)) {
+			return Math.min(opacity, ThirdPerson.ENTITY_AGENT.getSmoothOpacity(partialTick));
 		}
 		return opacity;
 	}

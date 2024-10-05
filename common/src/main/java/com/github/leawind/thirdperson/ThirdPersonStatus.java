@@ -22,10 +22,6 @@ public final class ThirdPersonStatus {
 	 * @see ThirdPersonKeys#TOGGLE_AIMING
 	 */
 	public static                boolean  isToggleToAiming                     = false;
-	/**
-	 * 最近一次 renderTick 的 partialTick
-	 */
-	public static                float    lastPartialTick                      = 1;
 	public static                double   lastRenderTickTimeStamp              = 0;
 	/**
 	 * 上一tick中是否以第三人称视角渲染 mc.options.cameraType.isThirdPerson()
@@ -102,9 +98,9 @@ public final class ThirdPersonStatus {
 	 *
 	 * @return 是否渲染相机实体
 	 */
-	public static boolean shouldRenderCameraEntity () {
-		return ThirdPerson.ENTITY_AGENT.getSmoothOpacity() > ThirdPersonConstants.RENDERED_OPACITY_THRESHOLD_MIN //
-			   && ThirdPerson.ENTITY_AGENT.columnDistanceTo(ThirdPerson.CAMERA_AGENT.getRawCameraPosition(), ThirdPersonStatus.lastPartialTick) > ThirdPerson.getConfig().player_invisible_threshold;
+	public static boolean shouldRenderCameraEntity (float partialTick) {
+		return ThirdPerson.ENTITY_AGENT.getSmoothOpacity(partialTick) > ThirdPersonConstants.RENDERED_OPACITY_THRESHOLD_MIN //
+			   && ThirdPerson.ENTITY_AGENT.columnDistanceTo(ThirdPerson.CAMERA_AGENT.getRawCameraPosition(), partialTick) > ThirdPerson.getConfig().player_invisible_threshold;
 	}
 
 	/**
@@ -114,8 +110,8 @@ public final class ThirdPersonStatus {
 	 *
 	 * @return 是否按照透明度渲染相机实体
 	 */
-	public static boolean useCameraEntityOpacity () {
-		return ThirdPerson.ENTITY_AGENT.getSmoothOpacity() < ThirdPersonConstants.RENDERED_OPACITY_THRESHOLD_MAX;
+	public static boolean useCameraEntityOpacity (float partialTick) {
+		return ThirdPerson.ENTITY_AGENT.getSmoothOpacity(partialTick) < ThirdPersonConstants.RENDERED_OPACITY_THRESHOLD_MAX;
 	}
 
 	/**

@@ -168,7 +168,6 @@ public final class ThirdPersonEvents {
 			return;
 		}
 		ThirdPerson.CAMERA_AGENT.checkGameStatus();
-		ThirdPersonStatus.lastPartialTick = event.partialTick;
 		// in seconds
 		double now    = System.currentTimeMillis() / 1000D;
 		double period = now - ThirdPersonStatus.lastRenderTickTimeStamp;
@@ -177,7 +176,6 @@ public final class ThirdPersonEvents {
 		if (isRenderingInThirdPerson != ThirdPersonStatus.wasRenderInThirdPersonLastRenderTick) {
 			if (isRenderingInThirdPerson) {
 				// 进入第三人称
-				ThirdPersonStatus.lastPartialTick = Minecraft.getInstance().getFrameTime();
 				resetPlayer();
 			} else {
 				// 退出第三人称
@@ -229,7 +227,7 @@ public final class ThirdPersonEvents {
 				if (length > 1.0D) {
 					ThirdPersonStatus.impulseHorizon.div(length, length);
 				}
-				float playerYRot        = ThirdPerson.ENTITY_AGENT.getRawPlayerEntity().getViewYRot(ThirdPersonStatus.lastPartialTick);
+				float playerYRot        = ThirdPerson.ENTITY_AGENT.getRawPlayerEntity().getViewYRot(Minecraft.getInstance().getFrameTime());
 				var   playerLookHorizon = LMath.directionFromRotationDegree(playerYRot).normalize();
 				var   playerLeftHorizon = LMath.directionFromRotationDegree(playerYRot - 90).normalize();
 				event.forwardImpulse = (float)(ThirdPersonStatus.impulseHorizon.dot(playerLookHorizon));
@@ -240,7 +238,7 @@ public final class ThirdPersonEvents {
 
 	private static boolean onRenderEntity (RenderEntityEvent event) {
 		if (ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson() && event.entity == ThirdPerson.ENTITY_AGENT.getRawCameraEntity()) {
-			return ThirdPersonStatus.shouldRenderCameraEntity();
+			return ThirdPersonStatus.shouldRenderCameraEntity(event.partialTick);
 		}
 		return true;
 	}
