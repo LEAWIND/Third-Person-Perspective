@@ -1,29 +1,22 @@
 ### Added
 
-* Add config: `camera_distance_mode`
-* Allow item tag in item pattern
-* Make it always use post effect of attached entity in spectator mode
-* Disable double-tap sprinting in third person by default #153 #155
-	* config: `allow_double_tap_sprint`
+* Change fov when aiming (Dolly zoom)
+	* Config option: `aiming_fov_divisor`
+* Auto enter first person in narrow space
+	* Config option: `temp_first_person_in_narrow_space`
+* Adjustable vertical offset of rotate center
+	* Config option: `rotate_center_height_offset`
 
 ### Changed
 
-* Support both 1.20 and 1.20.1
-* Config `use_camera_pick_in_creative`:
-	* Disabled by default
-	* Moved to category _Other_
+* Update default value of config options
+* Rename config category name: "Aiming Check" -> "Item Predicates"
+* Change some default values of config options
 
 ### Removed
 
-* Remove config `sprint_impulse_threshold`
-
 ### Fixed
-
-* Camera slightly shakes when hitting wall
 
 ### Compatibility
 
 ### Other
-
-* Change package name to `com.github.leawind.thirdperson`
-* Record stack trace when infinite value detected. Once player's rotation become NaN or infinity, it will log some information for debugging
