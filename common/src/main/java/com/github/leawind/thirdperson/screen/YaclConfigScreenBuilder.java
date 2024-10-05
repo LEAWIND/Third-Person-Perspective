@@ -5,6 +5,7 @@ import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.thirdperson.config.AbstractConfig;
 import com.github.leawind.thirdperson.config.Config;
 import com.github.leawind.thirdperson.config.ConfigManager;
+import dev.isxander.yacl3.api.ButtonOption;
 import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.ListOption;
 import dev.isxander.yacl3.api.Option;
@@ -17,12 +18,14 @@ import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
+import dev.isxander.yacl3.gui.YACLScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -84,6 +87,14 @@ public class YaclConfigScreenBuilder extends ConfigScreenBuilder {
 														  .tooltip(ConfigManager.getText("option_category.camera_offset.desc")) //
 														  .option(option("aiming_fov_divisor", defaults.aiming_fov_divisor, 1D, 1.25D, 0.001D, () -> config.aiming_fov_divisor, v -> config.aiming_fov_divisor = v).build()) //
 														  .group(group("normal_mode") //
+																					  .option(button("sync_to_aiming_mode", (screen, button) -> {
+																						  config.normal_max_distance  = config.aiming_max_distance;
+																						  config.normal_offset_x      = config.aiming_offset_x;
+																						  config.normal_offset_y      = config.aiming_offset_y;
+																						  config.normal_is_centered   = config.aiming_is_centered;
+																						  config.normal_offset_center = config.aiming_offset_center;
+																						  screen.finishOrSave();
+																					  }).build()) //
 																					  .option(option("max_distance", defaults.normal_max_distance, 0D, 6D, 0.02, () -> config.normal_max_distance, v -> config.normal_max_distance = v).build()) //
 																					  .option(option("offset_x", defaults.normal_offset_x, -1D, +1D, 0.01, () -> config.normal_offset_x, v -> config.normal_offset_x = v).build()) //
 																					  .option(option("offset_y", defaults.normal_offset_y, -1D, +1D, 0.01, () -> config.normal_offset_y, v -> config.normal_offset_y = v).build()) //
@@ -91,6 +102,14 @@ public class YaclConfigScreenBuilder extends ConfigScreenBuilder {
 																					  .option(option("offset_center", defaults.normal_offset_center, -1D, +1D, 0.01, () -> config.normal_offset_center, v -> config.normal_offset_center = v).build()) //
 																					  .build()) //
 														  .group(group("aiming_mode") //
+																					  .option(button("sync_to_normal_mode", (screen, button) -> {
+																						  config.aiming_max_distance  = config.normal_max_distance;
+																						  config.aiming_offset_x      = config.normal_offset_x;
+																						  config.aiming_offset_y      = config.normal_offset_y;
+																						  config.aiming_is_centered   = config.normal_is_centered;
+																						  config.aiming_offset_center = config.normal_offset_center;
+																						  screen.finishOrSave();
+																					  }).build()) //
 																					  .option(option("max_distance", defaults.aiming_max_distance, 0D, 6D, 0.02, () -> config.aiming_max_distance, v -> config.aiming_max_distance = v).build()) //
 																					  .option(option("offset_x", defaults.aiming_offset_x, -1D, +1D, 0.01, () -> config.aiming_offset_x, v -> config.aiming_offset_x = v).build()) //
 																					  .option(option("offset_y", defaults.aiming_offset_y, -1D, +1D, 0.01, () -> config.aiming_offset_y, v -> config.aiming_offset_y = v).build()) //
@@ -147,6 +166,24 @@ public class YaclConfigScreenBuilder extends ConfigScreenBuilder {
 					 .name(ConfigManager.getText("option." + name)) //
 					 .description(OptionDescription.of(ConfigManager.getText("option." + name + ".desc"))) //
 					 .binding(defaultValue, getter, setter);
+	}
+
+	/**
+	 * name key: button.${name}
+	 * <p>
+	 * text key: button.${name}.text
+	 * <p>
+	 * description key: button.${name}.desc
+	 *
+	 * @param name   name
+	 * @param action action on click
+	 */
+	private ButtonOption.Builder button (String name, BiConsumer<YACLScreen, ButtonOption> action) {
+		return ButtonOption.createBuilder() //
+						   .name(ConfigManager.getText("button." + name)) //
+						   .text(ConfigManager.getText("button." + name + ".text")) //
+						   .description(OptionDescription.of(ConfigManager.getText("button." + name + ".desc"))) //
+						   .action(action);
 	}
 
 	private Option.Builder<Boolean> booleanOption (String name, boolean defaultValue, Supplier<Boolean> getter, Consumer<Boolean> setter) {
