@@ -29,13 +29,13 @@ fix: too many downloads #999
 
 ### Type (required)
 
-- feat: feature change
-- fix: fix bug
-- style: code format or comments change
-- chore: build script change
-- refactor: refactor code
-- perf: improve performance or experience
-- revert: revert commit
+* feat: feature change
+* fix: fix bug
+* style: code format or comments change
+* chore: build script change
+* refactor: refactor code
+* perf: improve performance or experience
+* revert: revert commit
 
 ## How to add a new config item
 
