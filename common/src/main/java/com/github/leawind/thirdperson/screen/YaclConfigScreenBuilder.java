@@ -82,6 +82,7 @@ public class YaclConfigScreenBuilder extends ConfigScreenBuilder {
 								  .category(ConfigCategory.createBuilder() //
 														  .name(ConfigManager.getText("option_category.camera_offset")) //
 														  .tooltip(ConfigManager.getText("option_category.camera_offset.desc")) //
+														  .option(option("aiming_fov_divisor", defaults.aiming_fov_divisor, 1D, 1.25D, 0.001D, () -> config.aiming_fov_divisor, v -> config.aiming_fov_divisor = v).build()) //
 														  .group(group("normal_mode") //
 																					  .option(option("max_distance", defaults.normal_max_distance, 0D, 6D, 0.02, () -> config.normal_max_distance, v -> config.normal_max_distance = v).build()) //
 																					  .option(option("offset_x", defaults.normal_offset_x, -1D, +1D, 0.01, () -> config.normal_offset_x, v -> config.normal_offset_x = v).build()) //

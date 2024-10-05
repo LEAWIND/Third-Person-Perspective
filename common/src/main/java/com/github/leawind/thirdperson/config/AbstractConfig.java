@@ -49,6 +49,7 @@ public abstract class AbstractConfig {
 	@Expose public          double             aiming_camera_offset_smooth_halflife      = 0.03;
 	@Expose public          double             aiming_distance_smooth_halflife           = 0.04;
 	// ================================================================================相机偏移 //
+	@Expose public          double             aiming_fov_divisor                        = 1.125;
 	//------------------------------正常模式
 	@Expose public          double             normal_max_distance                       = 1.5;
 	@Expose public          double             normal_offset_x                           = -0.16;

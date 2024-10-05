@@ -4,6 +4,8 @@ package com.github.leawind.thirdperson.mixin;
 import com.github.leawind.api.base.GameEvents;
 import com.github.leawind.api.client.event.MinecraftPickEvent;
 import com.github.leawind.api.client.event.RenderTickStartEvent;
+import com.github.leawind.thirdperson.ThirdPerson;
+import com.github.leawind.thirdperson.ThirdPersonStatus;
 import com.github.leawind.util.annotation.VersionSensitive;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -19,6 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
@@ -111,5 +114,13 @@ public class GameRendererMixin {
 				minecraft.getProfiler().pop();
 			}
 		}
+	}
+
+	@ModifyVariable(method="getFov", at=@At(value="STORE"))
+	private double getFov (double fov) {
+		if (ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson()) {
+			fov /= ThirdPerson.CAMERA_AGENT.getSmoothFovDivisor();
+		}
+		return fov;
 	}
 }
