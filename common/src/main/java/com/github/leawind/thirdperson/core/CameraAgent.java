@@ -42,9 +42,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class CameraAgent {
-	public final           FiniteChecker     FINITE_CHECKER   = new FiniteChecker(err -> {
-		ThirdPerson.LOGGER.error(err.toString());
-	});
+	public final           FiniteChecker     FINITE_CHECKER   = new FiniteChecker(err -> ThirdPerson.LOGGER.error(err.toString()));
 	private final @NotNull Minecraft         minecraft;
 	private final @NotNull ExpSmoothVector3d smoothRotateCenter;
 	private final @NotNull Camera            tempCamera       = new Camera();
@@ -148,8 +146,7 @@ public class CameraAgent {
 		var config      = ThirdPerson.getConfig();
 		var entity      = ThirdPerson.ENTITY_AGENT.getRawCameraEntity();
 		var eyePosition = entity.getEyePosition(partialTick);
-		var result      = LMath.toVector3d(eyePosition.with(Direction.Axis.Y, eyePosition.y + config.rotate_center_height_offset));
-		return result;
+		return LMath.toVector3d(eyePosition.with(Direction.Axis.Y, eyePosition.y + config.rotate_center_height_offset));
 	}
 
 	/**
@@ -265,14 +262,16 @@ public class CameraAgent {
 		FINITE_CHECKER.checkOnce(dYRot, dXRot);
 		var config = ThirdPerson.getConfig();
 		if (config.is_mod_enabled && !ThirdPersonStatus.isAdjustingCameraOffset()) {
-			if (config.lock_camera_pitch_angle) {
-				dXRot = 0;
-			}
 			if (dYRot != 0 || dXRot != 0) {
 				double yRot = getRelativeRotation().y() + dYRot;
-				double xRot = getRelativeRotation().x() - dXRot;
 				yRot %= 360f;
-				xRot = LMath.clamp(xRot, -ThirdPersonConstants.CAMERA_PITCH_DEGREE_LIMIT, ThirdPersonConstants.CAMERA_PITCH_DEGREE_LIMIT);
+				double xRot;
+				if (config.lock_camera_pitch_angle) {
+					xRot = 0;
+				} else {
+					xRot = getRelativeRotation().x() - dXRot;
+					xRot = LMath.clamp(xRot, -ThirdPersonConstants.CAMERA_PITCH_DEGREE_LIMIT, ThirdPersonConstants.CAMERA_PITCH_DEGREE_LIMIT);
+				}
 				relativeRotation.set(xRot, yRot);
 			}
 		}
@@ -507,6 +506,7 @@ public class CameraAgent {
 				switch (cameraDistanceMode) {
 					case PLANE -> smoothDistance.setValue(Math.max(0, smoothDistance.get() + limit - initDistance));
 					case STRAIGHT -> smoothDistance.setValue(Math.max(0, limit - bodyRadius));
+					default -> throw new IllegalStateException("Invalid camera distance mode: " + cameraDistanceMode);
 				}
 				var limitedPosition = rotateCenter.add(rotateCenterToCamera.scale(limit / initDistance));
 				((CameraInvoker)tempCamera).invokeSetPosition(limitedPosition);

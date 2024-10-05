@@ -39,9 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class EntityAgent {
-	public final     FiniteChecker       FINITE_CHECKER         = new FiniteChecker(err -> {
-		ThirdPerson.LOGGER.error(err.toString());
-	});
+	public final     FiniteChecker       FINITE_CHECKER         = new FiniteChecker(err -> ThirdPerson.LOGGER.error(err.toString()));
 	private final    Minecraft           minecraft;
 	private final    ExpSmoothRotation   smoothRotation         = ExpSmoothRotation.createWithHalflife(0.5);
 	private final    ExpSmoothDouble     smoothOpacity;
@@ -146,6 +144,7 @@ public class EntityAgent {
 					smoothRotation.update(period);
 					setRawRotation(smoothRotation.get());
 				}
+				default -> throw new IllegalStateException("Invalid smooth rotation type: " + smoothRotationType);
 			}
 		}
 	}

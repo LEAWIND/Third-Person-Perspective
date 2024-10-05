@@ -166,8 +166,8 @@ public class Zone {
 	 * 当减小量超过当前半径时，将视为将半径设为 0
 	 */
 	public @NotNull Zone squeezeSafely (double d) {
-		d = Math.min(d, radius());
-		return new Zone(min + d, max - d);
+		double r = Math.min(d, radius());
+		return new Zone(min + r, max - r);
 	}
 
 	/**

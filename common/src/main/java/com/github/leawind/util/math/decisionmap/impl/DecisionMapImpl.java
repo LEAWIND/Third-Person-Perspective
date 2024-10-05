@@ -1,7 +1,6 @@
 package com.github.leawind.util.math.decisionmap.impl;
 
 
-import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.util.math.decisionmap.api.DecisionFactor;
 import com.github.leawind.util.math.decisionmap.api.DecisionMap;
 import com.github.leawind.util.math.decisionmap.api.anno.ADecisionFactor;
@@ -63,11 +62,11 @@ public class DecisionMapImpl<T> implements DecisionMap<T> {
 		for (var field: clazz.getDeclaredFields()) {
 			if (field.isAnnotationPresent(ADecisionFactor.class)) {
 				if (field.getType() != DecisionFactor.class) {
-					throw new RuntimeException(String.format("Type %s required, got %s", DecisionFactor.class, field));
+					throw new IllegalArgumentException(String.format("Type %s required, got %s", DecisionFactor.class, field));
 				} else if (!Modifier.isStatic(field.getModifiers())) {
-					throw new RuntimeException(String.format("Static required: %s", field));
+					throw new IllegalArgumentException(String.format("Static required: %s", field));
 				} else if (!field.canAccess(null)) {
-					throw new RuntimeException(String.format("Cannot access field: %s", field));
+					throw new IllegalArgumentException(String.format("Cannot access field: %s", field));
 				}
 				var adf = field.getAnnotation(ADecisionFactor.class);
 				if (adf.value() == -1 && adf.mask() == -1) {
@@ -84,7 +83,7 @@ public class DecisionMapImpl<T> implements DecisionMap<T> {
 		}
 		int factorCount = adfListIndexed.size() + adfListAutoIndex.size();
 		if (factorCount > MAX_FACTOR_COUNT) {
-			throw new RuntimeException(String.format("Too many (%d) DecisionFactors in class %s", factorCount, clazz));
+			throw new IllegalArgumentException(String.format("Too many (%d) DecisionFactors in class %s", factorCount, clazz));
 		}
 		while (factors.size() < factorCount) {
 			factors.add(null);
@@ -94,7 +93,7 @@ public class DecisionMapImpl<T> implements DecisionMap<T> {
 				var adf   = field.getAnnotation(ADecisionFactor.class);
 				int index = adf.value() != -1 ? adf.value(): Integer.numberOfTrailingZeros(adf.mask());
 				if (factors.get(index) != null) {
-					throw new RuntimeException(String.format("Field %s: Index %d has been used already.", field, index));
+					throw new IllegalArgumentException(String.format("Field %s: Index %d has been used already.", field, index));
 				}
 				var df = (DecisionFactor)field.get(null);
 				df.setName(field.getName());
@@ -112,16 +111,16 @@ public class DecisionMapImpl<T> implements DecisionMap<T> {
 				}
 			}
 		} catch (IllegalAccessException e) {
-			ThirdPerson.LOGGER.error("This should never happen!");
-			throw new RuntimeException(e);
+			// This should never happen!
+			throw new IllegalStateException(e);
 		}
 		// Build
 		try {
 			var building = getBuildMethod(clazz);
 			building.invoke(null, this);
 		} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-			ThirdPerson.LOGGER.error("This should never happen!");
-			throw new RuntimeException(e);
+			// This should never happen!
+			throw new IllegalStateException(e);
 		}
 		build();
 	}
@@ -135,11 +134,11 @@ public class DecisionMapImpl<T> implements DecisionMap<T> {
 	private static @NotNull Method getBuildMethod (@NotNull Class<?> clazz) throws NoSuchMethodException {
 		var method = clazz.getMethod("build", DecisionMap.class);
 		if (!Modifier.isStatic(method.getModifiers())) {
-			throw new RuntimeException(String.format("Expected static method %s", method));
+			throw new IllegalArgumentException(String.format("Expected static method %s", method));
 		} else if (!method.canAccess(null)) {
-			throw new RuntimeException(String.format("Cannot access method %s", method));
+			throw new IllegalArgumentException(String.format("Cannot access method %s", method));
 		} else if (method.getReturnType() != void.class) {
-			throw new RuntimeException(String.format("Required return type void for method %s", method));
+			throw new IllegalArgumentException(String.format("Required return type void for method %s", method));
 		}
 		return method;
 	}

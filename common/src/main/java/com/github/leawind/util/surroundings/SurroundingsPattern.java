@@ -15,8 +15,7 @@ public class SurroundingsPattern {
 	private static final String  SEPARATOR_REGEXP = "[\\s\\n|]+";
 
 	public static SurroundingsPattern of (String str) {
-		str = BLANK_PATTERN.matcher(str).replaceAll(" ").trim();
-		var words   = str.split(SEPARATOR_REGEXP);
+		var words   = BLANK_PATTERN.matcher(str).replaceAll(" ").trim().split(SEPARATOR_REGEXP);
 		var pattern = new SurroundingsPattern();
 		for (int i = 0; i < words.length; i++) {
 			var         word = words[i];

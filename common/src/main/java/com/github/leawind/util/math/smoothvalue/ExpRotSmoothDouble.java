@@ -32,8 +32,7 @@ public class ExpRotSmoothDouble extends ExpSmoothDouble {
 
 	@Override
 	public void setTarget (double d) {
-		d = LMath.floorMod(d, cycle);
-		super.setTarget(d);
+		super.setTarget(LMath.floorMod(d, cycle));
 	}
 
 	@Override

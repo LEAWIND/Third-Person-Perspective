@@ -33,7 +33,8 @@ subprojects {
 			} catch (Exception e) {
 				throw new RuntimeException("Invalid json file: ${f}\n$e.message}")
 			}
-			meta.pack.pack_format = Integer.parseInt(resource_pack_format)
+			((Map) meta.pack).pack_format = Integer.parseInt(resource_pack_format)
+			//			meta.pack.pack_format = Integer.parseInt(resource_pack_format)
 			def writer = new FileWriter(f)
 			writer.write(JsonOutput.prettyPrint(JsonOutput.toJson(meta)))
 			writer.close()

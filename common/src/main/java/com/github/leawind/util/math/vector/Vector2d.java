@@ -35,9 +35,9 @@ public class Vector2d {
 
 	@Override
 	public int hashCode () {
-		int l = 31, r = 1;
-		r = l * r + Double.hashCode(x);
-		r = l * r + Double.hashCode(y);
+		int r = 1;
+		r = r * 31 + Double.hashCode(x);
+		r = r * 31 + Double.hashCode(y);
 		return r;
 	}
 

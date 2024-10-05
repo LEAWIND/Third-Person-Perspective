@@ -34,11 +34,11 @@
 <details>
 <summary>捐赠</summary>
 
-<img src=https://github.com/Leawind/Third-Person/raw/gh-pages/docs/public/donate/IHY-216.jpg width=648/>
+<img alt=ΨQ src=https://github.com/Leawind/Third-Person/raw/gh-pages/docs/public/donate/IHY-216.jpg width=648/>
 
 > <details>
 > <summary>通过微信捐赠</summary>
-> <img src=https://github.com/Leawind/Third-Person/raw/gh-pages/docs/public/donate/wechat.jpg width=320 />
+> <img alt=wechat src=https://github.com/Leawind/Third-Person/raw/gh-pages/docs/public/donate/wechat.jpg width=320 />
 > </details>
 
 > <details>

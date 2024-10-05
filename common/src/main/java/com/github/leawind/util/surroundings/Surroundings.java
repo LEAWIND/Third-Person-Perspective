@@ -14,17 +14,11 @@ import java.util.function.Predicate;
 public class Surroundings {
 	private final BlockGetter           level;
 	private final BlockPos              center;
-	public        SurroundingsPattern   pattern;
 	private final Map<String, Sequence> sequenceMap = new HashMap<>();
 
-	public Surroundings (BlockGetter level, BlockPos center, SurroundingsPattern pattern) {
-		this.level   = level;
-		this.center  = center;
-		this.pattern = pattern;
-		for (var name: pattern.getNames()) {
-			var seq = new Sequence(name, pattern.getOffsets(name));
-			sequenceMap.put(name, seq);
-		}
+	public Surroundings (BlockGetter level, BlockPos center) {
+		this.level  = level;
+		this.center = center;
 	}
 
 	public Sequence get (String name) {
@@ -34,7 +28,11 @@ public class Surroundings {
 		return sequenceMap.get(name);
 	}
 
-	public void apply (Predicate<BlockState> predicate) {
+	public void apply (SurroundingsPattern pattern, Predicate<BlockState> predicate) {
+		for (var name: pattern.getNames()) {
+			var seq = new Sequence(name, pattern.getOffsets(name));
+			sequenceMap.put(name, seq);
+		}
 		for (var seq: sequenceMap.values()) {
 			seq.apply(predicate);
 		}
@@ -68,8 +66,8 @@ public class Surroundings {
 		}
 
 		/**
-		 * @see Sequence#apply(Predicate)
-		 * @see Surroundings#apply(Predicate)
+		 * @see Sequence#apply
+		 * @see Surroundings#apply
 		 */
 		public boolean all () {
 			if (!isApplied) {
@@ -93,8 +91,8 @@ public class Surroundings {
 		}
 
 		/**
-		 * @see Sequence#apply(Predicate)
-		 * @see Surroundings#apply(Predicate)
+		 * @see Sequence#apply
+		 * @see Surroundings#apply
 		 */
 		public boolean any () {
 			if (!isApplied) {

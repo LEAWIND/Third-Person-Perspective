@@ -101,8 +101,7 @@ public class StaticMonoList implements MonoList {
 			}
 			icenter = (ileft + iright) / 2;
 		}
-		double emin = value - list[ileft], emax = list[iright] - value;
-		if (emin <= emax) {
+		if (value - list[ileft] <= list[iright] - value) {
 			return ileft;
 		} else {
 			return iright;

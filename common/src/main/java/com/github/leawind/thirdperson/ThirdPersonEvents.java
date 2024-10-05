@@ -70,13 +70,13 @@ public final class ThirdPersonEvents {
 					GameStatus.isPerspectiveInverted = true;
 				}
 			}
-			//TODO 如果位于狭窄通道内，暂时进入第一人称
+			// 如果位于狭窄通道内，暂时进入第一人称
 			{
 				final int leave_narrow_delay_ticks = 16;
 				boolean   isInNarrowSpace          = true;
 				var       center                   = BlockPos.containing(cameraEntity.getEyePosition(1));
-				var       surroundings             = new Surroundings(minecraft.level, center, ThirdPersonConstants.SURROUNDING_PATTERN);
-				surroundings.apply(s -> s.isViewBlocking(minecraft.level, center));
+				var       surroundings             = new Surroundings(minecraft.level, center);
+				surroundings.apply(ThirdPersonConstants.SURROUNDING_PATTERN, s -> s.isViewBlocking(minecraft.level, center));
 				int countT = surroundings.get("T").count();
 				int countM = surroundings.get("M").count();
 				isInNarrowSpace &= countT >= 3;
@@ -134,10 +134,8 @@ public final class ThirdPersonEvents {
 	 * 设置相机位置和朝向
 	 */
 	private static void onThirdPersonCameraSetup (ThirdPersonCameraSetupEvent event) {
-		if (ThirdPerson.isAvailable()) {
-			if (ThirdPerson.ENTITY_AGENT.isCameraEntityExist() && ThirdPersonStatus.isRenderingInThirdPerson()) {
-				ThirdPerson.CAMERA_AGENT.onCameraSetup(event);
-			}
+		if (ThirdPerson.isAvailable() && ThirdPerson.ENTITY_AGENT.isCameraEntityExist() && ThirdPersonStatus.isRenderingInThirdPerson()) {
+			ThirdPerson.CAMERA_AGENT.onCameraSetup(event);
 		}
 	}
 

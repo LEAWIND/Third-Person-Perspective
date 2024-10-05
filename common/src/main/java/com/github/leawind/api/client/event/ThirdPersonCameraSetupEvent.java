@@ -6,14 +6,13 @@ import net.minecraft.world.phys.Vec3;
 
 public final class ThirdPersonCameraSetupEvent implements ModEvent {
 	public final float partialTick;
+	public       Vec3  pos;
+	public       float xRot = 0;
+	public       float yRot = 0;
 
 	public ThirdPersonCameraSetupEvent (float partialTick) {
 		this.partialTick = partialTick;
 	}
-
-	public Vec3  pos;
-	public float xRot = 0;
-	public float yRot = 0;
 
 	/**
 	 * Set camera position

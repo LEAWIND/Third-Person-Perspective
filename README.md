@@ -34,13 +34,13 @@ A practical, smooth, feature-rich third person mod for all Minecraft players.
 <details>
 <summary>Donates</summary>
 
-<img src=https://github.com/Leawind/Third-Person/raw/gh-pages/docs/public/donate/IHY-216.jpg width=648/>
+<img alt=ΨQ src=https://github.com/Leawind/Third-Person/raw/gh-pages/docs/public/donate/IHY-216.jpg width=648/>
 
 > <details>
 >
 > <summary>Donate using Wechat</summary>
 >
-> <img src=https://github.com/Leawind/Third-Person/raw/gh-pages/docs/public/donate/wechat.jpg width=320 />
+> <img alt=wechat src=https://github.com/Leawind/Third-Person/raw/gh-pages/docs/public/donate/wechat.jpg width=320 />
 >
 > </details>
 
