@@ -62,7 +62,7 @@ public abstract class AbstractConfig {
 	@Expose public          double             aiming_offset_y                           = 0.42;
 	@Expose public          boolean            aiming_is_centered                        = false;
 	@Expose public          double             aiming_offset_center                      = 0.48;
-	// ================================================================================瞄准模式判定 //
+	// ================================================================================物品谓词 //
 	@Expose public          boolean            determine_aim_mode_by_animation           = true;
 	@Expose @NotNull public List<String>       hold_to_aim_item_patterns                 = new ArrayList<>();
 	@Expose @NotNull public List<String>       use_to_aim_item_patterns                  = new ArrayList<>();

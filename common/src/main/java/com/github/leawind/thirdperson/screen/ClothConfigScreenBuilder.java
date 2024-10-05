@@ -106,7 +106,7 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 		}
 		//==================================================================================================================================================//
 		// Category: Aiming Check
-		final var CATEGORY_AIMING_CHECK = builder.getOrCreateCategory(ConfigManager.getText("option_category.aiming_check"));
+		final var CATEGORY_AIMING_CHECK = builder.getOrCreateCategory(ConfigManager.getText("option_category.item_predicates"));
 		{
 			CATEGORY_AIMING_CHECK.addEntry(buildBooleanEntry("determine_aim_mode_by_animation", defaults.determine_aim_mode_by_animation, config.determine_aim_mode_by_animation, v -> config.determine_aim_mode_by_animation = v, entryBuilder));
 			CATEGORY_AIMING_CHECK.addEntry(buildStringListEntry("hold_to_aim_item_pattern_expressions", defaults.hold_to_aim_item_patterns, config.hold_to_aim_item_patterns, v -> config.hold_to_aim_item_patterns = v, entryBuilder));
