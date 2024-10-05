@@ -51,7 +51,7 @@ public class YaclConfigScreenBuilder extends ConfigScreenBuilder {
 																						  .build()) //
 														  .group(group("player_fade_out")//
 																						 .option(booleanOption("player_fade_out_enabled", defaults.player_fade_out_enabled, () -> config.player_fade_out_enabled, v -> config.player_fade_out_enabled = v).build()) //
-																						 .option(option("gaze_opacity", defaults.gaze_opacity, 0D, 0.5D, 0.01, () -> config.gaze_opacity, v -> config.gaze_opacity = v).build()) //
+																						 .option(option("gaze_opacity", defaults.gaze_opacity, 0D, 1D, 0.01, () -> config.gaze_opacity, v -> config.gaze_opacity = v).build()) //
 																						 .option(option("player_invisible_threshold", defaults.player_invisible_threshold, 0D, 1D, 0.01D, () -> config.player_invisible_threshold, v -> config.player_invisible_threshold = v).build()) //
 																						 .build()) //
 														  .group(group("camera_distance_adjustment") //

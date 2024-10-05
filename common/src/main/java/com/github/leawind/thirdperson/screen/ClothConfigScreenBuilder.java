@@ -46,7 +46,7 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 			// SubCategory: Player Fade out
 			final var Subcategory_Player_Fade_Out = buildSubCategory("player_fade_out", entryBuilder);
 			Subcategory_Player_Fade_Out.add(buildBooleanEntry("player_fade_out_enabled", defaults.player_fade_out_enabled, config.player_fade_out_enabled, v -> config.player_fade_out_enabled = v, entryBuilder));
-			Subcategory_Player_Fade_Out.add(buildDoubleEntry("gaze_opacity", 0D, 0.5D, defaults.gaze_opacity, config.gaze_opacity, v -> config.gaze_opacity = v, entryBuilder));
+			Subcategory_Player_Fade_Out.add(buildDoubleEntry("gaze_opacity", 0D, 1D, defaults.gaze_opacity, config.gaze_opacity, v -> config.gaze_opacity = v, entryBuilder));
 			Subcategory_Player_Fade_Out.add(buildDoubleEntry("player_invisible_threshold", 0D, 1D, defaults.player_invisible_threshold, config.player_invisible_threshold, v -> config.player_invisible_threshold = v, entryBuilder));
 			CATEGORY_COMMON.addEntry(Subcategory_Player_Fade_Out.build());
 			// SubCategory: Camera Distance Adjustment
