@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class ThirdPerson {
-	public static final Minecraft     mc             = Minecraft.getInstance();
 	public static final Logger        LOGGER         = LoggerFactory.getLogger(ThirdPersonConstants.MOD_NAME);
 	public static final ConfigManager CONFIG_MANAGER = new ConfigManager();
 	public static final FiniteChecker FINITE_CHECKER = new FiniteChecker(err -> ThirdPerson.LOGGER.error(err.toString()));
@@ -22,11 +21,12 @@ public final class ThirdPerson {
 	public static       CameraAgent   CAMERA_AGENT;
 
 	public static void init () {
+		var minecraft = Minecraft.getInstance();
 		LOGGER.debug("Initializing mod {}", ThirdPersonConstants.MOD_NAME);
 		MixinExtrasBootstrap.init();
-		ENTITY_AGENT = EntityAgent.create(mc);
-		ENTITY_AGENT = new EntityAgent(mc);
-		CAMERA_AGENT = new CameraAgent(mc);
+		ENTITY_AGENT = EntityAgent.create(minecraft);
+		ENTITY_AGENT = new EntityAgent(minecraft);
+		CAMERA_AGENT = new CameraAgent(minecraft);
 		CONFIG_MANAGER.tryLoad();
 		ThirdPersonResources.register();
 		ThirdPersonKeys.register();
@@ -38,10 +38,11 @@ public final class ThirdPerson {
 	 * 判断：模组功能已启用，且相机和玩家都已经初始化
 	 */
 	public static boolean isAvailable () {
-		return mc.player != null    //
-			   && mc.cameraEntity != null    //
+		var minecraft = Minecraft.getInstance();
+		return minecraft.player != null    //
+			   && minecraft.cameraEntity != null    //
 			   && getConfig().is_mod_enabled //
-			   && mc.gameRenderer.getMainCamera().isInitialized()    //
+			   && minecraft.gameRenderer.getMainCamera().isInitialized()    //
 			;
 	}
 

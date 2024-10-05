@@ -181,8 +181,9 @@ public final class ThirdPersonEvents {
 				// 退出第三人称
 				ThirdPerson.ENTITY_AGENT.setRawRotation(ThirdPerson.CAMERA_AGENT.getRotation());
 			}
-			ThirdPerson.mc.gameRenderer.checkEntityPostEffect(ThirdPerson.mc.getCameraEntity());
-			ThirdPerson.mc.levelRenderer.needsUpdate();
+			var minecraft = Minecraft.getInstance();
+			minecraft.gameRenderer.checkEntityPostEffect(minecraft.getCameraEntity());
+			minecraft.levelRenderer.needsUpdate();
 			ThirdPersonStatus.wasRenderInThirdPersonLastRenderTick = isRenderingInThirdPerson;
 		}
 		if (isRenderingInThirdPerson) {
@@ -249,7 +250,7 @@ public final class ThirdPersonEvents {
 			if (ThirdPersonStatus.isRenderingInThirdPerson()) {
 				if (ThirdPerson.ENTITY_AGENT.isInteracting()) {
 					// 立即更新玩家注视着的目标 Minecraft#hitResult
-					ThirdPerson.mc.gameRenderer.pick(1f);
+					Minecraft.getInstance().gameRenderer.pick(1f);
 				}
 			}
 		}
@@ -264,7 +265,7 @@ public final class ThirdPersonEvents {
 				return;
 			}
 			var config     = ThirdPerson.getConfig();
-			var window     = ThirdPerson.mc.getWindow();
+			var window     = Minecraft.getInstance().getWindow();
 			var screenSize = Vector2d.of(window.getScreenWidth(), window.getScreenHeight());
 			var scheme     = config.getCameraOffsetScheme();
 			var mode       = scheme.getMode();

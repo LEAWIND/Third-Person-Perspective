@@ -21,10 +21,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ConfigManager {
-	private final @NotNull Gson    GSON                = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().disableHtmlEscaping().create();
-	private @NotNull       Config  config              = new Config();
-	private final          Timer   lazySaveTimer       = new Timer();
-	private                boolean isLazySaveScheduled = false;
+	private final    Gson    GSON                = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().disableHtmlEscaping().create();
+	private @NotNull Config  config              = new Config();
+	private final    Timer   lazySaveTimer       = new Timer();
+	private          boolean isLazySaveScheduled = false;
 
 	public ConfigManager () {
 	}

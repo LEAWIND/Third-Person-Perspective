@@ -5,6 +5,7 @@ import com.github.leawind.thirdperson.core.rotation.RotateTargetEnum;
 import com.github.leawind.thirdperson.core.rotation.SmoothTypeEnum;
 import com.github.leawind.util.math.vector.Vector2d;
 import com.github.leawind.util.math.vector.Vector3d;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -59,7 +60,7 @@ public final class ThirdPersonStatus {
 	 * 当前相机模式既不是第一人称，也不是镜像的
 	 */
 	public static boolean isRenderingInThirdPerson () {
-		var cameraType = ThirdPerson.mc.options.getCameraType();
+		var cameraType = Minecraft.getInstance().options.getCameraType();
 		return !(cameraType.isFirstPerson() || cameraType.isMirrored());
 	}
 

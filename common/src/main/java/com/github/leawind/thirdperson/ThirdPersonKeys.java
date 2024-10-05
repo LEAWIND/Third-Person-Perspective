@@ -19,7 +19,7 @@ public final class ThirdPersonKeys {
 			if (config.is_mod_enabled) {
 				ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.CAMERA_ROTATION);
 			} else {
-				ThirdPerson.mc.gameRenderer.checkEntityPostEffect(null);
+				Minecraft.getInstance().gameRenderer.checkEntityPostEffect(null);
 				ThirdPersonEvents.resetPlayer();
 			}
 			config.is_mod_enabled = !config.is_mod_enabled;

@@ -5,6 +5,7 @@ import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.util.math.decisionmap.api.DecisionFactor;
 import com.github.leawind.util.math.decisionmap.api.DecisionMap;
 import com.github.leawind.util.math.decisionmap.api.anno.ADecisionFactor;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +29,7 @@ public interface RotateStrategy {
 		var rotateTarget = ThirdPerson.getConfig().rotate_to_moving_direction && (!entity.isPassenger() || entity.getVehicle() instanceof LivingEntity)   //
 						   ? RotateTargetEnum.HORIZONTAL_IMPULSE_DIRECTION    //
 						   : RotateTargetEnum.DEFAULT;
-		var smoothType = ThirdPerson.mc.options.keySprint.isDown() || ThirdPerson.ENTITY_AGENT.isSprinting()    //
+		var smoothType = Minecraft.getInstance().options.keySprint.isDown() || ThirdPerson.ENTITY_AGENT.isSprinting()    //
 						 ? SmoothTypeEnum.HARD    //
 						 : SmoothTypeEnum.EXP_LINEAR;
 		ThirdPerson.ENTITY_AGENT.setRotateTarget(rotateTarget);

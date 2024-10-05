@@ -47,7 +47,7 @@ public enum RotateTargetEnum {
 	}),
 	DEFAULT(partialTick -> {
 		var entity = ThirdPerson.ENTITY_AGENT.getRawCameraEntity();
-		if (!ThirdPerson.CONFIG_MANAGER.getConfig().player_rotate_to_interest_point || entity.getControlledVehicle() instanceof LivingEntity) {
+		if (!ThirdPerson.getConfig().player_rotate_to_interest_point || entity.getControlledVehicle() instanceof LivingEntity) {
 			return NONE.getRotation(partialTick);
 		}
 		return INTEREST_POINT.getRotation(partialTick);

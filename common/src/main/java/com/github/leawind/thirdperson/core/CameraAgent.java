@@ -446,11 +446,11 @@ public class CameraAgent {
 	 */
 	private void updateTempCameraRotationPosition (float partialTick) {
 		((CameraInvoker)tempCamera).invokeSetRotation((float)(relativeRotation.y() + 180), (float)-relativeRotation.x());
-		var    mc          = ThirdPerson.mc;
-		var    config      = ThirdPerson.getConfig();
-		double aspectRatio = (double)mc.getWindow().getWidth() / mc.getWindow().getHeight();
+		var    minecraft          = Minecraft.getInstance();
+		var    cameraDistanceMode = ThirdPerson.getConfig().camera_distance_mode;
 		// 垂直视野角度一半(弧度制）
-		double fov                = ((GameRendererInvoker)mc.gameRenderer).invokeGetFov(getRawCamera(), partialTick, true);
+		double aspectRatio        = (double)minecraft.getWindow().getWidth() / minecraft.getWindow().getHeight();
+		double fov                = ((GameRendererInvoker)minecraft.gameRenderer).invokeGetFov(getRawCamera(), partialTick, true);
 		double verticalRadianHalf = Math.toRadians(fov) / 2;
 		double heightHalf         = Math.tan(verticalRadianHalf) * ThirdPersonConstants.VANILLA_NEAR_PLANE_DISTANCE;
 		double widthHalf          = aspectRatio * heightHalf;
@@ -466,7 +466,7 @@ public class CameraAgent {
 			double offsetX           = offsetRatio.x();
 			double offsetY           = offsetRatio.y();
 			direction = forward.sub(up.mul(offsetY * Math.tan(verticalFovHalf / 2)).add(left.mul(offsetX * Math.tan(horizontalFovHalf / 2))));
-			if (config.camera_distance_mode == AbstractConfig.CameraDistanceMode.STRAIGHT) {
+			if (cameraDistanceMode == AbstractConfig.CameraDistanceMode.STRAIGHT) {
 				direction.normalizeSafely();
 			}
 		}
@@ -499,7 +499,7 @@ public class CameraAgent {
 				}
 			}
 			if (limit < initDistance) {
-				switch (config.camera_distance_mode) {
+				switch (cameraDistanceMode) {
 					case PLANE -> smoothDistance.setValue(Math.max(0, smoothDistance.get() + limit - initDistance));
 					case STRAIGHT -> smoothDistance.setValue(Math.max(0, limit - bodyRadius));
 				}
