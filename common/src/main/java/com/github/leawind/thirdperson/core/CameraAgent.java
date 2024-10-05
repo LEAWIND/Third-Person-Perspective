@@ -36,10 +36,10 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 public class CameraAgent {
 	public final           FiniteChecker     FINITE_CHECKER   = new FiniteChecker(err -> {
@@ -301,7 +301,7 @@ public class CameraAgent {
 	 * <p>
 	 * 使用默认距离
 	 */
-	public @NotNull Optional<Vector3d> getPickPosition () {
+	public @Nullable Vector3d getPickPosition () {
 		return getPickPosition(getPickRange());
 	}
 
@@ -310,9 +310,9 @@ public class CameraAgent {
 	 *
 	 * @param pickRange 最大探测距离
 	 */
-	public @NotNull Optional<Vector3d> getPickPosition (double pickRange) {
+	public @Nullable Vector3d getPickPosition (double pickRange) {
 		var hitResult = pick(pickRange);
-		return Optional.ofNullable(hitResult.getType() == HitResult.Type.MISS ? null: LMath.toVector3d(hitResult.getLocation()));
+		return hitResult.getType() == HitResult.Type.MISS ? null: LMath.toVector3d(hitResult.getLocation());
 	}
 
 	/**
@@ -324,12 +324,17 @@ public class CameraAgent {
 	 */
 	@VersionSensitive
 	public @NotNull HitResult pick (double pickRange) {
-		var                 camera                 = getRawCamera();
-		var                 cameraPos              = camera.getPosition();
-		Optional<HitResult> entityHitResult        = pickEntity(pickRange).map(hr -> hr);
-		HitResult           blockHitResult         = pickBlock(pickRange);
-		double              blockHitResultDistance = blockHitResult.getLocation().distanceTo(cameraPos);
-		return entityHitResult.filter(hitResult -> !(blockHitResultDistance < hitResult.getLocation().distanceTo(cameraPos))).orElse(blockHitResult);
+		var cameraPos       = getRawCamera().getPosition();
+		var entityHitResult = pickEntity(pickRange);
+		var blockHitResult  = pickBlock(pickRange);
+		if (entityHitResult != null) {
+			double blockDistance  = blockHitResult.getLocation().distanceTo(cameraPos);
+			double entityDistance = hitResult.getLocation().distanceTo(cameraPos);
+			if (blockDistance < entityDistance) {
+				return entityHitResult;
+			}
+		}
+		return blockHitResult;
 	}
 
 	/**
@@ -340,9 +345,9 @@ public class CameraAgent {
 	 * @param pickRange 探测距离
 	 */
 	@VersionSensitive
-	public @NotNull Optional<EntityHitResult> pickEntity (double pickRange) {
+	public @Nullable EntityHitResult pickEntity (double pickRange) {
 		if (!ThirdPerson.ENTITY_AGENT.isCameraEntityExist()) {
-			return Optional.empty();
+			return null;
 		}
 		var cameraEntity = ThirdPerson.ENTITY_AGENT.getRawCameraEntity();
 		var camera       = getRawCamera();
@@ -350,7 +355,7 @@ public class CameraAgent {
 		var pickFrom     = camera.getPosition();
 		var pickTo       = viewVector.scale(pickRange).add(pickFrom);
 		var aabb         = new AABB(pickFrom, pickTo);
-		return Optional.ofNullable(ProjectileUtil.getEntityHitResult(cameraEntity, pickFrom, pickTo, aabb, target -> !target.isSpectator() && target.isPickable(), pickRange));
+		return ProjectileUtil.getEntityHitResult(cameraEntity, pickFrom, pickTo, aabb, target -> !target.isSpectator() && target.isPickable(), pickRange);
 	}
 
 	/**
@@ -397,7 +402,7 @@ public class CameraAgent {
 	/**
 	 * 预测玩家可能想要射击的目标实体
 	 */
-	public @NotNull Optional<Entity> predictTargetEntity (float partialTick) {
+	public @Nullable Entity predictTargetEntity (float partialTick) {
 		var config = ThirdPerson.getConfig();
 		// 候选目标实体
 		List<Entity> candidateTargets = Lists.newArrayList();
@@ -434,9 +439,9 @@ public class CameraAgent {
 		}
 		if (!candidateTargets.isEmpty()) {
 			candidateTargets.sort(new AimingTargetComparator(cameraPos, cameraViewVector));
-			return Optional.of(candidateTargets.get(0));
+			return candidateTargets.get(0);
 		}
-		return Optional.empty();
+		return null;
 	}
 
 	/**
@@ -446,8 +451,8 @@ public class CameraAgent {
 	 */
 	private void updateTempCameraRotationPosition (float partialTick) {
 		((CameraInvoker)tempCamera).invokeSetRotation((float)(relativeRotation.y() + 180), (float)-relativeRotation.x());
-		var    minecraft          = Minecraft.getInstance();
-		var    cameraDistanceMode = ThirdPerson.getConfig().camera_distance_mode;
+		var minecraft          = Minecraft.getInstance();
+		var cameraDistanceMode = ThirdPerson.getConfig().camera_distance_mode;
 		// 垂直视野角度一半(弧度制）
 		double aspectRatio        = (double)minecraft.getWindow().getWidth() / minecraft.getWindow().getHeight();
 		double fov                = ((GameRendererInvoker)minecraft.gameRenderer).invokeGetFov(getRawCamera(), partialTick, true);

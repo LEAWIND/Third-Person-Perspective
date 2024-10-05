@@ -4,6 +4,7 @@ package com.github.leawind.util;
 import com.github.leawind.thirdperson.ThirdPerson;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import me.shedaniel.clothconfig2.impl.builders.StringListBuilder;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -24,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 /**
@@ -55,6 +57,9 @@ public final class ItemPredicateUtil {
 	 */
 	private static final Pattern RGX_KEY_NBT = Pattern.compile("^([a-z0-9.:_]+)(\\{.*})?$");
 
+	/**
+	 * @see StringListBuilder#setCellErrorSupplier(Function)
+	 */
 	public static @NotNull Optional<Component> supplyError (String pattern) {
 		try {
 			parse("minecraft", pattern);

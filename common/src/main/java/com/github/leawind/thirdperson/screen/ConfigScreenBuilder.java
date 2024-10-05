@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * 配置屏幕构建器
@@ -43,12 +42,12 @@ public abstract class ConfigScreenBuilder {
 	/**
 	 * 根据配置获取屏幕构建器
 	 */
-	public static @NotNull Optional<ConfigScreenBuilder> getBuilder () {
-		final Map<String, PossibleSupplier<ConfigScreenBuilder>> availables = getAvailableBuidlers();
+	public static @Nullable ConfigScreenBuilder getBuilder () {
+		final var availables = getAvailableBuidlers();
 		if (availables.isEmpty()) {
-			return Optional.empty();
+			return null;
 		}
-		return Optional.of(availables.getOrDefault(ThirdPerson.getConfig().config_screen_api, availables.values().iterator().next()).get());
+		return availables.getOrDefault(ThirdPerson.getConfig().config_screen_api, availables.values().iterator().next()).get();
 	}
 
 	/**

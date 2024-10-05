@@ -21,12 +21,11 @@ public enum RotateTargetEnum {
 	 */
 	NONE(partialTick -> ThirdPerson.ENTITY_AGENT.getRawRotation(1)),
 	INTEREST_POINT(partialTick -> {
-		var optionalPoint = ThirdPerson.ENTITY_AGENT.getInterestPoint();
-		if (optionalPoint.isEmpty()) {
+		var point = ThirdPerson.ENTITY_AGENT.getInterestPoint();
+		if (point == null) {
 			return NONE.getRotation(partialTick);
 		}
 		var player            = ThirdPerson.ENTITY_AGENT.getRawPlayerEntity();
-		var point             = optionalPoint.get();
 		var toInterestedPoint = point.subtract(player.getEyePosition(partialTick));
 		if (toInterestedPoint.length() < 1e-5) {
 			return NONE.getRotation(partialTick);
@@ -61,11 +60,11 @@ public enum RotateTargetEnum {
 	 */
 	CAMERA_HIT_RESULT(partialTick -> {
 		var cameraHitPosition = ThirdPerson.CAMERA_AGENT.getPickPosition();
-		if (cameraHitPosition.isEmpty()) {
+		if (cameraHitPosition == null) {
 			return CAMERA_ROTATION.getRotation(partialTick);
 		}
 		var eyePosition = ThirdPerson.ENTITY_AGENT.getRawEyePosition(partialTick);
-		var viewVector  = cameraHitPosition.get().sub(eyePosition);
+		var viewVector  = cameraHitPosition.sub(eyePosition);
 		return LMath.rotationDegreeFromDirection(viewVector);
 	}),
 	/**
@@ -85,14 +84,13 @@ public enum RotateTargetEnum {
 			return rotation;
 		}
 		var predicted = ThirdPerson.CAMERA_AGENT.predictTargetEntity(partialTick);
-		if (predicted.isEmpty()) {
+		if (predicted == null) {
 			return rotation;
 		}
 		var camera       = ThirdPerson.CAMERA_AGENT.getRawCamera();
-		var target       = predicted.get();
 		var playerEyePos = ThirdPerson.ENTITY_AGENT.getRawEyePosition(partialTick);
 		var cameraPos    = LMath.toVector3d(camera.getPosition());
-		var targetPos    = LMath.toVector3d(target.getPosition(partialTick));
+		var targetPos    = LMath.toVector3d(predicted.getPosition(partialTick));
 		var end          = LMath.toVector3d(camera.getLookVector()).normalize(cameraPos.distance(targetPos)).add(cameraPos);
 		var eyeToEnd     = end.sub(playerEyePos);
 		if (eyeToEnd.length() < 1e-5) {

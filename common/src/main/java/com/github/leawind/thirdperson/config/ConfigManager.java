@@ -119,12 +119,12 @@ public class ConfigManager {
 	 */
 	public @Nullable Screen getConfigScreen (@Nullable Screen parent) {
 		var builder = ConfigScreenBuilder.getBuilder();
-		if (builder.isEmpty()) {
+		if (builder == null) {
 			ThirdPerson.LOGGER.warn("No config screen builder available.");
 			return null;
 		}
 		ThirdPerson.LOGGER.debug("Building config screen");
-		return builder.get().build(config, parent);
+		return builder.build(config, parent);
 	}
 
 	/**
