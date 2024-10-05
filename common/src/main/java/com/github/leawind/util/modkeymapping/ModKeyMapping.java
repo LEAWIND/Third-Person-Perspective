@@ -64,11 +64,8 @@ public interface ModKeyMapping extends Comparable<KeyMapping> {
 	}
 
 	/**
-	 * <a href="https://github.com/LEAWIND/Third-Person/issues/44">#44</a>
-	 * <p>
 	 * 按键是否已按下
 	 */
-	@SuppressWarnings("EmptyMethod")
 	boolean isDown ();
 
 	/**
