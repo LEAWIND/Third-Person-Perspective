@@ -3,6 +3,7 @@ package com.github.leawind.util.math;
 
 import com.github.leawind.util.math.vector.Vector2d;
 import com.github.leawind.util.math.vector.Vector3d;
+import com.github.leawind.util.math.vector.Vector3i;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Contract;
@@ -131,6 +132,11 @@ public interface LMath {
 	@Contract(pure=true)
 	static Vec3i toVec3i (Vec3 v) {
 		return new Vec3i((int)v.x, (int)v.y, (int)v.z);
+	}
+
+	@Contract(pure=true)
+	static Vec3i toVec3i (Vector3i v) {
+		return new Vec3i(v.x(), v.y(), v.z());
 	}
 
 	@Contract(pure=true)

@@ -41,6 +41,8 @@
 	"leawind_third_person.option.config_screen_api.desc": "",
 	"leawind_third_person.option.center_offset_when_flying": "飞行时自动居中",
 	"leawind_third_person.option.center_offset_when_flying.desc": "当相机附着的实体正在使用鞘翅飞行时，不使用相机偏移量。",
+	"leawind_third_person.option.temp_first_person_in_narrow_space": "狭窄空间暂时第一人称",
+	"leawind_third_person.option.temp_first_person_in_narrow_space.desc": "当玩家处于狭窄空间中时，暂时进入第一人称。",
 	"leawind_third_person.option.player_fade_out_enabled": "启用玩家半透明",
 	"leawind_third_person.option.player_fade_out_enabled.desc": "当玩家实体阻挡视野时，让其变得半透明。",
 	"leawind_third_person.option.gaze_opacity": "注视透明度",

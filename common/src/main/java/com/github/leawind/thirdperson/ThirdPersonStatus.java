@@ -37,7 +37,7 @@ public final class ThirdPersonStatus {
 	/**
 	 * 自上次离开狭窄空间以来经过的 tick 数
 	 */
-	public static                int      ticksSinceLeaveNarrowSpace           = 0;
+	public static                int      ticksSinceLeaveNarrowSpace           = ThirdPersonConstants.LEAVE_NARROW_SPACE_DELAY_TICKS;
 
 	/**
 	 * 是否正在调整摄像机偏移量

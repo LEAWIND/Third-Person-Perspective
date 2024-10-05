@@ -34,6 +34,7 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 		{
 			CATEGORY_COMMON.addEntry(buildBooleanEntry("is_mod_enabled", defaults.is_mod_enabled, config.is_mod_enabled, v -> config.is_mod_enabled = v, entryBuilder));
 			CATEGORY_COMMON.addEntry(buildBooleanEntry("center_offset_when_flying", defaults.center_offset_when_flying, config.center_offset_when_flying, v -> config.center_offset_when_flying = v, entryBuilder));
+			CATEGORY_COMMON.addEntry(buildBooleanEntry("temp_first_person_in_narrow_space", defaults.temp_first_person_in_narrow_space, config.temp_first_person_in_narrow_space, v -> config.temp_first_person_in_narrow_space = v, entryBuilder));
 			// SubCategory: Player Rotation
 			final var SUBCATEGORY_PLAYER_ROTATION = buildSubCategory("player_rotation", entryBuilder);
 			SUBCATEGORY_PLAYER_ROTATION.add(buildBooleanEntry("player_rotate_with_camera_when_not_aiming", defaults.player_rotate_with_camera_when_not_aiming, config.player_rotate_with_camera_when_not_aiming, v -> config.player_rotate_with_camera_when_not_aiming = v, entryBuilder));

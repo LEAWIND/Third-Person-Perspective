@@ -14,7 +14,6 @@ import com.github.leawind.util.ItemPredicateUtil;
 import com.github.leawind.util.annotation.VersionSensitive;
 import com.github.leawind.util.math.LMath;
 import com.github.leawind.util.math.vector.Vector2d;
-import com.github.leawind.util.surroundings.Surroundings;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.event.events.client.ClientPlayerEvent;
@@ -26,6 +25,7 @@ import net.minecraft.client.MouseHandler;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
@@ -70,28 +70,29 @@ public final class ThirdPersonEvents {
 					GameStatus.isPerspectiveInverted = true;
 				}
 			}
-			// 如果位于狭窄通道内，暂时进入第一人称
-			{
-				final int leave_narrow_delay_ticks = 16;
-				boolean   isInNarrowSpace          = true;
-				var       center                   = BlockPos.containing(cameraEntity.getEyePosition(1));
-				var       surroundings             = new Surroundings(minecraft.level, center);
-				surroundings.apply(ThirdPersonConstants.SURROUNDING_PATTERN, s -> s.isViewBlocking(minecraft.level, center));
-				int countT = surroundings.get("T").count();
-				int countM = surroundings.get("M").count();
-				isInNarrowSpace &= countT >= 3;
-				isInNarrowSpace &= countM >= 1;
+			// 如果位于狭窄空间内，暂时进入第一人称
+			ThirdPersonStatus.ticksSinceLeaveNarrowSpace = Math.min(ThirdPersonConstants.LEAVE_NARROW_SPACE_DELAY_TICKS, ThirdPersonStatus.ticksSinceLeaveNarrowSpace + 1);
+			if (config.temp_first_person_in_narrow_space) {
+				boolean isInNarrowSpace = calcIsInNarrowSpace(minecraft, cameraEntity);
 				if (isInNarrowSpace) {
 					ThirdPersonStatus.ticksSinceLeaveNarrowSpace = 0;
-					GameStatus.isPerspectiveInverted             = true;
-				} else if (ThirdPersonStatus.ticksSinceLeaveNarrowSpace < leave_narrow_delay_ticks) {
-					GameStatus.isPerspectiveInverted = true;
-					ThirdPersonStatus.ticksSinceLeaveNarrowSpace++;
 				}
+				GameStatus.isPerspectiveInverted = ThirdPersonStatus.ticksSinceLeaveNarrowSpace < ThirdPersonConstants.LEAVE_NARROW_SPACE_DELAY_TICKS;
 			}
 		}
 		ThirdPerson.ENTITY_AGENT.onClientTickStart();
 		ThirdPerson.CAMERA_AGENT.onClientTickStart();
+	}
+
+	public static boolean calcIsInNarrowSpace (Minecraft minecraft, Entity entity) {
+		boolean isInNarrowSpace = true;
+		var     center          = BlockPos.containing(entity.getEyePosition(1));
+		ThirdPersonConstants.SURROUNDINGS_MATCHING.rematch(center, minecraft.level, s -> s.isViewBlocking(minecraft.level, center));
+		int countT = ThirdPersonConstants.SURROUNDINGS_MATCHING.getMatches("T").count();
+		int countM = ThirdPersonConstants.SURROUNDINGS_MATCHING.getMatches("M").count();
+		isInNarrowSpace &= countT >= 3;
+		isInNarrowSpace &= countM >= 1;
+		return isInNarrowSpace;
 	}
 
 	private static void onClientStopping (Minecraft minecraft) {

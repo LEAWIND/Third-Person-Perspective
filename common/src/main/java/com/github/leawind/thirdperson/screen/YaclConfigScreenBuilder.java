@@ -41,6 +41,7 @@ public class YaclConfigScreenBuilder extends ConfigScreenBuilder {
 														  .tooltip(ConfigManager.getText("option_category.common.desc")) //
 														  .option(booleanOption("is_mod_enabled", defaults.is_mod_enabled, () -> config.is_mod_enabled, v -> config.is_mod_enabled = v).build()) //
 														  .option(booleanOption("center_offset_when_flying", defaults.center_offset_when_flying, () -> config.center_offset_when_flying, v -> config.center_offset_when_flying = v).build()) //
+														  .option(booleanOption("temp_first_person_in_narrow_space", defaults.temp_first_person_in_narrow_space, () -> config.temp_first_person_in_narrow_space, v -> config.temp_first_person_in_narrow_space = v).build()) //
 														  .group(group("player_rotation") //
 																						  .option(booleanOption("player_rotate_with_camera_when_not_aiming", defaults.player_rotate_with_camera_when_not_aiming, () -> config.player_rotate_with_camera_when_not_aiming, v -> config.player_rotate_with_camera_when_not_aiming = v).build()) //
 																						  .option(booleanOption("player_rotate_to_interest_point", defaults.player_rotate_to_interest_point, () -> config.player_rotate_to_interest_point, v -> config.player_rotate_to_interest_point = v).build()) //

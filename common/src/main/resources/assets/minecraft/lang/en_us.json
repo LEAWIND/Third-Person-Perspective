@@ -41,6 +41,8 @@
 	"leawind_third_person.option.config_screen_api.desc": "",
 	"leawind_third_person.option.center_offset_when_flying": "Automatically center when flying",
 	"leawind_third_person.option.center_offset_when_flying.desc": "When the entity the camera is attached to is flying with elytra, do not use camera offset.",
+	"leawind_third_person.option.temp_first_person_in_narrow_space": "Enter first-person in narrow space",
+	"leawind_third_person.option.temp_first_person_in_narrow_space.desc": "Temporarily enter first person while player is in narrow space.",
 	"leawind_third_person.option.player_fade_out_enabled": "Enable player fade-out",
 	"leawind_third_person.option.player_fade_out_enabled.desc": "When player blocks the sight, make the player semi-transparent.",
 	"leawind_third_person.option.gaze_opacity": "Gaze opacity",
