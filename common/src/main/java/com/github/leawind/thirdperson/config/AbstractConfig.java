@@ -52,15 +52,15 @@ public abstract class AbstractConfig {
 	// ================================================================================相机偏移 //
 	@Expose public          double             aiming_fov_divisor                        = 1.125;
 	//------------------------------正常模式
-	@Expose public          double             normal_max_distance                       = 1.5;
-	@Expose public          double             normal_offset_x                           = -0.16;
-	@Expose public          double             normal_offset_y                           = 0.26;
+	@Expose public          double             normal_max_distance                       = 1.5625;
+	@Expose public          double             normal_offset_x                           = -0.145;
+	@Expose public          double             normal_offset_y                           = 0.12;
 	@Expose public          boolean            normal_is_centered                        = false;
 	@Expose public          double             normal_offset_center                      = 0.24;
 	//------------------------------瞄准模式
-	@Expose public          double             aiming_max_distance                       = 0.28;
-	@Expose public          double             aiming_offset_x                           = -0.36;
-	@Expose public          double             aiming_offset_y                           = 0.42;
+	@Expose public          double             aiming_max_distance                       = 0.56;
+	@Expose public          double             aiming_offset_x                           = -0.29;
+	@Expose public          double             aiming_offset_y                           = 0.19;
 	@Expose public          boolean            aiming_is_centered                        = false;
 	@Expose public          double             aiming_offset_center                      = 0.48;
 	// ================================================================================物品谓词 //
