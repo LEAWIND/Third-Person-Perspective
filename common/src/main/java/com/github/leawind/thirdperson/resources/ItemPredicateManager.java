@@ -39,26 +39,30 @@ import java.util.Set;
  */
 @VersionSensitive("SimpleJsonResourceReloadListener may not exist in other mc version")
 public class ItemPredicateManager extends SimpleJsonResourceReloadListener {
-	private static final Gson                     GSON                           = new GsonBuilder().create();
-	private static final String                   ID                             = "item_patterns";
-	private static final String                   SET_HOLD_TO_AIM                = "hold_to_aim";
-	private static final String                   SET_USE_TO_AIM                 = "use_to_aim";
-	private static final String                   SET_USE_TO_FIRST_PERSON        = "use_to_first_person";
-	public final         Map<String, Set<String>> holdToAimItemPatterns          = new HashMap<>();
-	public final         Map<String, Set<String>> useToAimItemPatterns           = new HashMap<>();
-	public final         Map<String, Set<String>> useToFirstPersonItemPatterns   = new HashMap<>();
+	private static final Gson GSON = new GsonBuilder().create();
+
+	private static final String ID = "item_patterns";
+
+	private static final String SET_HOLD_TO_AIM         = "hold_to_aim";
+	private static final String SET_USE_TO_AIM          = "use_to_aim";
+	private static final String SET_USE_TO_FIRST_PERSON = "use_to_first_person";
+
+	public final Map<String, Set<String>> holdToAimItemPatterns        = new HashMap<>();
+	public final Map<String, Set<String>> useToAimItemPatterns         = new HashMap<>();
+	public final Map<String, Set<String>> useToFirstPersonItemPatterns = new HashMap<>();
+
 	/**
 	 * 玩家手持（主手或副手）这些物品时，进入瞄准模式
 	 */
-	public final         Set<ItemPredicate>       holdToAimItemPredicates        = new HashSet<>();
+	public final Set<ItemPredicate> holdToAimItemPredicates        = new HashSet<>();
 	/**
 	 * 玩家使用这些物品时，进入瞄准模式
 	 */
-	public final         Set<ItemPredicate>       useToAimItemPredicates         = new HashSet<>();
+	public final Set<ItemPredicate> useToAimItemPredicates         = new HashSet<>();
 	/**
 	 * 玩家使用这些物品时，会暂时进入第一人称
 	 */
-	public final         Set<ItemPredicate>       useToFirstPersonItemPredicates = new HashSet<>();
+	public final Set<ItemPredicate> useToFirstPersonItemPredicates = new HashSet<>();
 
 	public ItemPredicateManager () {
 		super(GSON, ID);
@@ -76,10 +80,12 @@ public class ItemPredicateManager extends SimpleJsonResourceReloadListener {
 		holdToAimItemPatterns.clear();
 		useToAimItemPatterns.clear();
 		useToFirstPersonItemPatterns.clear();
+
 		map.forEach((resourceLocation, jsonElement) -> {
 			var obj          = jsonElement.getAsJsonArray();
 			var resourcePath = resourceLocation.getPath().split("/");
 			var namespace    = resourceLocation.getNamespace();
+
 			if (resourcePath.length >= 2) {
 				var resourceSetName = resourcePath[0];
 				switch (resourceSetName) {
@@ -115,6 +121,7 @@ public class ItemPredicateManager extends SimpleJsonResourceReloadListener {
 		holdToAimItemPredicates.clear();
 		useToAimItemPredicates.clear();
 		useToFirstPersonItemPredicates.clear();
+
 		int count;
 		count = parseToSet(holdToAimItemPredicates, holdToAimItemPatterns);
 		if (count > 0) {

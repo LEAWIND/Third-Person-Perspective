@@ -29,16 +29,9 @@ public class DeferedMonoList implements MonoList {
 		this.sgn    = getter.apply(1) > getter.apply(0) ? 1: -1;
 	}
 
-	public static @NotNull DeferedMonoList exp (int length) {
-		return new DeferedMonoList(length, Math::exp);
-	}
-
-	public static @NotNull DeferedMonoList squared (int length) {
-		return new DeferedMonoList(length, i -> (double)(i * i));
-	}
-
-	public static @NotNull DeferedMonoList of (int length, @NotNull Function<Integer, Double> getter) {
-		return new DeferedMonoList(length, getter);
+	@Override
+	public double get (int i) {
+		return getter.apply(i);
 	}
 
 	@Override
@@ -77,13 +70,18 @@ public class DeferedMonoList implements MonoList {
 	}
 
 	@Override
-	public double get (int i) {
-		return getter.apply(i);
+	public double adsorption (double value) {
+		return get(iadsorption(value));
 	}
 
 	@Override
-	public double adsorption (double value) {
-		return get(iadsorption(value));
+	public double getNext (double value) {
+		return offset(value, 1);
+	}
+
+	@Override
+	public double getLast (double value) {
+		return offset(value, -1);
 	}
 
 	@Override
@@ -96,13 +94,15 @@ public class DeferedMonoList implements MonoList {
 		return length;
 	}
 
-	@Override
-	public double getNext (double value) {
-		return offset(value, 1);
+	public static @NotNull DeferedMonoList exp (int length) {
+		return new DeferedMonoList(length, Math::exp);
 	}
 
-	@Override
-	public double getLast (double value) {
-		return offset(value, -1);
+	public static @NotNull DeferedMonoList squared (int length) {
+		return new DeferedMonoList(length, i -> (double)(i * i));
+	}
+
+	public static @NotNull DeferedMonoList of (int length, @NotNull Function<Integer, Double> getter) {
+		return new DeferedMonoList(length, getter);
 	}
 }

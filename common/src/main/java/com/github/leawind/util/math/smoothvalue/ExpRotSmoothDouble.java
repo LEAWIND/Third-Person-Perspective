@@ -16,12 +16,6 @@ public class ExpRotSmoothDouble extends ExpSmoothDouble {
 		setCycle(cycle);
 	}
 
-	public static @NotNull ExpRotSmoothDouble createWithHalflife (double cycle, double halflife) {
-		var v = new ExpRotSmoothDouble(cycle);
-		v.setHalflife(halflife);
-		return v;
-	}
-
 	public double getCycle () {
 		return cycle;
 	}
@@ -74,5 +68,11 @@ public class ExpRotSmoothDouble extends ExpSmoothDouble {
 	public void setValue (double d) {
 		d = LMath.floorMod(d, cycle);
 		super.setValue(d);
+	}
+
+	public static @NotNull ExpRotSmoothDouble createWithHalflife (double cycle, double halflife) {
+		var v = new ExpRotSmoothDouble(cycle);
+		v.setHalflife(halflife);
+		return v;
 	}
 }

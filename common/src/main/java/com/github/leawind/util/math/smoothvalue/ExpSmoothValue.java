@@ -29,9 +29,10 @@ public abstract class ExpSmoothValue<T> implements ISmoothValue<T> {
 	protected ExpSmoothValue (@NotNull T smoothFactor, @NotNull T smoothFactorWeight, @NotNull T value, @NotNull T lastValue, @NotNull T target) {
 		this.smoothFactor       = smoothFactor;
 		this.smoothFactorWeight = smoothFactorWeight;
-		this.value              = value;
-		this.lastValue          = lastValue;
-		this.target             = target;
+
+		this.value     = value;
+		this.lastValue = lastValue;
+		this.target    = target;
 	}
 
 	public T getRawValue () {

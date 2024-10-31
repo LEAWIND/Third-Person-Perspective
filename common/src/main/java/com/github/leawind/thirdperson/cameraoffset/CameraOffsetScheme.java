@@ -14,7 +14,8 @@ import org.jetbrains.annotations.NotNull;
 public class CameraOffsetScheme {
 	private final @NotNull AbstractCameraOffsetMode normalMode;
 	private final @NotNull AbstractCameraOffsetMode aimingMode;
-	private                boolean                  isAiming = false;
+
+	private boolean isAiming = false;
 
 	public CameraOffsetScheme (@NotNull Config config) {
 		normalMode = new CameraOffsetModeNormal(config);

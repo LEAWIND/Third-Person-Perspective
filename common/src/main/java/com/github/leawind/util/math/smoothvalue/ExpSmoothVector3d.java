@@ -55,10 +55,6 @@ public class ExpSmoothVector3d extends ExpSmoothValue<Vector3d> {
 		setSmoothFactor(d, d, d);
 	}
 
-	private void setSmoothFactor (double x, double y, double z) {
-		this.smoothFactor.set(x, y, z);
-	}
-
 	@Override
 	public void setMT (@NotNull Vector3d multiplier, @NotNull Vector3d time) {
 		if (multiplier.x() < 0 || multiplier.x() > 1) {
@@ -83,6 +79,10 @@ public class ExpSmoothVector3d extends ExpSmoothValue<Vector3d> {
 	@Override
 	public void setHalflife (double halflife) {
 		setMT(Vector3d.of(0.5), Vector3d.of(halflife));
+	}
+
+	private void setSmoothFactor (double x, double y, double z) {
+		this.smoothFactor.set(x, y, z);
 	}
 
 	public void setSmoothFactorWeight (double x, double y, double z) {

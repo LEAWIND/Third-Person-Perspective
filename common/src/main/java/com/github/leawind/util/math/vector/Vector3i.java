@@ -15,21 +15,6 @@ public class Vector3i {
 		this.z = z;
 	}
 
-	@Contract(value=" -> new", pure=true)
-	public static @NotNull Vector3i of () {
-		return of(0);
-	}
-
-	@Contract(value="_ -> new", pure=true)
-	public static @NotNull Vector3i of (int d) {
-		return of(d, d, d);
-	}
-
-	@Contract(value="_,_,_ -> new", pure=true)
-	public static @NotNull Vector3i of (int x, int y, int z) {
-		return new Vector3i(x, y, z);
-	}
-
 	@Override
 	public int hashCode () {
 		return (y + z * 31) * 31 + x;
@@ -392,5 +377,20 @@ public class Vector3i {
 
 	public boolean isFinite () {
 		return Double.isFinite(x) && Double.isFinite(y) && Double.isFinite(z);
+	}
+
+	@Contract(value=" -> new", pure=true)
+	public static @NotNull Vector3i of () {
+		return of(0);
+	}
+
+	@Contract(value="_ -> new", pure=true)
+	public static @NotNull Vector3i of (int d) {
+		return of(d, d, d);
+	}
+
+	@Contract(value="_,_,_ -> new", pure=true)
+	public static @NotNull Vector3i of (int x, int y, int z) {
+		return new Vector3i(x, y, z);
 	}
 }

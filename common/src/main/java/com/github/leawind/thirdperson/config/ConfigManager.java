@@ -21,23 +21,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ConfigManager {
-	private final    Gson    GSON                = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().disableHtmlEscaping().create();
-	private @NotNull Config  config              = new Config();
+	private final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().disableHtmlEscaping().create();
+
 	private final    Timer   lazySaveTimer       = new Timer();
+	private @NotNull Config  config              = new Config();
 	private          boolean isLazySaveScheduled = false;
 
 	public ConfigManager () {
-	}
-
-	/**
-	 * 在可翻译文本的键前加上mod_id前缀
-	 *
-	 * @param name 键名
-	 * @return ${mod_id}.${id}
-	 */
-	@Contract(value="_ -> new", pure=true)
-	public static @NotNull Component getText (@NotNull String name) {
-		return Component.translatable(ThirdPersonConstants.MOD_ID + "." + name);
 	}
 
 	/**
@@ -67,22 +57,6 @@ public class ConfigManager {
 	}
 
 	/**
-	 * 尝试保存配置文件
-	 * <p>
-	 * 如果失败，则记录错误到日志
-	 */
-	public void trySave () {
-		ThirdPerson.LOGGER.debug("Trying saving config to {}", ThirdPersonConstants.CONFIG_FILE);
-		try {
-			save();
-			ThirdPerson.LOGGER.info("Config is saved.");
-		} catch (IOException e) {
-			ThirdPerson.LOGGER.error("Failed to save config.", e);
-		}
-		config.update();
-	}
-
-	/**
 	 * 惰性保存
 	 * <p>
 	 * 两次保存时间间隔至少为 {@link ThirdPersonConstants#CONFIG_LAZY_SAVE_DELAY}
@@ -98,6 +72,22 @@ public class ConfigManager {
 				}
 			}, ThirdPersonConstants.CONFIG_LAZY_SAVE_DELAY);
 		}
+	}
+
+	/**
+	 * 尝试保存配置文件
+	 * <p>
+	 * 如果失败，则记录错误到日志
+	 */
+	public void trySave () {
+		ThirdPerson.LOGGER.debug("Trying saving config to {}", ThirdPersonConstants.CONFIG_FILE);
+		try {
+			save();
+			ThirdPerson.LOGGER.info("Config is saved.");
+		} catch (IOException e) {
+			ThirdPerson.LOGGER.error("Failed to save config.", e);
+		}
+		config.update();
 	}
 
 	/**
@@ -132,5 +122,16 @@ public class ConfigManager {
 	 */
 	public @NotNull Config getConfig () {
 		return this.config;
+	}
+
+	/**
+	 * 在可翻译文本的键前加上mod_id前缀
+	 *
+	 * @param name 键名
+	 * @return ${mod_id}.${id}
+	 */
+	@Contract(value="_ -> new", pure=true)
+	public static @NotNull Component getText (@NotNull String name) {
+		return Component.translatable(ThirdPersonConstants.MOD_ID + "." + name);
 	}
 }

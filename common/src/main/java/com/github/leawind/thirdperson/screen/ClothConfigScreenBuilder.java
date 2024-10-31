@@ -35,6 +35,7 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 			CATEGORY_COMMON.addEntry(buildBooleanEntry("is_mod_enabled", defaults.is_mod_enabled, config.is_mod_enabled, v -> config.is_mod_enabled = v, entryBuilder));
 			CATEGORY_COMMON.addEntry(buildBooleanEntry("center_offset_when_flying", defaults.center_offset_when_flying, config.center_offset_when_flying, v -> config.center_offset_when_flying = v, entryBuilder));
 			CATEGORY_COMMON.addEntry(buildBooleanEntry("temp_first_person_in_narrow_space", defaults.temp_first_person_in_narrow_space, config.temp_first_person_in_narrow_space, v -> config.temp_first_person_in_narrow_space = v, entryBuilder));
+
 			// SubCategory: Player Rotation
 			final var SUBCATEGORY_PLAYER_ROTATION = buildSubCategory("player_rotation", entryBuilder);
 			SUBCATEGORY_PLAYER_ROTATION.add(buildBooleanEntry("player_rotate_with_camera_when_not_aiming", defaults.player_rotate_with_camera_when_not_aiming, config.player_rotate_with_camera_when_not_aiming, v -> config.player_rotate_with_camera_when_not_aiming = v, entryBuilder));
@@ -44,12 +45,14 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 			SUBCATEGORY_PLAYER_ROTATION.add(buildBooleanEntry("do_not_rotate_when_eating", defaults.do_not_rotate_when_eating, config.do_not_rotate_when_eating, v -> config.do_not_rotate_when_eating = v, entryBuilder));
 			SUBCATEGORY_PLAYER_ROTATION.add(buildBooleanEntry("auto_turn_body_drawing_a_bow", defaults.auto_turn_body_drawing_a_bow, config.auto_turn_body_drawing_a_bow, v -> config.auto_turn_body_drawing_a_bow = v, entryBuilder));
 			CATEGORY_COMMON.addEntry(SUBCATEGORY_PLAYER_ROTATION.build());
+
 			// SubCategory: Player Fade out
 			final var Subcategory_Player_Fade_Out = buildSubCategory("player_fade_out", entryBuilder);
 			Subcategory_Player_Fade_Out.add(buildBooleanEntry("player_fade_out_enabled", defaults.player_fade_out_enabled, config.player_fade_out_enabled, v -> config.player_fade_out_enabled = v, entryBuilder));
 			Subcategory_Player_Fade_Out.add(buildDoubleEntry("gaze_opacity", 0D, 1D, defaults.gaze_opacity, config.gaze_opacity, v -> config.gaze_opacity = v, entryBuilder));
 			Subcategory_Player_Fade_Out.add(buildDoubleEntry("player_invisible_threshold", 0D, 1D, defaults.player_invisible_threshold, config.player_invisible_threshold, v -> config.player_invisible_threshold = v, entryBuilder));
 			CATEGORY_COMMON.addEntry(Subcategory_Player_Fade_Out.build());
+
 			// SubCategory: Camera Distance Adjustment
 			final var Subcategory_Camera_Distance_Adjustment = buildSubCategory("camera_distance_adjustment", entryBuilder);
 			Subcategory_Camera_Distance_Adjustment.add(buildIntSliderEntry("available_distance_count", 2, 64, defaults.available_distance_count, config.available_distance_count, v -> config.available_distance_count = v, entryBuilder));
@@ -63,11 +66,13 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 		{
 			CATEGORY_SMOOTH_FACTORS.addEntry(buildSmoothHalflifeEntry("flying_smooth_halflife", defaults.flying_smooth_halflife, config.flying_smooth_halflife, v -> config.flying_smooth_halflife = v, entryBuilder));
 			CATEGORY_SMOOTH_FACTORS.addEntry(buildSmoothHalflifeEntry("t2f_transition_halflife", defaults.t2f_transition_halflife, config.t2f_transition_halflife, v -> config.t2f_transition_halflife = v, entryBuilder));
+
 			// SubCategory: Adjusting Camera
 			final var Subcategory_Adjusting_Camera = buildSubCategory("adjusting_camera", entryBuilder);
 			Subcategory_Adjusting_Camera.add(buildSmoothHalflifeEntry("adjusting_camera_offset_smooth_halflife", defaults.adjusting_camera_offset_smooth_halflife, config.adjusting_camera_offset_smooth_halflife, v -> config.adjusting_camera_offset_smooth_halflife = v, entryBuilder));
 			Subcategory_Adjusting_Camera.add(buildSmoothHalflifeEntry("adjusting_distance_smooth_halflife", defaults.adjusting_distance_smooth_halflife, config.adjusting_distance_smooth_halflife, v -> config.adjusting_distance_smooth_halflife = v, entryBuilder));
 			CATEGORY_SMOOTH_FACTORS.addEntry(Subcategory_Adjusting_Camera.build());
+
 			// SubCategory: Normal Mode
 			final var SubCategory_Normal_Mode = buildSubCategory("normal_mode", entryBuilder);
 			SubCategory_Normal_Mode.add(buildSmoothHalflifeEntry("smooth_halflife_horizon", defaults.normal_smooth_halflife_horizon, config.normal_smooth_halflife_horizon, v -> config.normal_smooth_halflife_horizon = v, entryBuilder));
@@ -75,6 +80,7 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 			SubCategory_Normal_Mode.add(buildSmoothHalflifeEntry("camera_offset_smooth_halflife", defaults.normal_camera_offset_smooth_halflife, config.normal_camera_offset_smooth_halflife, v -> config.normal_camera_offset_smooth_halflife = v, entryBuilder));
 			SubCategory_Normal_Mode.add(buildSmoothHalflifeEntry("distance_smooth_halflife", defaults.normal_distance_smooth_halflife, config.normal_distance_smooth_halflife, v -> config.normal_distance_smooth_halflife = v, entryBuilder));
 			CATEGORY_SMOOTH_FACTORS.addEntry(SubCategory_Normal_Mode.build());
+
 			// SubCategory: Aiming Mode
 			final var Subcategory_Aiming_Mode = buildSubCategory("aiming_mode", entryBuilder);
 			Subcategory_Aiming_Mode.add(buildSmoothHalflifeEntry("smooth_halflife_horizon", defaults.aiming_smooth_halflife_horizon, config.aiming_smooth_halflife_horizon, v -> config.aiming_smooth_halflife_horizon = v, entryBuilder));
@@ -88,6 +94,7 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 		final var CATEGORY_CAMERA_OFFSET = builder.getOrCreateCategory(ConfigManager.getText("option_category.camera_offset"));
 		{
 			CATEGORY_CAMERA_OFFSET.addEntry(buildDoubleEntry("aiming_fov_divisor", 1D, 1.25D, defaults.aiming_fov_divisor, config.aiming_fov_divisor, v -> config.aiming_fov_divisor = v, entryBuilder));
+
 			// SubCategory: Normal Mode
 			final var SubCategory_Normal_Mode = buildSubCategory("normal_mode", entryBuilder);
 			SubCategory_Normal_Mode.add(buildDoubleEntry("max_distance", 0D, 6D, defaults.normal_max_distance, config.normal_max_distance, v -> config.normal_max_distance = v, entryBuilder));
@@ -96,6 +103,7 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 			SubCategory_Normal_Mode.add(buildBooleanEntry("is_centered", defaults.normal_is_centered, config.normal_is_centered, v -> config.normal_is_centered = v, entryBuilder));
 			SubCategory_Normal_Mode.add(buildDoubleEntry("offset_center", -1, +1, defaults.normal_offset_center, config.normal_offset_center, v -> config.normal_offset_center = v, entryBuilder));
 			CATEGORY_CAMERA_OFFSET.addEntry(SubCategory_Normal_Mode.build());
+
 			// SubCategory: Aiming Mode
 			final var Subcategory_Aiming_Mode = buildSubCategory("aiming_mode", entryBuilder);
 			Subcategory_Aiming_Mode.add(buildDoubleEntry("max_distance", 0D, 6D, defaults.aiming_max_distance, config.aiming_max_distance, v -> config.aiming_max_distance = v, entryBuilder));
@@ -129,6 +137,7 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 			CATEGORY_OTHER.addEntry(buildBooleanEntry("lock_camera_pitch_angle", defaults.lock_camera_pitch_angle, config.lock_camera_pitch_angle, v -> config.lock_camera_pitch_angle = v, entryBuilder));
 			CATEGORY_OTHER.addEntry(buildBooleanEntry("use_camera_pick_in_creative", defaults.use_camera_pick_in_creative, config.use_camera_pick_in_creative, v -> config.use_camera_pick_in_creative = v, entryBuilder));
 			CATEGORY_OTHER.addEntry(buildDoubleEntry("camera_ray_trace_length", 32D, 2048D, defaults.camera_ray_trace_length, config.camera_ray_trace_length, v -> config.camera_ray_trace_length = v, entryBuilder));
+
 			// SubCategory: Crosshair
 			final var Subcategory_Crosshair = buildSubCategory("crosshair", entryBuilder);
 			Subcategory_Crosshair.add(buildBooleanEntry("render_crosshair_when_not_aiming", defaults.render_crosshair_when_not_aiming, config.render_crosshair_when_not_aiming, v -> config.render_crosshair_when_not_aiming = v, entryBuilder));

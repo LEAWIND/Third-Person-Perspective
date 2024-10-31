@@ -21,9 +21,12 @@ public class KeyboardInputMixin {
 		var that = ((KeyboardInput)(Object)this);
 		if (GameEvents.calculateMoveImpulse != null) {
 			var event = new CalculateMoveImpulseEvent(that, multiplyImpulse ? impulseMultiplier: 1);
+
 			event.forwardImpulse = that.forwardImpulse;
 			event.leftImpulse    = that.leftImpulse;
+
 			GameEvents.calculateMoveImpulse.accept(event);
+
 			that.forwardImpulse = event.forwardImpulse;
 			that.leftImpulse    = event.leftImpulse;
 		}

@@ -7,9 +7,10 @@ public class MouseTurnPlayerStartEvent implements ModEvent {
 	/**
 	 * 累积变化量
 	 */
-	public final double  accumulatedDX;
-	public final double  accumulatedDY;
-	private      boolean isDefaultCancelled = false;
+	public final double accumulatedDX;
+	public final double accumulatedDY;
+
+	private boolean isDefaultCancelled = false;
 
 	public MouseTurnPlayerStartEvent (double accumulatedDX, double accumulatedDY) {
 		this.accumulatedDX = accumulatedDX;

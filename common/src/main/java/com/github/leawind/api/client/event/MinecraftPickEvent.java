@@ -6,13 +6,14 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class MinecraftPickEvent implements ModEvent {
-	public final      float  partialTick;
+	public final float  partialTick;
 	/**
 	 * 预期的玩家选取距离
 	 */
-	public final      double playerReach;
-	private @Nullable Vec3   pickFrom = null;
-	private @Nullable Vec3   pickTo   = null;
+	public final double playerReach;
+
+	private @Nullable Vec3 pickFrom = null;
+	private @Nullable Vec3 pickTo   = null;
 
 	public MinecraftPickEvent (float partialTick, double playerReach) {
 		this.partialTick = partialTick;

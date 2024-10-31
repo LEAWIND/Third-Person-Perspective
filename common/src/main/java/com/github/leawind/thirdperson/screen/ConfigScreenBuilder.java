@@ -23,6 +23,16 @@ import java.util.Map;
 @VersionSensitive("YACL version check")
 public abstract class ConfigScreenBuilder {
 	/**
+	 * 构建配置屏幕
+	 *
+	 * @param config 配置实例
+	 * @param parent 父屏幕
+	 * @return 配置屏幕
+	 */
+	@NotNull
+	public abstract Screen build (@NotNull Config config, @Nullable Screen parent);
+
+	/**
 	 * 已经实现或将来可能实现的构建器们
 	 */
 	private static Map<String, PossibleSupplier<ConfigScreenBuilder>> builders = new HashMap<>();
@@ -30,6 +40,7 @@ public abstract class ConfigScreenBuilder {
 	static {
 		builders.put("Cloth Config", PossibleSupplier.of(() -> new ClothConfigScreenBuilder(), () -> Platform.isModLoaded("cloth-config") || Platform.isModLoaded("cloth_config")));
 		builders.put("YACL", PossibleSupplier.of(() -> new YaclConfigScreenBuilder(), () -> Platform.isModLoaded("yet_another_config_lib_v3") && !(Platform.isForge() && !Platform.getMod("yet_another_config_lib_v3").getVersion().startsWith("3.2."))));
+
 		var availables = ConfigScreenBuilder.getAvailableBuidlers().keySet();
 		availables.forEach(name -> {
 			ThirdPerson.LOGGER.debug("Found available config screen builder: {}", name);
@@ -62,14 +73,4 @@ public abstract class ConfigScreenBuilder {
 		});
 		return availableBuilders;
 	}
-
-	/**
-	 * 构建配置屏幕
-	 *
-	 * @param config 配置实例
-	 * @param parent 父屏幕
-	 * @return 配置屏幕
-	 */
-	@NotNull
-	public abstract Screen build (@NotNull Config config, @Nullable Screen parent);
 }

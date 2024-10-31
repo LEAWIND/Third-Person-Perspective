@@ -17,21 +17,6 @@ import java.util.function.Supplier;
 public interface DecisionMap<T> {
 	int MAX_FACTOR_COUNT = 32;
 
-	@Contract("_ -> new")
-	static <T> @NotNull DecisionMap<T> of (@NotNull Class<?> clazz) {
-		return new DecisionMapImpl<>(clazz);
-	}
-
-	static int toFlagBits (boolean @NotNull [] flagList) {
-		int flagBits = 0;
-		for (int i = 0; i < flagList.length; i++) {
-			if (flagList[i]) {
-				flagBits |= 1 << i;
-			}
-		}
-		return flagBits;
-	}
-
 	void reset ();
 
 	/**
@@ -116,4 +101,19 @@ public interface DecisionMap<T> {
 	 */
 	@Contract("_,_,_ -> this")
 	@NotNull DecisionMap<T> addRule (int flagBits, int mask, @NotNull Supplier<T> strategy);
+
+	@Contract("_ -> new")
+	static <T> @NotNull DecisionMap<T> of (@NotNull Class<?> clazz) {
+		return new DecisionMapImpl<>(clazz);
+	}
+
+	static int toFlagBits (boolean @NotNull [] flagList) {
+		int flagBits = 0;
+		for (int i = 0; i < flagList.length; i++) {
+			if (flagList[i]) {
+				flagBits |= 1 << i;
+			}
+		}
+		return flagBits;
+	}
 }

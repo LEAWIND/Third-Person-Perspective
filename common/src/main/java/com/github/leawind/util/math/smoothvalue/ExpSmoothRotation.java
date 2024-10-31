@@ -25,12 +25,6 @@ public class ExpSmoothRotation {
 		x = new ExpSmoothDouble();
 	}
 
-	public static @NotNull ExpSmoothRotation createWithHalflife (double halflife) {
-		var v = new ExpSmoothRotation();
-		v.setHalflife(halflife);
-		return v;
-	}
-
 	public void setHalflife (double halflife) {
 		y.setHalflife(halflife);
 		x.setHalflife(halflife);
@@ -111,5 +105,11 @@ public class ExpSmoothRotation {
 	 */
 	public @NotNull Vector2d getLast () {
 		return Vector2d.of(x.getLast(), y.getLast());
+	}
+
+	public static @NotNull ExpSmoothRotation createWithHalflife (double halflife) {
+		var v = new ExpSmoothRotation();
+		v.setHalflife(halflife);
+		return v;
 	}
 }

@@ -50,8 +50,10 @@ public interface LMath {
 	static Vector3d directionFromRotationDegree (double x, double y) {
 		double h = Math.cos(-y * 0.017453292519943295 - Math.PI);
 		double i = Math.sin(-y * 0.017453292519943295 - Math.PI);
+
 		double j = -Math.cos(-x * 0.017453292519943295);
 		double k = Math.sin(-x * 0.017453292519943295);
+
 		return Vector3d.of(i * j, k, h * j);
 	}
 

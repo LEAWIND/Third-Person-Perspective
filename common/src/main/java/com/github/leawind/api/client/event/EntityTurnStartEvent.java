@@ -5,10 +5,12 @@ import com.github.leawind.api.base.ModEvent;
 import net.minecraft.world.entity.Entity;
 
 public class EntityTurnStartEvent implements ModEvent {
-	public final Entity  entity;
-	public final double  dXRot;
-	public final double  dYRot;
-	private      boolean isDefaultCancelled = false;
+	public final Entity entity;
+
+	public final double dXRot;
+	public final double dYRot;
+
+	private boolean isDefaultCancelled = false;
 
 	public EntityTurnStartEvent (Entity entity, double dYRot, double dXRot) {
 		this.entity = entity;

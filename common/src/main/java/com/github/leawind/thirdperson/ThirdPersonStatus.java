@@ -10,7 +10,6 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 public final class ThirdPersonStatus {
-	public static                int      clientTicks                          = 0;
 	/**
 	 * 移动脉冲
 	 */
@@ -19,6 +18,7 @@ public final class ThirdPersonStatus {
 	 * 移动脉冲的水平分量
 	 */
 	public static final @NotNull Vector2d impulseHorizon                       = Vector2d.of(0);
+	public static                int      clientTicks                          = 0;
 	/**
 	 * @see ThirdPersonKeys#TOGGLE_AIMING
 	 */

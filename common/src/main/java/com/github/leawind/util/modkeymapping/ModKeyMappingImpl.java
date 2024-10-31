@@ -11,14 +11,16 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public final class ModKeyMappingImpl extends KeyMapping implements ModKeyMapping {
-	private           long              holdLength  = 300;
-	private           long              pressLength = 300;
-	private           long              keyDownTime = 0;
-	private @Nullable Timer             timer       = null;
-	private @Nullable Supplier<Boolean> ondown      = null;
-	private @Nullable Supplier<Boolean> onup        = null;
-	private @Nullable Supplier<Boolean> onhold      = null;
-	private @Nullable Supplier<Boolean> onpress     = null;
+	private long holdLength  = 300;
+	private long pressLength = 300;
+	private long keyDownTime = 0;
+
+	private @Nullable Timer timer = null;
+
+	private @Nullable Supplier<Boolean> ondown  = null;
+	private @Nullable Supplier<Boolean> onup    = null;
+	private @Nullable Supplier<Boolean> onhold  = null;
+	private @Nullable Supplier<Boolean> onpress = null;
 
 	/**
 	 * @param id           按键映射的标识符，用于可翻译文本
@@ -33,6 +35,43 @@ public final class ModKeyMappingImpl extends KeyMapping implements ModKeyMapping
 	@Override
 	public boolean isDown () {
 		return super.isDown();
+	}
+
+	@Override
+	public void setDown (boolean down) {
+		boolean wasDown = isDown();
+		super.setDown(down);
+		long now = System.currentTimeMillis();
+		if (!wasDown && down) {
+			// key down
+			if (handle(ondown)) {
+				return;
+			}
+			keyDownTime = now;
+			if (onhold != null) {
+				timer = new Timer();
+				timer.schedule(new TimerTask() {
+					@Override
+					public void run () {
+						handle(onhold);
+						timer = null;
+					}
+				}, holdLength);
+			}
+		} else if (wasDown && !down) {
+			// key up
+			long sinceKeydown = now - keyDownTime;
+			if (handle(onup)) {
+				return;
+			}
+			if (sinceKeydown < pressLength) {
+				if (timer != null) {
+					timer.cancel();
+					timer = null;
+				}
+				handle(onpress);
+			}
+		}
 	}
 
 	@Override
@@ -101,43 +140,6 @@ public final class ModKeyMappingImpl extends KeyMapping implements ModKeyMapping
 	public ModKeyMappingImpl onHold (@NotNull Supplier<Boolean> handler) {
 		onhold = handler;
 		return this;
-	}
-
-	@Override
-	public void setDown (boolean down) {
-		boolean wasDown = isDown();
-		super.setDown(down);
-		long now = System.currentTimeMillis();
-		if (!wasDown && down) {
-			// key down
-			if (handle(ondown)) {
-				return;
-			}
-			keyDownTime = now;
-			if (onhold != null) {
-				timer = new Timer();
-				timer.schedule(new TimerTask() {
-					@Override
-					public void run () {
-						handle(onhold);
-						timer = null;
-					}
-				}, holdLength);
-			}
-		} else if (wasDown && !down) {
-			// key up
-			long sinceKeydown = now - keyDownTime;
-			if (handle(onup)) {
-				return;
-			}
-			if (sinceKeydown < pressLength) {
-				if (timer != null) {
-					timer.cancel();
-					timer = null;
-				}
-				handle(onpress);
-			}
-		}
 	}
 
 	private static boolean handle (@Nullable Supplier<Boolean> handler) {

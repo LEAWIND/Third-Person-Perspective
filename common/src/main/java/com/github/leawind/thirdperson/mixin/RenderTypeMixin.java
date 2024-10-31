@@ -23,11 +23,6 @@ import java.util.function.Function;
 
 @Mixin(value=RenderType.class, priority=2000)
 public class RenderTypeMixin extends RenderStateShard {
-	@SuppressWarnings("unused")
-	public RenderTypeMixin (String name, Runnable setupState, Runnable clearState) {
-		super(name, setupState, clearState);
-	}
-
 	/**
 	 * 修改自 RenderType#ARMOR_CUTOUT_NO_CULL
 	 * <p>
@@ -45,6 +40,11 @@ public class RenderTypeMixin extends RenderStateShard {
 													  .createCompositeState(true);
 		return RenderType.create("armor_cutout_no_cull", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, false, compositeState);
 	});
+
+	@SuppressWarnings("unused")
+	public RenderTypeMixin (String name, Runnable setupState, Runnable clearState) {
+		super(name, setupState, clearState);
+	}
 
 	/**
 	 * 对盔甲和鞘翅使用自定义的 RenderType 提供器，实现半透明效果

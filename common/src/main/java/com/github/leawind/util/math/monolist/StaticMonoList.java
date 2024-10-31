@@ -40,37 +40,6 @@ public class StaticMonoList implements MonoList {
 		return true;
 	}
 
-	public static @NotNull StaticMonoList linear (int length) {
-		return of(length, d -> (double)d);
-	}
-
-	public static @NotNull StaticMonoList of (int length, @NotNull Function<Integer, Double> getter) {
-		double[] list = new double[length];
-		for (int i = 0; i < length; i++) {
-			list[i] = getter.apply(i);
-		}
-		return of(list);
-	}
-
-	@Contract("_ -> new")
-	public static @NotNull StaticMonoList of (double[] list) {
-		return new StaticMonoList(list);
-	}
-
-	public static @NotNull StaticMonoList exp (int length) {
-		return of(length, Math::exp);
-	}
-
-	public static @NotNull StaticMonoList squared (int length) {
-		return of(length, i -> (double)(i * i));
-	}
-
-	public static @NotNull StaticMonoList of (int length, double min, double max, @NotNull Function<Double, Double> f, @NotNull Function<Double, Double> fInv) {
-		double xmin   = fInv.apply(min);
-		double xrange = fInv.apply(max) - xmin;
-		return of(length, i -> f.apply(i * xrange / length + xmin));
-	}
-
 	@Override
 	public double get (int i) {
 		return list[i];
@@ -88,6 +57,7 @@ public class StaticMonoList implements MonoList {
 		int ileft   = 0;
 		int iright  = length() - 1;
 		int icenter = length() / 2;
+
 		while (true) {
 			if (list[icenter] < value) {
 				ileft = icenter;
@@ -131,5 +101,36 @@ public class StaticMonoList implements MonoList {
 	@Override
 	public int length () {
 		return list.length;
+	}
+
+	public static @NotNull StaticMonoList linear (int length) {
+		return of(length, d -> (double)d);
+	}
+
+	public static @NotNull StaticMonoList of (int length, @NotNull Function<Integer, Double> getter) {
+		double[] list = new double[length];
+		for (int i = 0; i < length; i++) {
+			list[i] = getter.apply(i);
+		}
+		return of(list);
+	}
+
+	@Contract("_ -> new")
+	public static @NotNull StaticMonoList of (double[] list) {
+		return new StaticMonoList(list);
+	}
+
+	public static @NotNull StaticMonoList exp (int length) {
+		return of(length, Math::exp);
+	}
+
+	public static @NotNull StaticMonoList squared (int length) {
+		return of(length, i -> (double)(i * i));
+	}
+
+	public static @NotNull StaticMonoList of (int length, double min, double max, @NotNull Function<Double, Double> f, @NotNull Function<Double, Double> fInv) {
+		double xmin   = fInv.apply(min);
+		double xrange = fInv.apply(max) - xmin;
+		return of(length, i -> f.apply(i * xrange / length + xmin));
 	}
 }

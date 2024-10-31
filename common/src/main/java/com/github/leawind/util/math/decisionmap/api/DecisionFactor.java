@@ -11,11 +11,6 @@ import java.util.function.BooleanSupplier;
  * 决策因素
  */
 public interface DecisionFactor {
-	@Contract("_ -> new")
-	static @NotNull DecisionFactor of (BooleanSupplier getter) {
-		return new DecisionFactorImpl(getter);
-	}
-
 	/**
 	 * 重新计算因素的值
 	 */
@@ -46,5 +41,10 @@ public interface DecisionFactor {
 	 */
 	default int mask () {
 		return 1 << index();
+	}
+
+	@Contract("_ -> new")
+	static @NotNull DecisionFactor of (BooleanSupplier getter) {
+		return new DecisionFactorImpl(getter);
 	}
 }

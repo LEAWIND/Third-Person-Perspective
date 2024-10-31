@@ -13,26 +13,6 @@ public class Vector2d {
 		this.y = y;
 	}
 
-	@Contract("-> new")
-	public static @NotNull Vector2d of () {
-		return of(0);
-	}
-
-	@Contract("_ -> new")
-	public static @NotNull Vector2d of (double d) {
-		return of(d, d);
-	}
-
-	@Contract("_,_ -> new")
-	public static @NotNull Vector2d of (double x, double y) {
-		return new Vector2d(x, y);
-	}
-
-	@Contract("_ -> new")
-	public static @NotNull Vector2d of (@NotNull Vector2d v) {
-		return of(v.x(), v.y());
-	}
-
 	@Override
 	public int hashCode () {
 		int r = 1;
@@ -53,15 +33,15 @@ public class Vector2d {
 			return false;
 		}
 		var other = (Vector2d)obj;
-		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x())) {
+		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x)) {
 			return false;
 		}
-		return Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y());
+		return Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y);
 	}
 
 	@Override
 	public String toString () {
-		return String.format("Vector2d(%f, %f)", x(), y());
+		return String.format("Vector2d(%f, %f)", x, y);
 	}
 
 	public double x () {
@@ -87,7 +67,7 @@ public class Vector2d {
 
 	@Contract("_ -> this")
 	public Vector2d set (@NotNull Vector2d v) {
-		return set(v.x(), v.y());
+		return set(v.x, v.y);
 	}
 
 	@Contract("_,_ -> this")
@@ -99,7 +79,7 @@ public class Vector2d {
 
 	@Contract("_,_ -> param2")
 	public Vector2d add (@NotNull Vector2d v, @NotNull Vector2d dest) {
-		return add(v.x(), v.y(), dest);
+		return add(v.x, v.y, dest);
 	}
 
 	@Contract("_,_,_ -> param3")
@@ -111,7 +91,7 @@ public class Vector2d {
 
 	@Contract("_ -> this")
 	public Vector2d add (@NotNull Vector2d v) {
-		return add(v.x(), v.y());
+		return add(v.x, v.y);
 	}
 
 	@Contract("_ -> this")
@@ -128,7 +108,7 @@ public class Vector2d {
 
 	@Contract("_,_ -> param2")
 	public Vector2d sub (@NotNull Vector2d v, @NotNull Vector2d dest) {
-		return sub(v.x(), v.y(), dest);
+		return sub(v.x, v.y, dest);
 	}
 
 	public Vector2d sub (double x, double y, @NotNull Vector2d dest) {
@@ -139,7 +119,7 @@ public class Vector2d {
 
 	@Contract("_ -> this")
 	public Vector2d sub (@NotNull Vector2d v) {
-		return sub(v.x(), v.y());
+		return sub(v.x, v.y);
 	}
 
 	@Contract("_,_ -> this")
@@ -150,7 +130,7 @@ public class Vector2d {
 	}
 
 	public Vector2d mul (@NotNull Vector2d v, @NotNull Vector2d dest) {
-		return mul(v.x(), v.y(), dest);
+		return mul(v.x, v.y, dest);
 	}
 
 	public Vector2d mul (double x, double y, @NotNull Vector2d dest) {
@@ -161,7 +141,7 @@ public class Vector2d {
 
 	@Contract("_ -> this")
 	public Vector2d mul (@NotNull Vector2d v) {
-		return mul(v.x(), v.y());
+		return mul(v.x, v.y);
 	}
 
 	@Contract("_ -> this")
@@ -177,7 +157,7 @@ public class Vector2d {
 	}
 
 	public Vector2d div (@NotNull Vector2d v, @NotNull Vector2d dest) {
-		return div(v.x(), v.y(), dest);
+		return div(v.x, v.y, dest);
 	}
 
 	public Vector2d div (double x, double y, @NotNull Vector2d dest) {
@@ -188,7 +168,7 @@ public class Vector2d {
 
 	@Contract("_ -> this")
 	public Vector2d div (@NotNull Vector2d v) {
-		return div(v.x(), v.y());
+		return div(v.x, v.y);
 	}
 
 	@Contract("_,_ -> this")
@@ -199,7 +179,7 @@ public class Vector2d {
 	}
 
 	public Vector2d pow (@NotNull Vector2d v, @NotNull Vector2d dest) {
-		return pow(v.x(), v.y(), dest);
+		return pow(v.x, v.y, dest);
 	}
 
 	public Vector2d pow (double d, @NotNull Vector2d dest) {
@@ -214,7 +194,7 @@ public class Vector2d {
 
 	@Contract("_ -> this")
 	public Vector2d pow (@NotNull Vector2d v) {
-		return pow(v.x(), v.y());
+		return pow(v.x, v.y);
 	}
 
 	@Contract("_ -> this")
@@ -238,7 +218,7 @@ public class Vector2d {
 	}
 
 	public double distance (@NotNull Vector2d v) {
-		return distance(v.x(), v.y());
+		return distance(v.x, v.y);
 	}
 
 	public double distance (double x, double y) {
@@ -310,7 +290,7 @@ public class Vector2d {
 	}
 
 	public double dot (@NotNull Vector2d v) {
-		return x() * v.x() + y() * v.y();
+		return x * v.x + y * v.y;
 	}
 
 	@Contract("_,_ -> this")
@@ -322,22 +302,22 @@ public class Vector2d {
 
 	@Contract("_,_ -> this")
 	public Vector2d clamp (@NotNull Vector2d min, @NotNull Vector2d max) {
-		x = Math.min(Math.max(x, min.x()), max.x());
-		y = Math.min(Math.max(y, min.y()), max.y());
+		x = Math.min(Math.max(x, min.x), max.x);
+		y = Math.min(Math.max(y, min.y), max.y);
 		return this;
 	}
 
 	@Contract("_,_ -> this")
 	public Vector2d lerp (@NotNull Vector2d end, double t) {
-		x = x + (end.x() - x) * t;
-		y = y + (end.y() - y) * t;
+		x = x + (end.x - x) * t;
+		y = y + (end.y - y) * t;
 		return this;
 	}
 
 	@Contract("_,_ -> this")
 	public Vector2d lerp (@NotNull Vector2d end, @NotNull Vector2d t) {
-		x = x + (end.x() - x) * t.x();
-		y = y + (end.y() - y) * t.y();
+		x = x + (end.x - x) * t.x;
+		y = y + (end.y - y) * t.y;
 		return this;
 	}
 
@@ -355,5 +335,25 @@ public class Vector2d {
 
 	public boolean isFinite () {
 		return Double.isFinite(x) && Double.isFinite(y);
+	}
+
+	@Contract("-> new")
+	public static @NotNull Vector2d of () {
+		return of(0);
+	}
+
+	@Contract("_ -> new")
+	public static @NotNull Vector2d of (double d) {
+		return of(d, d);
+	}
+
+	@Contract("_,_ -> new")
+	public static @NotNull Vector2d of (double x, double y) {
+		return new Vector2d(x, y);
+	}
+
+	@Contract("_ -> new")
+	public static @NotNull Vector2d of (@NotNull Vector2d v) {
+		return of(v.x, v.y);
 	}
 }

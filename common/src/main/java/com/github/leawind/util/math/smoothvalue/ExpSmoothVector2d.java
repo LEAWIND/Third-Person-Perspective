@@ -51,10 +51,6 @@ public class ExpSmoothVector2d extends ExpSmoothValue<Vector2d> {
 		setSmoothFactor(smoothFactor, smoothFactor);
 	}
 
-	public void setSmoothFactor (double x, double y) {
-		this.smoothFactor.set(x, y);
-	}
-
 	@Override
 	public void setMT (@NotNull Vector2d multiplier, @NotNull Vector2d time) {
 		if (multiplier.x() < 0 || multiplier.x() > 1) {
@@ -76,6 +72,10 @@ public class ExpSmoothVector2d extends ExpSmoothValue<Vector2d> {
 	@Override
 	public void setHalflife (double halflife) {
 		setMT(Vector2d.of(0.5), Vector2d.of(halflife));
+	}
+
+	public void setSmoothFactor (double x, double y) {
+		this.smoothFactor.set(x, y);
 	}
 
 	public void setSmoothFactorWeight (double x, double y) {

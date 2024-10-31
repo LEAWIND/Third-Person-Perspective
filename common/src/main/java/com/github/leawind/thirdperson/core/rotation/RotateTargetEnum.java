@@ -25,22 +25,29 @@ public enum RotateTargetEnum {
 		if (point == null) {
 			return NONE.getRotation(partialTick);
 		}
-		var player            = ThirdPerson.ENTITY_AGENT.getRawPlayerEntity();
+
+		var player = ThirdPerson.ENTITY_AGENT.getRawPlayerEntity();
+
 		var toInterestedPoint = point.subtract(player.getEyePosition(partialTick));
 		if (toInterestedPoint.length() < 1e-5) {
 			return NONE.getRotation(partialTick);
 		}
+
 		var playerRot = ThirdPerson.ENTITY_AGENT.getRawRotation(1);
 		ThirdPerson.FINITE_CHECKER.checkOnce(playerRot.x(), playerRot.y());
+
 		var rot = LMath.rotationDegreeFromDirection(LMath.toVector3d(toInterestedPoint));
 		ThirdPerson.FINITE_CHECKER.checkOnce(rot.x(), rot.y());
+
 		double leftBound  = player.yBodyRot - ThirdPersonConstants.VANILLA_PLAYER_HEAD_ROTATE_LIMIT_DEGREES;
 		double rightBound = player.yBodyRot + ThirdPersonConstants.VANILLA_PLAYER_HEAD_ROTATE_LIMIT_DEGREES;
+
 		if (LMath.isWithinDegrees(rot.y(), leftBound, rightBound)) {
 			playerRot.y(rot.y());
 		} else {
 			playerRot.y(LMath.subtractDegrees(rot.y(), leftBound) < LMath.subtractDegrees(rot.y(), rightBound) ? leftBound: rightBound);
 		}
+
 		playerRot.x(rot.x());
 		return playerRot;
 	}),
@@ -63,9 +70,9 @@ public enum RotateTargetEnum {
 		if (cameraHitPosition == null) {
 			return CAMERA_ROTATION.getRotation(partialTick);
 		}
+
 		var eyePosition = ThirdPerson.ENTITY_AGENT.getRawEyePosition(partialTick);
-		var viewVector  = cameraHitPosition.sub(eyePosition);
-		return LMath.rotationDegreeFromDirection(viewVector);
+		return LMath.rotationDegreeFromDirection(cameraHitPosition.sub(eyePosition));
 	}),
 	/**
 	 * 预测玩家想射击的目标实体
@@ -80,22 +87,28 @@ public enum RotateTargetEnum {
 	 */
 	PREDICTED_TARGET_ENTITY(partialTick -> {
 		var rotation = CAMERA_HIT_RESULT.getRotation(partialTick);
+
 		if (!ThirdPerson.getConfig().enable_target_entity_predict || !ThirdPerson.ENTITY_AGENT.isControlled()) {
 			return rotation;
 		}
+
 		var predicted = ThirdPerson.CAMERA_AGENT.predictTargetEntity(partialTick);
+
 		if (predicted == null) {
 			return rotation;
 		}
+
 		var camera       = ThirdPerson.CAMERA_AGENT.getRawCamera();
 		var playerEyePos = ThirdPerson.ENTITY_AGENT.getRawEyePosition(partialTick);
 		var cameraPos    = LMath.toVector3d(camera.getPosition());
 		var targetPos    = LMath.toVector3d(predicted.getPosition(partialTick));
 		var end          = LMath.toVector3d(camera.getLookVector()).normalize(cameraPos.distance(targetPos)).add(cameraPos);
 		var eyeToEnd     = end.sub(playerEyePos);
+
 		if (eyeToEnd.length() < 1e-5) {
 			return rotation;
 		}
+
 		return LMath.rotationDegreeFromDirection(eyeToEnd);
 	}),
 	/**

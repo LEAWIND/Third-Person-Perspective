@@ -32,27 +32,29 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import org.apache.logging.log4j.util.PerformanceSensitive;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
 public class EntityAgent {
-	public final     FiniteChecker       FINITE_CHECKER         = new FiniteChecker(err -> ThirdPerson.LOGGER.error(err.toString()));
-	private final    Minecraft           minecraft;
-	private final    ExpSmoothRotation   smoothRotation         = ExpSmoothRotation.createWithHalflife(0.5);
-	private final    ExpSmoothDouble     smoothOpacity;
+	public final FiniteChecker FINITE_CHECKER = new FiniteChecker(err -> ThirdPerson.LOGGER.error(err.toString()));
+
+	private final Minecraft minecraft;
+
+	private final ExpSmoothRotation smoothRotation = ExpSmoothRotation.createWithHalflife(0.5);
+	private final ExpSmoothDouble   smoothOpacity;
+
 	/**
 	 * @see RotateStrategy#build
 	 */
 	private final    DecisionMap<Double> rotateDecisionMap      = DecisionMap.of(RotateStrategy.class);
-	private @NotNull RotateTargetEnum    rotateTarget           = RotateTargetEnum.DEFAULT;
-	private @NotNull SmoothTypeEnum      smoothRotationType     = SmoothTypeEnum.EXP_LINEAR;
 	/**
 	 * 在 clientTick 中更新
 	 */
 	public           double              vehicleTotalSizeCached = 1D;
+	private @NotNull RotateTargetEnum    rotateTarget           = RotateTargetEnum.DEFAULT;
+	private @NotNull SmoothTypeEnum      smoothRotationType     = SmoothTypeEnum.EXP_LINEAR;
 	/**
 	 * 在上一个 client tick 中的 isAiming() 的值
 	 */
@@ -60,14 +62,11 @@ public class EntityAgent {
 
 	public EntityAgent (@NotNull Minecraft minecraft) {
 		this.minecraft = minecraft;
-		smoothOpacity  = new ExpSmoothDouble();
-		smoothOpacity.set(1d);
-		ThirdPerson.LOGGER.debug(rotateDecisionMap.toString());
-	}
 
-	@Contract("_ -> new")
-	public static @NotNull EntityAgent create (@NotNull Minecraft mc) {
-		return new EntityAgent(mc);
+		smoothOpacity = new ExpSmoothDouble();
+		smoothOpacity.set(1d);
+
+		ThirdPerson.LOGGER.debug(rotateDecisionMap.toString());
 	}
 
 	/**
@@ -88,6 +87,11 @@ public class EntityAgent {
 		wasAiming = false;
 	}
 
+	@NotNull
+	public RotateTargetEnum getRotateTarget () {
+		return rotateTarget;
+	}
+
 	/**
 	 * 设置旋转目标
 	 */
@@ -95,9 +99,8 @@ public class EntityAgent {
 		this.rotateTarget = rotateTarget;
 	}
 
-	@NotNull
-	public RotateTargetEnum getRotateTarget () {
-		return rotateTarget;
+	public @NotNull SmoothTypeEnum getRotationSmoothType () {
+		return smoothRotationType;
 	}
 
 	/**
@@ -107,10 +110,6 @@ public class EntityAgent {
 	 */
 	public void setRotationSmoothType (@NotNull SmoothTypeEnum smoothType) {
 		smoothRotationType = smoothType;
-	}
-
-	public @NotNull SmoothTypeEnum getRotationSmoothType () {
-		return smoothRotationType;
 	}
 
 	/**
@@ -137,6 +136,7 @@ public class EntityAgent {
 		if (ThirdPersonStatus.isRenderingInThirdPerson() && isControlled() && !ThirdPersonStatus.shouldCameraTurnWithEntity()) {
 			var targetRotation = getRotateTarget().getRotation(partialTick);
 			smoothRotation.setTarget(targetRotation);
+
 			switch (smoothRotationType) {
 				case HARD -> setRawRotation(targetRotation);
 				case LINEAR, EXP_LINEAR -> setRawRotation(smoothRotation.get(partialTick));
@@ -154,12 +154,14 @@ public class EntityAgent {
 			vehicleTotalSizeCached = getVehicleTotalSize();
 		}
 		ThirdPersonStatus.clientTicks++;
-		var config = ThirdPerson.getConfig();
+
 		wasAiming = isAiming();
-		config.getCameraOffsetScheme().setAiming(wasAiming());
+		ThirdPerson.getConfig().getCameraOffsetScheme().setAiming(wasAiming());
+
 		updateRotateStrategy();
 		updateSmoothOpacity(ThirdPersonConstants.VANILLA_CLIENT_TICK_TIME, 1);
 		smoothRotation.update(ThirdPersonConstants.VANILLA_CLIENT_TICK_TIME);
+
 		switch (smoothRotationType) {
 			case HARD, EXP -> {
 			}
@@ -176,6 +178,7 @@ public class EntityAgent {
 	public void setRawRotation (@NotNull Vector2d rot) {
 		FINITE_CHECKER.checkOnce(rot.x(), rot.y());
 		var entity = getRawPlayerEntity();
+
 		entity.setYRot(entity.yRotO = (float)rot.y());
 		entity.setXRot(entity.xRotO = (float)rot.x());
 	}
@@ -225,11 +228,11 @@ public class EntityAgent {
 	 * 与{@link Entity#isInWall()}不同的是，旁观者模式下此方法仍然可以返回true
 	 */
 	public boolean isEyeInWall (@NotNull ClipContext.ShapeGetter shapeGetter) {
-		final var cameraEntity = getRawCameraEntity();
-		var       eyePos       = cameraEntity.getEyePosition();
-		final var blockPos     = BlockPos.containing(eyePos.x(), eyePos.y(), eyePos.z());
-		final var eyeAabb      = AABB.ofSize(eyePos, 0.8, 1e-6, 0.8);
-		var       blockState   = cameraEntity.level().getBlockState(blockPos);
+		var cameraEntity = getRawCameraEntity();
+		var eyePos       = cameraEntity.getEyePosition();
+		var blockPos     = BlockPos.containing(eyePos.x(), eyePos.y(), eyePos.z());
+		var blockState   = cameraEntity.level().getBlockState(blockPos);
+		var eyeAabb      = AABB.ofSize(eyePos, 0.8, 1e-6, 0.8);
 		return shapeGetter.get(blockState, cameraEntity.level(), blockPos, CollisionContext.empty()).toAabbs().stream().anyMatch(a -> a.move(blockPos).intersects(eyeAabb));
 	}
 
@@ -295,8 +298,10 @@ public class EntityAgent {
 					return true;
 				}
 			}
+
 			boolean shouldBeAiming = ItemPredicateUtil.anyMatches(livingEntity.getMainHandItem(), config.getHoldToAimItemPredicates(), ThirdPersonResources.itemPredicateManager.holdToAimItemPredicates) || //
 									 ItemPredicateUtil.anyMatches(livingEntity.getOffhandItem(), config.getHoldToAimItemPredicates(), ThirdPersonResources.itemPredicateManager.holdToAimItemPredicates);
+
 			if (livingEntity.isUsingItem()) {
 				shouldBeAiming |= ItemPredicateUtil.anyMatches(livingEntity.getUseItem(), config.getUseToAimItemPredicates(), ThirdPersonResources.itemPredicateManager.useToAimItemPredicates);
 			}
@@ -323,9 +328,11 @@ public class EntityAgent {
 	public double boxDistanceTo (@NotNull Vector3d target, float partialTick) {
 		var aabb = getBoundingBox(partialTick);
 		var c    = Vector3d.of();
+
 		c.x(LMath.clamp(target.x(), aabb.minX, aabb.maxX));
 		c.y(LMath.clamp(target.y(), aabb.minY, aabb.maxY));
 		c.z(LMath.clamp(target.z(), aabb.minZ, aabb.maxZ));
+
 		return c.distance(target);
 	}
 
@@ -334,9 +341,10 @@ public class EntityAgent {
 	}
 
 	public double columnDistanceTo (@NotNull Vector3d target, float partialTick) {
-		var    entity = getRawCameraEntity();
-		var    c      = LMath.toVector3d(entity.getPosition(partialTick));
-		double maxY   = c.y() + entity.getEyeHeight();
+		var entity = getRawCameraEntity();
+
+		var    c    = LMath.toVector3d(entity.getPosition(partialTick));
+		double maxY = c.y() + entity.getEyeHeight();
 		c.y(LMath.clamp(target.y(), c.y(), maxY));
 		double dist = c.distance(target);
 		if (maxY > target.y() && target.y() > c.y()) {
@@ -384,13 +392,16 @@ public class EntityAgent {
 		if (config.player_fade_out_enabled) {
 			final double C              = ThirdPersonConstants.CAMERA_THROUGH_WALL_DETECTION * 2;
 			var          cameraPosition = LMath.toVector3d(ThirdPerson.CAMERA_AGENT.getRawCamera().getPosition());
-			final double distance       = getRawEyePosition(partialTick).distance(cameraPosition);
+			double       distance       = getRawEyePosition(partialTick).distance(cameraPosition);
+
 			targetOpacity = (distance - C) / (1 - C);
 			FINITE_CHECKER.checkOnce(targetOpacity);
+
 			if (targetOpacity > config.gaze_opacity && !isFallFlying() && ThirdPerson.CAMERA_AGENT.isLookingAt(getRawCameraEntity())) {
 				targetOpacity = config.gaze_opacity;
 			}
 		}
+
 		smoothOpacity.setTarget(LMath.clamp(targetOpacity, 0, 1));
 		smoothOpacity.setHalflife(ThirdPersonConstants.OPACITY_HALFLIFE * (wasAiming() ? 0.25: 1));
 		smoothOpacity.update(period);

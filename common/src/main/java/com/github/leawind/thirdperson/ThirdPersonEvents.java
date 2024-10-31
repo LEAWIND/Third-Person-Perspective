@@ -37,16 +37,15 @@ public final class ThirdPersonEvents {
 		ClientPlayerEvent.CLIENT_PLAYER_RESPAWN.register(ThirdPersonEvents::onClientPlayerRespawn);
 		ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(ThirdPersonEvents::onClientPlayerJoin);
 		ClientRawInputEvent.MOUSE_SCROLLED.register(ThirdPersonEvents::onMouseScrolled);
-		{
-			GameEvents.thirdPersonCameraSetup = ThirdPersonEvents::onThirdPersonCameraSetup;
-			GameEvents.minecraftPick          = ThirdPersonEvents::onMinecraftPickEvent;
-			GameEvents.renderTickStart        = ThirdPersonEvents::onRenderTickStart;
-			GameEvents.calculateMoveImpulse   = ThirdPersonEvents::onCalculateMoveImpulse;
-			GameEvents.renderEntity           = ThirdPersonEvents::onRenderEntity;
-			GameEvents.handleKeybindsStart    = ThirdPersonEvents::onHandleKeybindsStart;
-			GameEvents.mouseTurnPlayerStart   = ThirdPersonEvents::onMouseTurnPlayerStart;
-			GameEvents.entityTurnStart        = ThirdPersonEvents::onEntityTurnStart;
-		}
+
+		GameEvents.thirdPersonCameraSetup = ThirdPersonEvents::onThirdPersonCameraSetup;
+		GameEvents.minecraftPick          = ThirdPersonEvents::onMinecraftPickEvent;
+		GameEvents.renderTickStart        = ThirdPersonEvents::onRenderTickStart;
+		GameEvents.calculateMoveImpulse   = ThirdPersonEvents::onCalculateMoveImpulse;
+		GameEvents.renderEntity           = ThirdPersonEvents::onRenderEntity;
+		GameEvents.handleKeybindsStart    = ThirdPersonEvents::onHandleKeybindsStart;
+		GameEvents.mouseTurnPlayerStart   = ThirdPersonEvents::onMouseTurnPlayerStart;
+		GameEvents.entityTurnStart        = ThirdPersonEvents::onEntityTurnStart;
 	}
 
 	/**
@@ -87,9 +86,11 @@ public final class ThirdPersonEvents {
 	public static boolean calcIsInNarrowSpace (Minecraft minecraft, Entity entity) {
 		boolean isInNarrowSpace = true;
 		var     center          = BlockPos.containing(entity.getEyePosition(1));
+
 		ThirdPersonConstants.SURROUNDINGS_MATCHING.rematch(center, minecraft.level, s -> s.isViewBlocking(minecraft.level, center));
 		int countT = ThirdPersonConstants.SURROUNDINGS_MATCHING.getMatches("T").count();
 		int countM = ThirdPersonConstants.SURROUNDINGS_MATCHING.getMatches("M").count();
+
 		isInNarrowSpace &= countT >= 3;
 		isInNarrowSpace &= countM >= 1;
 		return isInNarrowSpace;
@@ -147,6 +148,7 @@ public final class ThirdPersonEvents {
 			var eyePosition       = cameraEntity.getEyePosition(event.partialTick);
 			var cameraHitPosition = ThirdPerson.CAMERA_AGENT.getHitResult().getLocation();
 			event.pickTo(cameraHitPosition);
+
 			double pickRange;
 			if (ThirdPersonStatus.shouldPickFromCamera()) {
 				event.pickFrom(cameraPosition);
@@ -183,6 +185,7 @@ public final class ThirdPersonEvents {
 			var minecraft = Minecraft.getInstance();
 			minecraft.gameRenderer.checkEntityPostEffect(minecraft.getCameraEntity());
 			minecraft.levelRenderer.needsUpdate();
+
 			ThirdPersonStatus.wasRenderInThirdPersonLastRenderTick = isRenderingInThirdPerson;
 		}
 		if (isRenderingInThirdPerson) {
@@ -209,27 +212,33 @@ public final class ThirdPersonEvents {
 	private static void onCalculateMoveImpulse (CalculateMoveImpulseEvent event) {
 		if (ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson() && ThirdPerson.ENTITY_AGENT.isControlled()) {
 			var camera = ThirdPerson.CAMERA_AGENT.getRawCamera();
+
 			// 计算世界坐标系下的向前和向左 impulse
 			// 视线向量
 			var lookImpulse = LMath.toVector3d(camera.getLookVector()).normalize();
 			var leftImpulse = LMath.toVector3d(camera.getLeftVector()).normalize();
+
 			// 水平方向上的视线向量
 			var lookImpulseHorizon = Vector2d.of(lookImpulse.x(), lookImpulse.z()).normalize(event.forwardImpulse);
 			var leftImpulseHorizon = Vector2d.of(leftImpulse.x(), leftImpulse.z()).normalize(event.leftImpulse);
 			lookImpulseHorizon.add(leftImpulseHorizon, ThirdPersonStatus.impulseHorizon);
+
 			// 世界坐标系下的 impulse
 			lookImpulse.mul(event.forwardImpulse);    // 这才是 impulse
 			leftImpulse.mul(event.leftImpulse);
 			lookImpulse.add(leftImpulse, ThirdPersonStatus.impulse);
+
 			// impulse 不为0，
 			final double length = ThirdPersonStatus.impulseHorizon.length();
 			if (length > 1E-5) {
 				if (length > 1.0D) {
 					ThirdPersonStatus.impulseHorizon.div(length, length);
 				}
-				float playerYRot        = ThirdPerson.ENTITY_AGENT.getRawPlayerEntity().getViewYRot(Minecraft.getInstance().getFrameTime());
-				var   playerLookHorizon = LMath.directionFromRotationDegree(playerYRot).normalize();
-				var   playerLeftHorizon = LMath.directionFromRotationDegree(playerYRot - 90).normalize();
+				float playerYRot = ThirdPerson.ENTITY_AGENT.getRawPlayerEntity().getViewYRot(Minecraft.getInstance().getFrameTime());
+
+				var playerLookHorizon = LMath.directionFromRotationDegree(playerYRot).normalize();
+				var playerLeftHorizon = LMath.directionFromRotationDegree(playerYRot - 90).normalize();
+
 				event.forwardImpulse = (float)(ThirdPersonStatus.impulseHorizon.dot(playerLookHorizon));
 				event.leftImpulse    = (float)(ThirdPersonStatus.impulseHorizon.dot(playerLeftHorizon));
 			}

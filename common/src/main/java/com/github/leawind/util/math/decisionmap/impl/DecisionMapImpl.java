@@ -21,7 +21,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class DecisionMapImpl<T> implements DecisionMap<T> {
-	private final          Class<?>                 initializer;
+	private final Class<?> initializer;
+
 	/**
 	 * 规则构建器们
 	 */
@@ -37,11 +38,12 @@ public class DecisionMapImpl<T> implements DecisionMap<T> {
 	 */
 	private final @NotNull List<Supplier<T>>        strategyMap  = new ArrayList<>();
 	private final          Map<Supplier<?>, String> nameMap      = new HashMap<>();
+
+	private int     flagBits = 0;
 	/**
 	 * 此对象是否已经构建
 	 */
-	private                boolean                  isBuilt      = false;
-	private                int                      flagBits     = 0;
+	private boolean isBuilt  = false;
 
 	/**
 	 * 根据类中的定义构建决策表
@@ -56,9 +58,11 @@ public class DecisionMapImpl<T> implements DecisionMap<T> {
 	 */
 	public DecisionMapImpl (@NotNull Class<?> clazz) {
 		initializer = clazz;
+
 		// Register Factors
 		List<Field> adfListIndexed   = new LinkedList<>();
 		List<Field> adfListAutoIndex = new LinkedList<>();
+
 		for (var field: clazz.getDeclaredFields()) {
 			if (field.isAnnotationPresent(ADecisionFactor.class)) {
 				if (field.getType() != DecisionFactor.class) {
@@ -81,6 +85,7 @@ public class DecisionMapImpl<T> implements DecisionMap<T> {
 				}
 			}
 		}
+
 		int factorCount = adfListIndexed.size() + adfListAutoIndex.size();
 		if (factorCount > MAX_FACTOR_COUNT) {
 			throw new IllegalArgumentException(String.format("Too many (%d) DecisionFactors in class %s", factorCount, clazz));
@@ -88,6 +93,7 @@ public class DecisionMapImpl<T> implements DecisionMap<T> {
 		while (factors.size() < factorCount) {
 			factors.add(null);
 		}
+
 		try {
 			for (var field: adfListIndexed) {
 				var adf   = field.getAnnotation(ADecisionFactor.class);
@@ -114,6 +120,7 @@ public class DecisionMapImpl<T> implements DecisionMap<T> {
 			// This should never happen!
 			throw new IllegalStateException(e);
 		}
+
 		// Build
 		try {
 			var building = getBuildMethod(clazz);
@@ -131,45 +138,14 @@ public class DecisionMapImpl<T> implements DecisionMap<T> {
 		}
 	}
 
-	private static @NotNull Method getBuildMethod (@NotNull Class<?> clazz) throws NoSuchMethodException {
-		var method = clazz.getMethod("build", DecisionMap.class);
-		if (!Modifier.isStatic(method.getModifiers())) {
-			throw new IllegalArgumentException(String.format("Expected static method %s", method));
-		} else if (!method.canAccess(null)) {
-			throw new IllegalArgumentException(String.format("Cannot access method %s", method));
-		} else if (method.getReturnType() != void.class) {
-			throw new IllegalArgumentException(String.format("Required return type void for method %s", method));
-		}
-		return method;
-	}
-
 	@Override
 	public void reset () {
 		ruleBuilders.clear();
 		factors.clear();
 		strategyMap.clear();
+
 		isBuilt  = false;
 		flagBits = 0;
-	}
-
-	@Override
-	public String toString () {
-		var sb = new StringBuilder();
-		sb.append(String.format("%s from %s (factorCount=%d, mapSize=%d)\n", DecisionMap.class.getSimpleName(), initializer.getSimpleName(), getFactorCount(), getMapSize()));
-		sb.append("Factors:\n");
-		for (int i = 0; i < factors.size(); i++) {
-			sb.append(String.format("\t[%d] %s\n", i, factors.get(i).getName()));
-		}
-		sb.append("Strategy Map:\n");
-		for (int flagBits = 0; flagBits < getMapSize(); flagBits++) {
-			var func = getStrategy(flagBits).orElse(null);
-			sb.append(String.format("\t%s %s\n", padStart(Integer.toBinaryString(flagBits), factors.size(), '0'), nameMap.getOrDefault(func, "unnamed")));
-		}
-		return sb.toString();
-	}
-
-	private @NotNull String padStart (String s, int length, char filler) {
-		return String.format("%" + length + "s", s).replace(' ', filler);
 	}
 
 	@Override
@@ -285,5 +261,37 @@ public class DecisionMapImpl<T> implements DecisionMap<T> {
 			}
 		});
 		return this;
+	}
+
+	@Override
+	public String toString () {
+		var sb = new StringBuilder();
+		sb.append(String.format("%s from %s (factorCount=%d, mapSize=%d)\n", DecisionMap.class.getSimpleName(), initializer.getSimpleName(), getFactorCount(), getMapSize()));
+		sb.append("Factors:\n");
+		for (int i = 0; i < factors.size(); i++) {
+			sb.append(String.format("\t[%d] %s\n", i, factors.get(i).getName()));
+		}
+		sb.append("Strategy Map:\n");
+		for (int flagBits = 0; flagBits < getMapSize(); flagBits++) {
+			var func = getStrategy(flagBits).orElse(null);
+			sb.append(String.format("\t%s %s\n", padStart(Integer.toBinaryString(flagBits), factors.size(), '0'), nameMap.getOrDefault(func, "unnamed")));
+		}
+		return sb.toString();
+	}
+
+	private @NotNull String padStart (String s, int length, char filler) {
+		return String.format("%" + length + "s", s).replace(' ', filler);
+	}
+
+	private static @NotNull Method getBuildMethod (@NotNull Class<?> clazz) throws NoSuchMethodException {
+		var method = clazz.getMethod("build", DecisionMap.class);
+		if (!Modifier.isStatic(method.getModifiers())) {
+			throw new IllegalArgumentException(String.format("Expected static method %s", method));
+		} else if (!method.canAccess(null)) {
+			throw new IllegalArgumentException(String.format("Cannot access method %s", method));
+		} else if (method.getReturnType() != void.class) {
+			throw new IllegalArgumentException(String.format("Required return type void for method %s", method));
+		}
+		return method;
 	}
 }

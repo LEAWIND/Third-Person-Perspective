@@ -9,8 +9,10 @@ import com.github.leawind.util.math.monolist.MonoList;
 import com.github.leawind.util.math.monolist.StaticMonoList;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -19,12 +21,15 @@ import java.util.Set;
  * 但要在模组中使用这些配置项，还需要进行进一步的处理。
  */
 public class Config extends AbstractConfig {
-	public static final @NotNull Config             DEFAULTS                       = new Config();
-	private final @NotNull       CameraOffsetScheme cameraOffsetScheme             = new CameraOffsetScheme(this);
-	private final @NotNull       Set<ItemPredicate> holdToAimItemPredicates        = new HashSet<>();
-	private final @NotNull       Set<ItemPredicate> useToAimItemPredicates         = new HashSet<>();
-	private final @NotNull       Set<ItemPredicate> useToFirstPersonItemPredicates = new HashSet<>();
-	private                      MonoList           distanceMonoList;
+	public static final @NotNull Config DEFAULTS = new Config();
+
+	private final @NotNull CameraOffsetScheme cameraOffsetScheme = new CameraOffsetScheme(this);
+
+	private final @NotNull Set<ItemPredicate> holdToAimItemPredicates        = new HashSet<>();
+	private final @NotNull Set<ItemPredicate> useToAimItemPredicates         = new HashSet<>();
+	private final @NotNull Set<ItemPredicate> useToFirstPersonItemPredicates = new HashSet<>();
+
+	private @Nullable MonoList distanceMonoList;
 
 	public Config () {
 		update();
@@ -53,6 +58,7 @@ public class Config extends AbstractConfig {
 		holdToAimItemPredicates.clear();
 		useToAimItemPredicates.clear();
 		useToFirstPersonItemPredicates.clear();
+
 		int count;
 		count = ItemPredicateUtil.addToSet("minecraft", holdToAimItemPredicates, hold_to_aim_item_patterns);
 		if (count > 0) {
@@ -85,6 +91,6 @@ public class Config extends AbstractConfig {
 	}
 
 	public @NotNull MonoList getDistanceMonoList () {
-		return distanceMonoList;
+		return Objects.requireNonNull(distanceMonoList);
 	}
 }

@@ -8,9 +8,10 @@ import java.util.function.BooleanSupplier;
 
 public class DecisionFactorImpl implements DecisionFactor {
 	private final @NotNull BooleanSupplier getter;
-	protected              int             index;
-	private                boolean         value = false;
-	private @NotNull       String          name  = "unnamed";
+
+	protected        int     index;
+	private          boolean value = false;
+	private @NotNull String  name  = "unnamed";
 
 	public DecisionFactorImpl (@NotNull BooleanSupplier getter) {
 		this.getter = getter;

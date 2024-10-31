@@ -15,26 +15,6 @@ public class Vector3d {
 		this.z = z;
 	}
 
-	@Contract(value=" -> new", pure=true)
-	public static @NotNull Vector3d of () {
-		return of(0);
-	}
-
-	@Contract(value="_ -> new", pure=true)
-	public static @NotNull Vector3d of (double d) {
-		return of(d, d, d);
-	}
-
-	@Contract(value="_,_,_ -> new", pure=true)
-	public static @NotNull Vector3d of (double x, double y, double z) {
-		return new Vector3d(x, y, z);
-	}
-
-	@Contract("_ -> new")
-	public static @NotNull Vector3d of (@NotNull Vector3d v) {
-		return of(v.x(), v.y(), v.z());
-	}
-
 	@Override
 	public int hashCode () {
 		final int l = 31;
@@ -57,13 +37,13 @@ public class Vector3d {
 			return false;
 		}
 		var other = (Vector3d)obj;
-		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x())) {
+		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x)) {
 			return false;
 		}
-		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y())) {
+		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y)) {
 			return false;
 		}
-		return Double.doubleToLongBits(z) == Double.doubleToLongBits(other.z());
+		return Double.doubleToLongBits(z) == Double.doubleToLongBits(other.z);
 	}
 
 	@Override
@@ -110,12 +90,12 @@ public class Vector3d {
 
 	@Contract("_ -> this")
 	public Vector3d set (@NotNull Vector3d v) {
-		return set(v.x(), v.y(), v.z());
+		return set(v.x, v.y, v.z);
 	}
 
 	@Contract("_,_ -> param2")
 	public Vector3d add (@NotNull Vector3d v, @NotNull Vector3d dest) {
-		return add(v.x(), v.y(), v.z(), dest);
+		return add(v.x, v.y, v.z, dest);
 	}
 
 	@Contract("_,_,_,_ -> param4")
@@ -128,7 +108,7 @@ public class Vector3d {
 
 	@Contract("_ -> this")
 	public Vector3d add (@NotNull Vector3d v) {
-		return add(v.x(), v.y(), v.z());
+		return add(v.x, v.y, v.z);
 	}
 
 	@Contract("_,_,_ -> this")
@@ -146,7 +126,7 @@ public class Vector3d {
 
 	@Contract("_,_ -> param2")
 	public Vector3d sub (@NotNull Vector3d v, @NotNull Vector3d dest) {
-		return sub(v.x(), v.y(), v.z(), dest);
+		return sub(v.x, v.y, v.z, dest);
 	}
 
 	@Contract("_,_,_,_ -> param4")
@@ -159,7 +139,7 @@ public class Vector3d {
 
 	@Contract("_ -> this")
 	public Vector3d sub (@NotNull Vector3d v) {
-		return sub(v.x(), v.y(), v.z());
+		return sub(v.x, v.y, v.z);
 	}
 
 	@Contract("_,_,_ -> this")
@@ -172,7 +152,7 @@ public class Vector3d {
 
 	@Contract("_,_ -> param2")
 	public Vector3d mul (@NotNull Vector3d v, @NotNull Vector3d dest) {
-		return mul(v.x(), v.y(), v.z(), dest);
+		return mul(v.x, v.y, v.z, dest);
 	}
 
 	@Contract("_,_,_,_ -> param4")
@@ -185,7 +165,7 @@ public class Vector3d {
 
 	@Contract("_ -> this")
 	public Vector3d mul (@NotNull Vector3d v) {
-		return mul(v.x(), v.y(), v.z());
+		return mul(v.x, v.y, v.z);
 	}
 
 	@Contract("_,_,_ -> this")
@@ -203,7 +183,7 @@ public class Vector3d {
 
 	@Contract("_,_ -> param2")
 	public Vector3d div (@NotNull Vector3d v, @NotNull Vector3d dest) {
-		return div(v.x(), v.y(), v.z(), dest);
+		return div(v.x, v.y, v.z, dest);
 	}
 
 	@Contract("_,_,_,_ -> param4")
@@ -216,7 +196,7 @@ public class Vector3d {
 
 	@Contract("_ -> this")
 	public Vector3d div (@NotNull Vector3d v) {
-		return div(v.x(), v.y(), v.z());
+		return div(v.x, v.y, v.z);
 	}
 
 	@Contract("_,_,_ -> this")
@@ -234,7 +214,7 @@ public class Vector3d {
 
 	@Contract("_,_ -> param2")
 	public Vector3d pow (@NotNull Vector3d v, @NotNull Vector3d dest) {
-		return pow(v.x(), v.y(), v.z(), dest);
+		return pow(v.x, v.y, v.z, dest);
 	}
 
 	@Contract("_,_,_,_ -> param4")
@@ -252,7 +232,7 @@ public class Vector3d {
 
 	@Contract("_ -> this")
 	public Vector3d pow (@NotNull Vector3d v) {
-		return pow(v.x(), v.y(), v.z());
+		return pow(v.x, v.y, v.z);
 	}
 
 	@Contract("_,_,_ -> this")
@@ -273,7 +253,7 @@ public class Vector3d {
 	}
 
 	public double distance (@NotNull Vector3d v) {
-		return distance(v.x(), v.y(), v.z());
+		return distance(v.x, v.y, v.z);
 	}
 
 	public double distance (double x, double y, double z) {
@@ -356,7 +336,7 @@ public class Vector3d {
 	}
 
 	public double dot (@NotNull Vector3d v) {
-		return x * v.x() + y * v.y() + z * v.z();
+		return x * v.x + y * v.y + z * v.z;
 	}
 
 	@Contract("_,_ -> this")
@@ -369,25 +349,25 @@ public class Vector3d {
 
 	@Contract("_,_ -> this")
 	public Vector3d clamp (@NotNull Vector3d min, @NotNull Vector3d max) {
-		x = Math.min(Math.max(x, min.x()), max.x());
-		y = Math.min(Math.max(y, min.y()), max.y());
-		z = Math.min(Math.max(z, min.z()), max.z());
+		x = Math.min(Math.max(x, min.x), max.x);
+		y = Math.min(Math.max(y, min.y), max.y);
+		z = Math.min(Math.max(z, min.z), max.z);
 		return this;
 	}
 
 	@Contract("_,_ -> this")
 	public Vector3d lerp (@NotNull Vector3d end, double t) {
-		x += (end.x() - x) * t;
-		y += (end.y() - y) * t;
-		z += (end.z() - z) * t;
+		x += (end.x - x) * t;
+		y += (end.y - y) * t;
+		z += (end.z - z) * t;
 		return this;
 	}
 
 	@Contract("_,_ -> this")
 	public Vector3d lerp (@NotNull Vector3d end, @NotNull Vector3d t) {
-		x += (end.x() - x) * t.x();
-		y += (end.y() - y) * t.y();
-		z += (end.z() - z) * t.z();
+		x += (end.x - x) * t.x;
+		y += (end.y - y) * t.y;
+		z += (end.z - z) * t.z;
 		return this;
 	}
 
@@ -406,5 +386,25 @@ public class Vector3d {
 
 	public boolean isFinite () {
 		return Double.isFinite(x) && Double.isFinite(y) && Double.isFinite(z);
+	}
+
+	@Contract(value=" -> new", pure=true)
+	public static @NotNull Vector3d of () {
+		return of(0);
+	}
+
+	@Contract(value="_ -> new", pure=true)
+	public static @NotNull Vector3d of (double d) {
+		return of(d, d, d);
+	}
+
+	@Contract(value="_,_,_ -> new", pure=true)
+	public static @NotNull Vector3d of (double x, double y, double z) {
+		return new Vector3d(x, y, z);
+	}
+
+	@Contract("_ -> new")
+	public static @NotNull Vector3d of (@NotNull Vector3d v) {
+		return of(v.x, v.y, v.z);
 	}
 }

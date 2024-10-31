@@ -21,18 +21,21 @@ public interface RotateStrategy {
 	@ADecisionFactor DecisionFactor should_rotate_with_camera_when_not_aiming = DecisionFactor.of(() -> ThirdPerson.getConfig().player_rotate_with_camera_when_not_aiming);
 	@ADecisionFactor DecisionFactor rotate_interacting                        = DecisionFactor.of(() -> ThirdPerson.getConfig().auto_rotate_interacting && ThirdPerson.ENTITY_AGENT.isInteracting() &&
 																										!(ThirdPerson.getConfig().do_not_rotate_when_eating && ThirdPerson.ENTITY_AGENT.isEating()));
+
 	/**
 	 * 默认策略：移动时转向前进方向，静止时不旋转
 	 */
 	Supplier<Double> DEFAULT                = () -> {
 		var entity = ThirdPerson.ENTITY_AGENT.getRawCameraEntity();
+
 		var rotateTarget = ThirdPerson.getConfig().rotate_to_moving_direction && (!entity.isPassenger() || entity.getVehicle() instanceof LivingEntity)   //
 						   ? RotateTargetEnum.HORIZONTAL_IMPULSE_DIRECTION    //
 						   : RotateTargetEnum.DEFAULT;
+		ThirdPerson.ENTITY_AGENT.setRotateTarget(rotateTarget);
+
 		var smoothType = Minecraft.getInstance().options.keySprint.isDown() || ThirdPerson.ENTITY_AGENT.isSprinting()    //
 						 ? SmoothTypeEnum.HARD    //
 						 : SmoothTypeEnum.EXP_LINEAR;
-		ThirdPerson.ENTITY_AGENT.setRotateTarget(rotateTarget);
 		ThirdPerson.ENTITY_AGENT.setRotationSmoothType(smoothType);
 		return 0.1D;
 	};

@@ -14,23 +14,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class ThirdPerson {
-	public static final Logger        LOGGER         = LoggerFactory.getLogger(ThirdPersonConstants.MOD_NAME);
-	public static final ConfigManager CONFIG_MANAGER = new ConfigManager();
+	public static final Logger LOGGER = LoggerFactory.getLogger(ThirdPersonConstants.MOD_NAME);
+
 	public static final FiniteChecker FINITE_CHECKER = new FiniteChecker(err -> ThirdPerson.LOGGER.error(err.toString()));
-	public static       EntityAgent   ENTITY_AGENT;
-	public static       CameraAgent   CAMERA_AGENT;
+	public static final ConfigManager CONFIG_MANAGER = new ConfigManager();
+
+	public static EntityAgent ENTITY_AGENT;
+	public static CameraAgent CAMERA_AGENT;
 
 	public static void init () {
 		var minecraft = Minecraft.getInstance();
 		LOGGER.debug("Initializing mod {}", ThirdPersonConstants.MOD_NAME);
 		MixinExtrasBootstrap.init();
-		ENTITY_AGENT = EntityAgent.create(minecraft);
+
 		ENTITY_AGENT = new EntityAgent(minecraft);
 		CAMERA_AGENT = new CameraAgent(minecraft);
+
 		CONFIG_MANAGER.tryLoad();
+
 		ThirdPersonResources.register();
 		ThirdPersonKeys.register();
 		ThirdPersonEvents.register();
+
 		Platform.getMod(ThirdPersonConstants.MOD_ID).registerConfigurationScreen(ThirdPerson.CONFIG_MANAGER::getConfigScreen);
 	}
 

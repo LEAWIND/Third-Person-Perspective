@@ -87,10 +87,6 @@ public abstract class AbstractConfig {
 		PLANE(true),
 		STRAIGHT(false);
 
-		public static Component formatter (boolean v) {
-			return v ? ConfigManager.getText("option.camera_distance_mode.plane"): ConfigManager.getText("option.camera_distance_mode.straight");
-		}
-
 		final boolean bool;
 
 		CameraDistanceMode (boolean bool) {
@@ -99,6 +95,10 @@ public abstract class AbstractConfig {
 
 		public boolean bool () {
 			return bool;
+		}
+
+		public static Component formatter (boolean v) {
+			return v ? ConfigManager.getText("option.camera_distance_mode.plane"): ConfigManager.getText("option.camera_distance_mode.straight");
 		}
 	}
 }
