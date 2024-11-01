@@ -5,10 +5,11 @@ import java.nio.file.Files
 
 plugins {
 	// https://github.com/architectury/architectury-plugin
-	id "architectury-plugin" version "3.4-SNAPSHOT"
+	// https://maven.architectury.dev/architectury-plugin/architectury-plugin.gradle.plugin/
+	id "architectury-plugin" version "3.4.159"
 	// https://maven.architectury.dev/dev/architectury/loom/dev.architectury.loom.gradle.plugin/
-	id "dev.architectury.loom" version "1.7.410" apply false
-	// 用于将模组发布至 Modrinth 和 CurseForge
+	id "dev.architectury.loom" version "1.7.414" apply false
+	// 用于发布至 Modrinth 和 CurseForge
 	// https://github.com/modmuss50/mod-publish-plugin
 	id "me.modmuss50.mod-publish-plugin" version "0.7.4"
 }
