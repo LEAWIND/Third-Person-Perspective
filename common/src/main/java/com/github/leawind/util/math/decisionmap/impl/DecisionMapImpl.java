@@ -1,7 +1,6 @@
 package com.github.leawind.util.math.decisionmap.impl;
 
 
-import com.github.leawind.util.math.decisionmap.api.DecisionFactor;
 import com.github.leawind.util.math.decisionmap.api.DecisionMap;
 import com.github.leawind.util.math.decisionmap.api.anno.ADecisionFactor;
 import org.jetbrains.annotations.NotNull;
@@ -26,17 +25,17 @@ public class DecisionMapImpl<T> implements DecisionMap<T> {
 	/**
 	 * 规则构建器们
 	 */
-	private final          List<Runnable>           ruleBuilders = new LinkedList<>();
+	private final          List<Runnable>        ruleBuilders = new LinkedList<>();
 	/**
 	 * 因素列表
 	 */
-	private final @NotNull List<DecisionFactor>     factors      = new ArrayList<>();
+	private final @NotNull List<DecisionFactor> factors      = new ArrayList<>();
 	/**
 	 * 列出所有可能的情况的列表
 	 * <p>
 	 * flagBits -> Supplier
 	 */
-	private final @NotNull List<Supplier<T>>        strategyMap  = new ArrayList<>();
+	private final @NotNull List<Supplier<T>>     strategyMap  = new ArrayList<>();
 	private final          Map<Supplier<?>, String> nameMap      = new HashMap<>();
 
 	private int     flagBits = 0;

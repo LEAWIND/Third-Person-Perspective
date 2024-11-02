@@ -2,9 +2,9 @@ package com.github.leawind.thirdperson.core.rotation;
 
 
 import com.github.leawind.thirdperson.ThirdPerson;
-import com.github.leawind.util.math.decisionmap.api.DecisionFactor;
 import com.github.leawind.util.math.decisionmap.api.DecisionMap;
 import com.github.leawind.util.math.decisionmap.api.anno.ADecisionFactor;
+import com.github.leawind.util.math.decisionmap.impl.DecisionFactor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
@@ -15,12 +15,12 @@ import java.util.function.Supplier;
  * 玩家旋转策略
  */
 public interface RotateStrategy {
-	@ADecisionFactor DecisionFactor is_swimming                               = DecisionFactor.of(() -> ThirdPerson.ENTITY_AGENT.getRawCameraEntity().isSwimming());
-	@ADecisionFactor DecisionFactor is_aiming                                 = DecisionFactor.of(() -> ThirdPerson.ENTITY_AGENT.isAiming());
-	@ADecisionFactor DecisionFactor is_fall_flying                            = DecisionFactor.of(() -> ThirdPerson.ENTITY_AGENT.isFallFlying());
-	@ADecisionFactor DecisionFactor should_rotate_with_camera_when_not_aiming = DecisionFactor.of(() -> ThirdPerson.getConfig().player_rotate_with_camera_when_not_aiming);
-	@ADecisionFactor DecisionFactor rotate_interacting                        = DecisionFactor.of(() -> ThirdPerson.getConfig().auto_rotate_interacting && ThirdPerson.ENTITY_AGENT.isInteracting() &&
-																										!(ThirdPerson.getConfig().do_not_rotate_when_eating && ThirdPerson.ENTITY_AGENT.isEating()));
+	@ADecisionFactor DecisionFactor is_swimming                               = new DecisionFactor(() -> ThirdPerson.ENTITY_AGENT.getRawCameraEntity().isSwimming());
+	@ADecisionFactor DecisionFactor is_aiming                                 = new DecisionFactor(() -> ThirdPerson.ENTITY_AGENT.isAiming());
+	@ADecisionFactor DecisionFactor is_fall_flying                            = new DecisionFactor(() -> ThirdPerson.ENTITY_AGENT.isFallFlying());
+	@ADecisionFactor DecisionFactor should_rotate_with_camera_when_not_aiming = new DecisionFactor(() -> ThirdPerson.getConfig().player_rotate_with_camera_when_not_aiming);
+	@ADecisionFactor DecisionFactor rotate_interacting                        = new DecisionFactor(() -> ThirdPerson.getConfig().auto_rotate_interacting && ThirdPerson.ENTITY_AGENT.isInteracting() &&
+																										 !(ThirdPerson.getConfig().do_not_rotate_when_eating && ThirdPerson.ENTITY_AGENT.isEating()));
 
 	/**
 	 * 默认策略：移动时转向前进方向，静止时不旋转

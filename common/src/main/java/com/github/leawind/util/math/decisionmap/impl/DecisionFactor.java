@@ -1,50 +1,63 @@
 package com.github.leawind.util.math.decisionmap.impl;
 
 
-import com.github.leawind.util.math.decisionmap.api.DecisionFactor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BooleanSupplier;
 
-public class DecisionFactorImpl implements DecisionFactor {
+public class DecisionFactor {
 	private final @NotNull BooleanSupplier getter;
 
 	protected        int     index;
 	private          boolean value = false;
 	private @NotNull String  name  = "unnamed";
 
-	public DecisionFactorImpl (@NotNull BooleanSupplier getter) {
+	public DecisionFactor (@NotNull BooleanSupplier getter) {
 		this.getter = getter;
 	}
 
-	@Override
+	/**
+	 * 重新计算因素的值
+	 */
+	@org.jetbrains.annotations.Contract("-> this")
 	public @NotNull DecisionFactor update () {
 		value = getter.getAsBoolean();
 		return this;
 	}
 
-	@Override
+	/**
+	 * 获取上次的计算结果
+	 */
 	public boolean get () {
 		return value;
 	}
 
-	@Override
 	public @NotNull String getName () {
 		return name;
 	}
 
-	@Override
 	public void setName (@NotNull String name) {
 		this.name = name;
 	}
 
-	@Override
+	/**
+	 * 设置索引
+	 */
 	public void setIndex (int index) {
 		this.index = index;
 	}
 
-	@Override
+	/**
+	 * 在所有因素中的索引
+	 */
 	public int index () {
 		return index;
+	}
+
+	/**
+	 * 掩码，即 1<<index
+	 */
+	public int mask () {
+		return 1 << index();
 	}
 }

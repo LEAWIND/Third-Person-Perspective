@@ -19,6 +19,7 @@ public abstract class AbstractConfig {
 	@Expose public          boolean            center_offset_when_flying                 = true;
 	@Expose public          boolean            temp_first_person_in_narrow_space         = true;
 	//------------------------------玩家旋转
+	@Expose public          PlayerRotateMode   player_rotate_mode                        = PlayerRotateMode.INTEREST_POINT;
 	@Expose public          boolean            player_rotate_with_camera_when_not_aiming = false;
 	@Expose public          boolean            player_rotate_to_interest_point           = true;
 	@Expose public          boolean            rotate_to_moving_direction                = true;
@@ -82,6 +83,13 @@ public abstract class AbstractConfig {
 	@Expose public          boolean            render_crosshair_when_not_aiming          = true;
 	@Expose public          boolean            render_crosshair_when_aiming              = true;
 	@Expose public          boolean            hide_crosshair_when_flying                = true;
+
+	public enum PlayerRotateMode {
+		INTEREST_POINT,
+		CAMERA_CROSSHAIR,
+		PARALLEL_WITH_CAMERA,
+		NONE,
+	}
 
 	public enum CameraDistanceMode {
 		PLANE(true),

@@ -12,6 +12,8 @@ import java.util.function.Supplier;
 
 /**
  * 决策表
+ * <p>
+ * 根据特定布尔类型因素做出决策
  */
 @SuppressWarnings("unused")
 public interface DecisionMap<T> {
