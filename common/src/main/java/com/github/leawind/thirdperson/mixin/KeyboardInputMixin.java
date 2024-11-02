@@ -17,7 +17,7 @@ public class KeyboardInputMixin {
 	 */
 	@Inject(method="tick", at=@At(value="TAIL"))
 	@PerformanceSensitive
-	private void tick_tail (boolean multiplyImpulse, float impulseMultiplier, CallbackInfo ci) {
+	private void postTick (boolean multiplyImpulse, float impulseMultiplier, CallbackInfo ci) {
 		var that = ((KeyboardInput)(Object)this);
 		if (GameEvents.calculateMoveImpulse != null) {
 			var event = new CalculateMoveImpulseEvent(that, multiplyImpulse ? impulseMultiplier: 1);

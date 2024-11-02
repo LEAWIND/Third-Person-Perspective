@@ -29,7 +29,7 @@ public class EntityMixin {
 	 * @see GameRendererMixin
 	 */
 	@Inject(method="pick", at=@At("HEAD"), cancellable=true)
-	private void pick (double playerReach, float partialTick, boolean includeFluid, CallbackInfoReturnable<HitResult> ci) {
+	private void prePick (double playerReach, float partialTick, boolean includeFluid, CallbackInfoReturnable<HitResult> ci) {
 		if (GameEvents.minecraftPick != null) {
 			var entity = (Entity)(Object)this;
 			var event  = new MinecraftPickEvent(partialTick, playerReach);
@@ -53,7 +53,7 @@ public class EntityMixin {
 	 * @see MouseHandler#turnPlayer()
 	 */
 	@Inject(method="turn", at=@At("HEAD"), cancellable=true)
-	private void turn (double yRot, double xRot, @NotNull CallbackInfo ci) {
+	private void preTurn (double yRot, double xRot, @NotNull CallbackInfo ci) {
 		if (GameEvents.entityTurnStart != null) {
 			var entity = (Entity)(Object)this;
 			var event  = new EntityTurnStartEvent(entity, yRot * 0.15, xRot * 0.15);
