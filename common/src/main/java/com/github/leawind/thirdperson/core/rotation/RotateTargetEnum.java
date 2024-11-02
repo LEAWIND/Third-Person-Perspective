@@ -8,6 +8,7 @@ import com.github.leawind.thirdperson.core.CameraAgent;
 import com.github.leawind.util.math.LMath;
 import com.github.leawind.util.math.vector.Vector2d;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.HitResult.Type;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
@@ -66,13 +67,14 @@ public enum RotateTargetEnum {
 	 * 转向相机的视线落点，即准星所指的位置
 	 */
 	CAMERA_HIT_RESULT(partialTick -> {
-		var cameraHitPosition = ThirdPerson.CAMERA_AGENT.getPickPosition();
-		if (cameraHitPosition == null) {
+		var cameraHitResult = ThirdPerson.CAMERA_AGENT.getHitResult();
+		if (cameraHitResult.getType() == Type.MISS) {
 			return CAMERA_ROTATION.getRotation(partialTick);
+		} else {
+			var cameraHitPosition = LMath.toVector3d(cameraHitResult.getLocation());
+			var eyePosition       = ThirdPerson.ENTITY_AGENT.getRawEyePosition(partialTick);
+			return LMath.rotationDegreeFromDirection(cameraHitPosition.sub(eyePosition));
 		}
-
-		var eyePosition = ThirdPerson.ENTITY_AGENT.getRawEyePosition(partialTick);
-		return LMath.rotationDegreeFromDirection(cameraHitPosition.sub(eyePosition));
 	}),
 	/**
 	 * 预测玩家想射击的目标实体

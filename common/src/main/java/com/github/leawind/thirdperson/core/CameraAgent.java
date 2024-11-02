@@ -308,25 +308,6 @@ public class CameraAgent {
 	}
 
 	/**
-	 * 获取pick结果坐标
-	 * <p>
-	 * 使用默认距离
-	 */
-	public @Nullable Vector3d getPickPosition () {
-		return getPickPosition(getPickRange());
-	}
-
-	/**
-	 * 获取相机视线落点坐标
-	 *
-	 * @param pickRange 最大探测距离
-	 */
-	public @Nullable Vector3d getPickPosition (double pickRange) {
-		var hitResult = pick(pickRange);
-		return hitResult.getType() == HitResult.Type.MISS ? null: LMath.toVector3d(hitResult.getLocation());
-	}
-
-	/**
 	 * 从相机出发探测所选方块或实体。
 	 * <p>
 	 * 当探测不到时，返回的是{@link HitResult.Type#MISS}类型。坐标将为探测终点
@@ -335,15 +316,14 @@ public class CameraAgent {
 	 */
 	@VersionSensitive
 	public @NotNull HitResult pick (double pickRange) {
-
 		var entityHitResult = pickEntity(pickRange);
 		var blockHitResult  = pickBlock(pickRange);
 
 		if (entityHitResult != null) {
 			var    cameraPos      = getRawCamera().getPosition();
-			double blockDistance  = blockHitResult.getLocation().distanceTo(cameraPos);
-			double entityDistance = hitResult.getLocation().distanceTo(cameraPos);
-			if (blockDistance < entityDistance) {
+			double blockDistance  = cameraPos.distanceTo(blockHitResult.getLocation());
+			double entityDistance = cameraPos.distanceTo(entityHitResult.getLocation());
+			if (entityDistance < blockDistance) {
 				return entityHitResult;
 			}
 		}
@@ -381,12 +361,13 @@ public class CameraAgent {
 	 * @param fluidShape 液体形状获取器
 	 */
 	public @NotNull BlockHitResult pickBlock (double pickRange, @NotNull ClipContext.Block blockShape, @NotNull ClipContext.Fluid fluidShape) {
-		var camera       = getRawCamera();
-		var pickFrom     = camera.getPosition();
-		var viewVector   = new Vec3(camera.getLookVector());
-		var pickTo       = viewVector.scale(pickRange).add(pickFrom);
-		var cameraEntity = ThirdPerson.ENTITY_AGENT.getRawCameraEntity();
+		var camera = getRawCamera();
 
+		var pickFrom   = camera.getPosition();
+		var viewVector = new Vec3(camera.getLookVector());
+		var pickTo     = pickFrom.add(viewVector.scale(pickRange));
+
+		var cameraEntity = ThirdPerson.ENTITY_AGENT.getRawCameraEntity();
 		return cameraEntity.level().clip(new ClipContext(pickFrom, pickTo, blockShape, fluidShape, cameraEntity));
 	}
 

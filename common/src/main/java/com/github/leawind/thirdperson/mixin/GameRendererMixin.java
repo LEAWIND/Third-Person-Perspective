@@ -2,21 +2,21 @@ package com.github.leawind.thirdperson.mixin;
 
 
 import com.github.leawind.api.base.GameEvents;
-import com.github.leawind.api.client.event.MinecraftPickEvent;
 import com.github.leawind.api.client.event.RenderTickStartEvent;
 import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.thirdperson.ThirdPersonStatus;
-import com.github.leawind.util.annotation.VersionSensitive;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,6 +25,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.function.Predicate;
 
 /**
  * {@link GameRenderer#pick(float)} 的作用是更新{@link Minecraft#hitResult}和{@link Minecraft#crosshairPickEntity}
@@ -40,9 +42,53 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * 当探测结果为空时，它会通过 {@link BlockHitResult#miss(Vec3, Direction, BlockPos)} 创建一个表示结果为空的 BlockHitResult 对象，此时会根据玩家的朝向计算 Direction 参数。
  */
 @Mixin(value=GameRenderer.class, priority=2000)
-public class GameRendererMixin {
+public abstract class GameRendererMixin {
 
-	@Shadow @Final Minecraft minecraft;
+	@Shadow @Final         Minecraft minecraft;
+	@Final @Shadow private Camera    mainCamera;
+
+	/**
+	 * 修改探测实体的起点和终点
+	 *
+	 * @param pickFrom     探测起点，原本是玩家眼睛位置
+	 * @param pickTo       探测终点，原本是玩家眼睛前方距离为 pickRange 的位置
+	 * @param aabb         碰撞箱，只有与它有交点的实体才会被考虑
+	 * @param predicate    目标实体谓词
+	 * @param pickRangeSqr 探测距离上限的平方
+	 */
+	@WrapOperation(method="pick", at=@At(value="INVOKE",
+										 target="Lnet/minecraft/world/entity/projectile/ProjectileUtil;getEntityHitResult(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/AABB;" +
+												"Ljava/util/function/Predicate;D)Lnet/minecraft/world/phys/EntityHitResult;"))
+	private EntityHitResult wrapEntityHit (Entity receiver, Vec3 pickFrom, Vec3 pickTo, AABB aabb, Predicate<Entity> predicate, double pickRangeSqr, Operation<EntityHitResult> original) {
+		if (ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson()) {
+			if (receiver == minecraft.cameraEntity) {
+				pickTo = ThirdPerson.CAMERA_AGENT.getHitResult().getLocation();
+				if (ThirdPersonStatus.shouldPickFromCamera()) {
+					// 从相机到准星处
+					pickFrom = mainCamera.getPosition();
+					var pickVector = pickFrom.vectorTo(pickTo).normalize().scale(1e-4);
+					pickTo = pickTo.add(pickVector);
+				} else {
+					// 从玩家眼睛到准星处
+					// 限制距离为 pickRange
+					var pickRange  = Math.sqrt(pickRangeSqr);
+					var pickVector = pickFrom.vectorTo(pickTo).normalize().scale(pickRange);
+					pickTo = pickFrom.add(pickVector);
+				}
+				aabb         = new AABB(pickFrom, pickTo).inflate(1.0);
+				pickRangeSqr = pickFrom.distanceToSqr(pickTo);
+			}
+		}
+		return original.call(receiver, pickFrom, pickTo, aabb, predicate, pickRangeSqr);
+	}
+
+	@ModifyVariable(method="getFov", at=@At(value="STORE"))
+	private double getFov (double fov) {
+		if (ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson()) {
+			return fov / ThirdPerson.CAMERA_AGENT.getSmoothFovDivisor();
+		}
+		return fov;
+	}
 
 	/**
 	 * 渲染tick前
@@ -52,80 +98,5 @@ public class GameRendererMixin {
 		if (GameEvents.renderTickStart != null) {
 			GameEvents.renderTickStart.accept(new RenderTickStartEvent(partialTick));
 		}
-	}
-
-	/**
-	 * TODO compatibility with VS
-	 * <p>
-	 * 更新{@link Minecraft#hitResult}和{@link Minecraft#crosshairPickEntity}
-	 */
-	@VersionSensitive("Entity predicate")
-	@Inject(method="pick", at=@At("HEAD"), cancellable=true)
-	private void preTick (float partialTick, CallbackInfo ci) {
-		if (GameEvents.minecraftPick != null) {
-			var event = new MinecraftPickEvent(partialTick, 4.5);
-			GameEvents.minecraftPick.accept(event);
-			if (event.set()) {
-				assert minecraft.gameMode != null;
-				var cameraEntity = minecraft.getCameraEntity();
-				assert cameraEntity != null;
-				minecraft.getProfiler().push("pick");
-				minecraft.crosshairPickEntity = null;
-				// pick距离，创造模式为5，否则为4.5
-				double playerReach = minecraft.gameMode.getPickRange();
-				// 选取方块
-				minecraft.hitResult = cameraEntity.pick(playerReach, partialTick, false);
-				var pickFrom = event.pickFrom();
-				assert pickFrom != null;
-				// 选取实体
-				boolean notCreativeMode = false;
-				double  dist            = playerReach;
-				if (minecraft.gameMode.hasFarPickRange()) {
-					// 如果当前是创造模式，则距离为6
-					dist = 6.0D;
-				} else if (playerReach > 3.0D) {
-					// 实际上一定大于3
-					notCreativeMode = true;
-				}
-				// dist 变成了 dist的平方
-				dist *= dist;
-				if (minecraft.hitResult != null) {
-					// 如果pick到了方块，则更新 dist 为玩家眼睛到目标的距离平方
-					dist = minecraft.hitResult.getLocation().distanceToSqr(pickFrom);
-				}
-				var viewVector = event.getPickVector();
-				var pickTo     = event.pickTo();
-				assert pickTo != null;
-				// 计算可能和目标实体发生碰撞的碰撞盒
-				var aabb = new AABB(pickFrom, pickTo);
-				// 探测实体
-				var entityHitResult = ProjectileUtil.getEntityHitResult(cameraEntity, pickFrom, pickTo, aabb, entity -> !entity.isSpectator() && entity.isPickable(), dist);
-				if (entityHitResult != null) {
-					var    targetEntity   = entityHitResult.getEntity();
-					var    targetLocation = entityHitResult.getLocation();
-					double entityDistSqr  = pickFrom.distanceToSqr(targetLocation);
-					if (notCreativeMode && entityDistSqr > 9.0D) {
-						// 如果不是创造模式且目标实体距离超过3
-						minecraft.hitResult = BlockHitResult.miss(targetLocation, Direction.getNearest(viewVector.x, viewVector.y, viewVector.z), BlockPos.containing(targetLocation));
-					} else if (entityDistSqr < dist || minecraft.hitResult == null) {
-						// 如果目标实体距离小于目标方块距离，或者没探测到目标方块，则采用目标实体作为结果
-						minecraft.hitResult = entityHitResult;
-						if (targetEntity instanceof LivingEntity || targetEntity instanceof ItemFrame) {
-							minecraft.crosshairPickEntity = targetEntity;
-						}
-					}
-				}
-				ci.cancel();
-				minecraft.getProfiler().pop();
-			}
-		}
-	}
-
-	@ModifyVariable(method="getFov", at=@At(value="STORE"))
-	private double getFov (double fov) {
-		if (ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson()) {
-			return fov / ThirdPerson.CAMERA_AGENT.getSmoothFovDivisor();
-		}
-		return fov;
 	}
 }

@@ -5,7 +5,6 @@ import com.github.leawind.api.base.GameEvents;
 import com.github.leawind.api.base.GameStatus;
 import com.github.leawind.api.client.event.CalculateMoveImpulseEvent;
 import com.github.leawind.api.client.event.EntityTurnStartEvent;
-import com.github.leawind.api.client.event.MinecraftPickEvent;
 import com.github.leawind.api.client.event.MouseTurnPlayerStartEvent;
 import com.github.leawind.api.client.event.RenderEntityEvent;
 import com.github.leawind.api.client.event.RenderTickStartEvent;
@@ -39,7 +38,6 @@ public final class ThirdPersonEvents {
 		ClientRawInputEvent.MOUSE_SCROLLED.register(ThirdPersonEvents::onMouseScrolled);
 
 		GameEvents.thirdPersonCameraSetup = ThirdPersonEvents::onThirdPersonCameraSetup;
-		GameEvents.minecraftPick          = ThirdPersonEvents::onMinecraftPickEvent;
 		GameEvents.renderTickStart        = ThirdPersonEvents::onRenderTickStart;
 		GameEvents.calculateMoveImpulse   = ThirdPersonEvents::onCalculateMoveImpulse;
 		GameEvents.renderEntity           = ThirdPersonEvents::onRenderEntity;
@@ -138,25 +136,6 @@ public final class ThirdPersonEvents {
 	private static void onThirdPersonCameraSetup (ThirdPersonCameraSetupEvent event) {
 		if (ThirdPerson.isAvailable() && ThirdPerson.ENTITY_AGENT.isCameraEntityExist() && ThirdPersonStatus.isRenderingInThirdPerson()) {
 			ThirdPerson.CAMERA_AGENT.onCameraSetup(event);
-		}
-	}
-
-	private static void onMinecraftPickEvent (MinecraftPickEvent event) {
-		if (ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson()) {
-			var cameraEntity      = ThirdPerson.ENTITY_AGENT.getRawCameraEntity();
-			var cameraPosition    = ThirdPerson.CAMERA_AGENT.getRawCamera().getPosition();
-			var eyePosition       = cameraEntity.getEyePosition(event.partialTick);
-			var cameraHitPosition = ThirdPerson.CAMERA_AGENT.getHitResult().getLocation();
-			event.pickTo(cameraHitPosition);
-
-			double pickRange;
-			if (ThirdPersonStatus.shouldPickFromCamera()) {
-				event.pickFrom(cameraPosition);
-				event.setPickRange(cameraHitPosition.distanceTo(cameraPosition) + 1e-5);
-			} else {
-				event.pickFrom(eyePosition);
-				event.setPickRange(event.playerReach);
-			}
 		}
 	}
 
