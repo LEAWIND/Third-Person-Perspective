@@ -2,83 +2,98 @@ package com.github.leawind.thirdperson.core.rotation;
 
 
 import com.github.leawind.thirdperson.ThirdPerson;
-import com.github.leawind.util.math.decisionmap.api.DecisionMap;
-import com.github.leawind.util.math.decisionmap.api.anno.ADecisionFactor;
-import com.github.leawind.util.math.decisionmap.impl.DecisionFactor;
+import com.github.leawind.util.math.decisionmap.DecisionMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Supplier;
 
 /**
  * 玩家旋转策略
  */
-public interface RotateStrategy {
-	@ADecisionFactor DecisionFactor is_swimming                               = new DecisionFactor(() -> ThirdPerson.ENTITY_AGENT.getRawCameraEntity().isSwimming());
-	@ADecisionFactor DecisionFactor is_aiming                                 = new DecisionFactor(() -> ThirdPerson.ENTITY_AGENT.isAiming());
-	@ADecisionFactor DecisionFactor is_fall_flying                            = new DecisionFactor(() -> ThirdPerson.ENTITY_AGENT.isFallFlying());
-	@ADecisionFactor DecisionFactor should_rotate_with_camera_when_not_aiming = new DecisionFactor(() -> ThirdPerson.getConfig().player_rotate_with_camera_when_not_aiming);
-	@ADecisionFactor DecisionFactor rotate_interacting                        = new DecisionFactor(() -> ThirdPerson.getConfig().auto_rotate_interacting && ThirdPerson.ENTITY_AGENT.isInteracting() &&
-																										 !(ThirdPerson.getConfig().do_not_rotate_when_eating && ThirdPerson.ENTITY_AGENT.isEating()));
+public final class RotateStrategy {
+	private static final class Factor {
+		static boolean isSwimming () {
+			return ThirdPerson.ENTITY_AGENT.getRawCameraEntity().isSwimming();
+		}
 
-	/**
-	 * 默认策略：移动时转向前进方向，静止时不旋转
-	 */
-	Supplier<Double> DEFAULT                = () -> {
-		var entity = ThirdPerson.ENTITY_AGENT.getRawCameraEntity();
+		static boolean isAiming () {
+			return ThirdPerson.ENTITY_AGENT.isAiming();
+		}
 
-		var rotateTarget = ThirdPerson.getConfig().rotate_to_moving_direction && (!entity.isPassenger() || entity.getVehicle() instanceof LivingEntity)   //
-						   ? RotateTargetEnum.HORIZONTAL_IMPULSE_DIRECTION    //
-						   : RotateTargetEnum.DEFAULT;
-		ThirdPerson.ENTITY_AGENT.setRotateTarget(rotateTarget);
+		static boolean isFallFlying () {
+			return ThirdPerson.ENTITY_AGENT.isFallFlying();
+		}
 
-		var smoothType = Minecraft.getInstance().options.keySprint.isDown() || ThirdPerson.ENTITY_AGENT.isSprinting()    //
-						 ? SmoothTypeEnum.HARD    //
-						 : SmoothTypeEnum.EXP_LINEAR;
-		ThirdPerson.ENTITY_AGENT.setRotationSmoothType(smoothType);
-		return 0.1D;
-	};
-	Supplier<Double> SWIMMING               = () -> {
-		ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.IMPULSE_DIRECTION);
-		ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.LINEAR);
-		return 0.01D;
-	};
-	Supplier<Double> AIMING                 = () -> {
-		ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.PREDICTED_TARGET_ENTITY);
-		ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.HARD);
-		return 0D;
-	};
-	Supplier<Double> FALL_FLYING            = () -> {
-		ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.CAMERA_ROTATION);
-		ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.HARD);
-		return 0D;
-	};
-	Supplier<Double> WITH_CAMERA_NOT_AIMING = () -> {
-		ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.CAMERA_ROTATION);
-		ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.LINEAR);
-		return 0D;
-	};
-	Supplier<Double> INTERACTING            = () -> {
-		ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.CAMERA_HIT_RESULT);
-		ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.LINEAR);
-		return 0D;
-	};
+		static boolean shouldRotateWithCameraWhenNotAiming () {
+			return ThirdPerson.getConfig().player_rotate_with_camera_when_not_aiming;
+		}
 
-	/**
-	 * 将通过反射调用此方法
-	 * <p>
-	 * {@link DecisionMap#of(Class)}
-	 */
-	@SuppressWarnings("unused")
-	static void build (@NotNull DecisionMap<Double> map) {
-		ThirdPerson.LOGGER.debug("Building Rotate Strategy");
-		map.addRule(0, 0, DEFAULT)    //
-		   .addRule(~0, rotate_interacting.mask(), INTERACTING)    //
-		   .addRule(~0, should_rotate_with_camera_when_not_aiming.mask(), WITH_CAMERA_NOT_AIMING)    //
-		   .addRule(~0, is_fall_flying.mask(), FALL_FLYING)    //
-		   .addRule(~0, is_swimming.mask(), SWIMMING)    //
-		   .addRule(~0, is_aiming.mask(), AIMING)    //
-		;
+		static boolean isRotateInteracting () {
+			return ThirdPerson.getConfig().auto_rotate_interacting && ThirdPerson.ENTITY_AGENT.isInteracting() && !(ThirdPerson.getConfig().do_not_rotate_when_eating && ThirdPerson.ENTITY_AGENT.isEating());
+		}
+	}
+
+	private static final class Do {
+		static double defaultOperation () {
+			var entity = ThirdPerson.ENTITY_AGENT.getRawCameraEntity();
+
+			var rotateTarget = ThirdPerson.getConfig().rotate_to_moving_direction && (!entity.isPassenger() || entity.getVehicle() instanceof LivingEntity)   //
+							   ? RotateTargetEnum.HORIZONTAL_IMPULSE_DIRECTION    //
+							   : RotateTargetEnum.DEFAULT;
+			ThirdPerson.ENTITY_AGENT.setRotateTarget(rotateTarget);
+
+			var smoothType = Minecraft.getInstance().options.keySprint.isDown() || ThirdPerson.ENTITY_AGENT.isSprinting()    //
+							 ? SmoothTypeEnum.HARD    //
+							 : SmoothTypeEnum.EXP_LINEAR;
+			ThirdPerson.ENTITY_AGENT.setRotationSmoothType(smoothType);
+			return 0.1D;
+		}
+
+		static double swimming () {
+			ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.IMPULSE_DIRECTION);
+			ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.LINEAR);
+			return 0.01D;
+		}
+
+		static double aiming () {
+			ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.PREDICTED_TARGET_ENTITY);
+			ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.HARD);
+			return 0D;
+		}
+
+		static double fallFlying () {
+			ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.CAMERA_ROTATION);
+			ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.HARD);
+			return 0D;
+		}
+
+		static double withCameraNotAiming () {
+			ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.CAMERA_ROTATION);
+			ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.LINEAR);
+			return 0D;
+		}
+
+		static double interacting () {
+			ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.CAMERA_HIT_RESULT);
+			ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.LINEAR);
+			return 0D;
+		}
+	}
+
+	public static DecisionMap<Double> build () {
+		var builder = DecisionMap.<Double>builder();
+		builder.factor("swimming", Factor::isSwimming);
+		builder.factor("aiming", Factor::isAiming);
+		builder.factor("fall_flying", Factor::isFallFlying);
+		builder.factor("rotate_with_camera_when_not_aiming", Factor::shouldRotateWithCameraWhenNotAiming);
+		builder.factor("rotate_interacting", Factor::isRotateInteracting);
+
+		builder.whenDefault(Do::defaultOperation);
+		builder.when("rotate_interacting", true, Do::interacting);
+		builder.when("rotate_with_camera_when_not_aiming", true, Do::withCameraNotAiming);
+		builder.when("fall_flying", true, Do::fallFlying);
+		builder.when("swimming", true, Do::swimming);
+		builder.when("aiming", true, Do::aiming);
+
+		return builder.build();
 	}
 }

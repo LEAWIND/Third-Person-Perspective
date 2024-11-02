@@ -21,6 +21,7 @@ public final class ThirdPersonConstants {
 	public static final double  CAMERA_PITCH_DEGREE_LIMIT     = 89.800;
 	public static final double  CAMERA_THROUGH_WALL_DETECTION = 0.180;
 	public static final double  ROTATE_CENTER_RADIUS          = 0.5;
+
 	/**
 	 * true: 相机距离为从相机平面到旋转中心的距离
 	 * <p>

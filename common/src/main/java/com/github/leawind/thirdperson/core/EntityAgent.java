@@ -12,7 +12,7 @@ import com.github.leawind.util.FiniteChecker;
 import com.github.leawind.util.ItemPredicateUtil;
 import com.github.leawind.util.annotation.VersionSensitive;
 import com.github.leawind.util.math.LMath;
-import com.github.leawind.util.math.decisionmap.api.DecisionMap;
+import com.github.leawind.util.math.decisionmap.DecisionMap;
 import com.github.leawind.util.math.smoothvalue.ExpSmoothDouble;
 import com.github.leawind.util.math.smoothvalue.ExpSmoothRotation;
 import com.github.leawind.util.math.vector.Vector2d;
@@ -45,20 +45,18 @@ public class EntityAgent {
 	private final ExpSmoothRotation smoothRotation = ExpSmoothRotation.createWithHalflife(0.5);
 	private final ExpSmoothDouble   smoothOpacity;
 
-	/**
-	 * @see RotateStrategy#build
-	 */
-	private final    DecisionMap<Double> rotateDecisionMap      = DecisionMap.of(RotateStrategy.class);
+	private final DecisionMap<Double> rotateDecisionMap = RotateStrategy.build();
+
 	/**
 	 * 在 clientTick 中更新
 	 */
-	public           double              vehicleTotalSizeCached = 1D;
-	private @NotNull RotateTargetEnum    rotateTarget           = RotateTargetEnum.DEFAULT;
-	private @NotNull SmoothTypeEnum      smoothRotationType     = SmoothTypeEnum.EXP_LINEAR;
+	public           double           vehicleTotalSizeCached = 1D;
+	private @NotNull RotateTargetEnum rotateTarget           = RotateTargetEnum.DEFAULT;
+	private @NotNull SmoothTypeEnum   smoothRotationType     = SmoothTypeEnum.EXP_LINEAR;
 	/**
 	 * 在上一个 client tick 中的 isAiming() 的值
 	 */
-	private          boolean             wasAiming              = false;
+	private          boolean          wasAiming              = false;
 
 	public EntityAgent (@NotNull Minecraft minecraft) {
 		this.minecraft = minecraft;
@@ -66,7 +64,7 @@ public class EntityAgent {
 		smoothOpacity = new ExpSmoothDouble();
 		smoothOpacity.set(1d);
 
-		ThirdPerson.LOGGER.debug(rotateDecisionMap.toString());
+		ThirdPerson.LOGGER.debug(rotateDecisionMap.toDescription());
 	}
 
 	/**
@@ -359,7 +357,7 @@ public class EntityAgent {
 	 * 根据配置、游泳、飞行、瞄准等状态判断。
 	 */
 	private void updateRotateStrategy () {
-		setSmoothRotationHalflife(rotateDecisionMap.remake());
+		setSmoothRotationHalflife(rotateDecisionMap.updateAll().make());
 		updateBodyRotation();
 	}
 
