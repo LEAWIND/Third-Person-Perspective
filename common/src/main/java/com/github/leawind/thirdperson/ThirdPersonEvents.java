@@ -63,18 +63,16 @@ public final class ThirdPersonEvents {
 			GameStatus.isPerspectiveInverted = !cameraEntity.isSpectator() && cameraEntity.isInWall();
 			// 如果正在使用的物品符合相关配置，就暂时切换到第一人称
 			if (cameraEntity instanceof LivingEntity livingEntity && livingEntity.isUsingItem()) {
-				if (ItemPredicateUtil.anyMatches(livingEntity.getUseItem(), config.getUseToFirstPersonItemPredicates(), ThirdPersonResources.itemPredicateManager.useToFirstPersonItemPredicates)) {
-					GameStatus.isPerspectiveInverted = true;
-				}
+				GameStatus.isPerspectiveInverted |= ItemPredicateUtil.anyMatches(livingEntity.getUseItem(), config.getUseToFirstPersonItemPredicates(), ThirdPersonResources.itemPredicateManager.useToFirstPersonItemPredicates);
 			}
 			// 如果位于狭窄空间内，暂时进入第一人称
 			ThirdPersonStatus.ticksSinceLeaveNarrowSpace = Math.min(ThirdPersonConstants.LEAVE_NARROW_SPACE_DELAY_TICKS, ThirdPersonStatus.ticksSinceLeaveNarrowSpace + 1);
-			if (config.temp_first_person_in_narrow_space) {
+			if (config.temp_first_person_in_narrow_space && !cameraEntity.isSpectator()) {
 				boolean isInNarrowSpace = calcIsInNarrowSpace(minecraft, cameraEntity);
 				if (isInNarrowSpace) {
 					ThirdPersonStatus.ticksSinceLeaveNarrowSpace = 0;
 				}
-				GameStatus.isPerspectiveInverted = ThirdPersonStatus.ticksSinceLeaveNarrowSpace < ThirdPersonConstants.LEAVE_NARROW_SPACE_DELAY_TICKS;
+				GameStatus.isPerspectiveInverted |= ThirdPersonStatus.ticksSinceLeaveNarrowSpace < ThirdPersonConstants.LEAVE_NARROW_SPACE_DELAY_TICKS;
 			}
 		}
 		ThirdPerson.ENTITY_AGENT.onClientTickStart();
