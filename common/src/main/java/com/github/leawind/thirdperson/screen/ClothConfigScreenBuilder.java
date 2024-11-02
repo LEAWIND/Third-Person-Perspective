@@ -128,8 +128,8 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 			if (getAvailableBuidlers().size() > 1) {
 				CATEGORY_OTHER.addEntry(entryBuilder.startDropdownMenu(ConfigManager.getText("option.config_screen_api"), config.config_screen_api, v -> config.config_screen_api = v).setSelections(getAvailableBuidlers().keySet()).build());
 			}
-			CATEGORY_OTHER.addEntry(booleanEntry("camera_distance_mode", defaults.camera_distance_mode.bool(), config.camera_distance_mode.bool(), v -> config.camera_distance_mode = v ? AbstractConfig.CameraDistanceMode.PLANE: AbstractConfig.CameraDistanceMode.STRAIGHT, entryBuilder) //
-																																																																							 .setYesNoTextSupplier(AbstractConfig.CameraDistanceMode::formatter).build());
+			CATEGORY_OTHER.addEntry(booleanEntry("camera_distance_mode", defaults.camera_distance_mode.bool(), config.camera_distance_mode.bool(), v -> config.camera_distance_mode = AbstractConfig.CameraDistanceMode.of(v), entryBuilder) //
+																																																											 .setYesNoTextSupplier(AbstractConfig.CameraDistanceMode::formatter).build());
 			CATEGORY_OTHER.addEntry(buildDoubleEntry("rotate_center_height_offset", -0.5, 0.5, defaults.rotate_center_height_offset, config.rotate_center_height_offset, v -> config.rotate_center_height_offset = v, entryBuilder));
 			CATEGORY_OTHER.addEntry(buildBooleanEntry("enable_target_entity_predict", defaults.enable_target_entity_predict, config.enable_target_entity_predict, v -> config.enable_target_entity_predict = v, entryBuilder));
 			CATEGORY_OTHER.addEntry(buildBooleanEntry("skip_vanilla_second_person_camera", defaults.skip_vanilla_second_person_camera, config.skip_vanilla_second_person_camera, v -> config.skip_vanilla_second_person_camera = v, entryBuilder));

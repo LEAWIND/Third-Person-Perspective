@@ -92,13 +92,19 @@ public abstract class AbstractConfig {
 	}
 
 	public enum CameraDistanceMode {
-		PLANE(true),
-		STRAIGHT(false);
+		PLANE(true, "option.camera_distance_mode.plane"),
+		STRAIGHT(false, "option.camera_distance_mode.straight");
 
 		final boolean bool;
+		final String  key;
 
-		CameraDistanceMode (boolean bool) {
+		CameraDistanceMode (boolean bool, String key) {
 			this.bool = bool;
+			this.key  = key;
+		}
+
+		public static CameraDistanceMode of (boolean b) {
+			return b ? PLANE: STRAIGHT;
 		}
 
 		public boolean bool () {
@@ -106,7 +112,11 @@ public abstract class AbstractConfig {
 		}
 
 		public static Component formatter (boolean v) {
-			return v ? ConfigManager.getText("option.camera_distance_mode.plane"): ConfigManager.getText("option.camera_distance_mode.straight");
+			return ConfigManager.getText(of(v).key);
+		}
+
+		public static Component formatter (CameraDistanceMode value) {
+			return ConfigManager.getText(value.key);
 		}
 	}
 }

@@ -138,7 +138,7 @@ public class YaclConfigScreenBuilder extends ConfigScreenBuilder {
 														  .option(option("camera_distance_mode", defaults.camera_distance_mode, () -> config.camera_distance_mode, v -> config.camera_distance_mode = v) //
 																																																		 .controller(opt -> EnumControllerBuilder.create(opt) //
 																																																												 .enumClass(AbstractConfig.CameraDistanceMode.class) //
-																																																												 .formatValue(v -> AbstractConfig.CameraDistanceMode.formatter(v.bool()))) //
+																																																												 .formatValue(AbstractConfig.CameraDistanceMode::formatter)) //
 																																																		 .build()) //
 														  .option(option("rotate_center_height_offset", defaults.rotate_center_height_offset, -0.5, 0.5, 0.02, () -> config.rotate_center_height_offset, v -> config.rotate_center_height_offset = v).build()) //
 														  .option(booleanOption("enable_target_entity_predict", defaults.enable_target_entity_predict, () -> config.enable_target_entity_predict, v -> config.enable_target_entity_predict = v).build()) //
