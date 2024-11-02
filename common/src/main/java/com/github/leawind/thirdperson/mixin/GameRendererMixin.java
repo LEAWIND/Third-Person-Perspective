@@ -83,7 +83,7 @@ public abstract class GameRendererMixin {
 	}
 
 	@ModifyVariable(method="getFov", at=@At(value="STORE"))
-	private double getFov (double fov) {
+	private double modifyFov (double fov) {
 		if (ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson()) {
 			return fov / ThirdPerson.CAMERA_AGENT.getSmoothFovDivisor();
 		}

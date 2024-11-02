@@ -15,7 +15,7 @@ public class LocalPlayerMixin {
 	@Shadow protected int sprintTriggerTime;
 
 	@Inject(method="aiStep()V", at=@At("HEAD"))
-	private void preAiStep (CallbackInfo ci) {
+	private void resetSprintTriggerTime (CallbackInfo ci) {
 		var config = ThirdPerson.getConfig();
 		if (config.is_mod_enabled && !Minecraft.getInstance().options.getCameraType().isFirstPerson() && !config.allow_double_tap_sprint) {
 			sprintTriggerTime = 0;

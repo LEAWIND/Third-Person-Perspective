@@ -43,7 +43,7 @@ public class CameraTypeMixin {
 	 * 根据配置决定是否跳过原版的“盯着镜头”视角，（有人称其为第二人称视角）
 	 */
 	@Inject(method="cycle", at=@At("RETURN"), cancellable=true)
-	private void cycle (CallbackInfoReturnable<CameraType> ci) {
+	private void modifyCycle (CallbackInfoReturnable<CameraType> ci) {
 		var config = ThirdPerson.getConfig();
 		if (config.is_mod_enabled && config.skip_vanilla_second_person_camera) {
 			var that = (CameraType)(Object)this;

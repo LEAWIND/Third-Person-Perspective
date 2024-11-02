@@ -20,7 +20,7 @@ public class LevelRendererMixin {
 	 * 允许取消渲染实体
 	 */
 	@Inject(method="renderEntity", at=@At("HEAD"), cancellable=true)
-	private void preRenderEntity (Entity entity, double x, double y, double z, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, CallbackInfo ci) {
+	private void cancelRenderEntity (Entity entity, double x, double y, double z, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, CallbackInfo ci) {
 		if (GameEvents.renderEntity != null) {
 			var event = new RenderEntityEvent(entity, partialTick);
 			if (!GameEvents.renderEntity.apply(event)) {
