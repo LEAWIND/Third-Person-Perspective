@@ -127,6 +127,10 @@ public class EntityAgent {
 		return smoothOpacity.get(partialTick).floatValue();
 	}
 
+	public ExpSmoothRotation getSmoothRotation () {
+		return smoothRotation;
+	}
+
 	/**
 	 * @param period 相邻两次 render tick 的时间差，单位：s
 	 */

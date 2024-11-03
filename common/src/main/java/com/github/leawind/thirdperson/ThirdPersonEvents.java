@@ -135,11 +135,22 @@ public final class ThirdPersonEvents {
 		double now    = System.currentTimeMillis() / 1000D;
 		double period = now - ThirdPersonStatus.lastRenderTickTimeStamp;
 		ThirdPersonStatus.lastRenderTickTimeStamp = now;
+
 		final boolean isRenderingInThirdPerson = ThirdPersonStatus.isRenderingInThirdPerson();
+
 		if (isRenderingInThirdPerson != ThirdPersonStatus.wasRenderInThirdPersonLastRenderTick) {
 			if (isRenderingInThirdPerson) {
 				// 进入第三人称
+
+				// 重置状态
 				resetPlayer();
+				// 将玩家朝向设为与当前相机一致
+				if (ThirdPersonStatus.isRenderingInThirdPerson()) {
+					var cameraRot = ThirdPerson.CAMERA_AGENT.getRawRotation();
+					ThirdPerson.ENTITY_AGENT.setRawRotation(cameraRot);
+					ThirdPerson.ENTITY_AGENT.getSmoothRotation().set(cameraRot);
+					ThirdPerson.CAMERA_AGENT.setRotation(cameraRot);
+				}
 			} else {
 				// 退出第三人称
 				ThirdPerson.ENTITY_AGENT.setRawRotation(ThirdPerson.CAMERA_AGENT.getRotation());
@@ -150,6 +161,7 @@ public final class ThirdPersonEvents {
 
 			ThirdPersonStatus.wasRenderInThirdPersonLastRenderTick = isRenderingInThirdPerson;
 		}
+
 		if (isRenderingInThirdPerson) {
 			boolean shouldCameraTurnWithEntity = ThirdPersonStatus.shouldCameraTurnWithEntity();
 			if (shouldCameraTurnWithEntity && !ThirdPersonStatus.wasShouldCameraTurnWithEntity) {
@@ -160,6 +172,7 @@ public final class ThirdPersonEvents {
 			}
 			ThirdPersonStatus.wasShouldCameraTurnWithEntity = shouldCameraTurnWithEntity;
 		}
+
 		if (ThirdPerson.isAvailable() && ThirdPerson.ENTITY_AGENT.isCameraEntityExist()) {
 			ThirdPerson.ENTITY_AGENT.onRenderTickStart(now, period, event.partialTick);
 			ThirdPerson.CAMERA_AGENT.onRenderTickStart(now, period, event.partialTick);

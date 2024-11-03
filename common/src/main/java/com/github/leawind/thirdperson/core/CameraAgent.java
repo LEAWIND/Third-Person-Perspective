@@ -261,7 +261,17 @@ public class CameraAgent {
 	 * 第三人称相机朝向
 	 */
 	public @NotNull Vector2d getRotation () {
-		return Vector2d.of(-relativeRotation.x(), relativeRotation.y() + 180);
+		return Vector2d.of(-relativeRotation.x(), (relativeRotation.y() % 360 - 180));
+	}
+
+	public void setRotation (Vector2d rot) {
+		relativeRotation.x(-rot.x());
+		relativeRotation.y(rot.y() % 360 - 180);
+	}
+
+	public Vector2d getRawRotation () {
+		var camera = ThirdPerson.CAMERA_AGENT.getRawCamera();
+		return new Vector2d(camera.getXRot(), camera.getYRot());
 	}
 
 	/**
