@@ -91,7 +91,7 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 		// Category: Camera Offset
 		final var CATEGORY_CAMERA_OFFSET = builder.getOrCreateCategory(ConfigManager.getText("option_category.camera_offset"));
 		{
-			CATEGORY_CAMERA_OFFSET.addEntry(buildDoubleEntry("aiming_fov_divisor", 1D, 1.25D, defaults.aiming_fov_divisor, config.aiming_fov_divisor, v -> config.aiming_fov_divisor = v, entryBuilder));
+			CATEGORY_CAMERA_OFFSET.addEntry(buildDoubleEntry("aiming_fov_divisor", 1D, 2D, defaults.aiming_fov_divisor, config.aiming_fov_divisor, v -> config.aiming_fov_divisor = v, entryBuilder));
 
 			// SubCategory: Normal Mode
 			final var SubCategory_Normal_Mode = buildSubCategory("normal_mode", entryBuilder);

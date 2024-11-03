@@ -5,6 +5,7 @@ import com.github.leawind.api.base.GameEvents;
 import com.github.leawind.api.client.event.RenderTickStartEvent;
 import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.thirdperson.ThirdPersonStatus;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.Camera;
@@ -23,7 +24,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Predicate;
@@ -82,10 +82,10 @@ public abstract class GameRendererMixin {
 		return original.call(receiver, pickFrom, pickTo, aabb, predicate, pickRangeSqr);
 	}
 
-	@ModifyVariable(method="getFov", at=@At(value="STORE"))
+	@ModifyReturnValue(method="getFov", at=@At(value="RETURN", ordinal=1))
 	private double modifyFov (double fov) {
-		if (ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson()) {
-			return fov / ThirdPerson.CAMERA_AGENT.getSmoothFovDivisor();
+		if (!((GameRenderer)(Object)this).isPanoramicMode() && ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson()) {
+			fov /= ThirdPerson.CAMERA_AGENT.getSmoothFovDivisor();
 		}
 		return fov;
 	}
