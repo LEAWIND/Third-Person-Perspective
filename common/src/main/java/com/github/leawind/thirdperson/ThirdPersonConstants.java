@@ -18,16 +18,16 @@ public final class ThirdPersonConstants {
 	public static final File   CONFIG_FILE            = Minecraft.getInstance().gameDirectory.toPath().resolve("config/" + MOD_ID + ".json").toFile();
 	public static final long   CONFIG_LAZY_SAVE_DELAY = 60000L;
 
-	public static final double  CAMERA_PITCH_DEGREE_LIMIT     = 89.800;
-	public static final double  CAMERA_THROUGH_WALL_DETECTION = 0.180;
-	public static final double  ROTATE_CENTER_RADIUS          = 0.5;
+	public static final double CAMERA_PITCH_DEGREE_LIMIT     = 89.800;
+	public static final double CAMERA_THROUGH_WALL_DETECTION = 0.180;
+	public static final double ROTATE_CENTER_RADIUS          = 0.5;
 
 	/**
 	 * true: 相机距离为从相机平面到旋转中心的距离
 	 * <p>
 	 * false: 相机距离为从相机位置到旋转中心的距离
 	 */
-	public static final boolean USE_CAMERA_PLAIN_DISTANCE     = true;
+	public static final boolean USE_CAMERA_PLAIN_DISTANCE = true;
 
 	public static final double OPACITY_HALFLIFE               = 0.0625;
 	/**

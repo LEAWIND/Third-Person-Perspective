@@ -11,23 +11,23 @@ import java.util.Objects;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-public class DecisionMapBuilder <T> {
-	private final String REVERSE_MARKER = "!~";
+public class DecisionMapBuilder<T> {
+	private final String      REVERSE_MARKER  = "!~";
 	private final Supplier<T> EMPTY_OPERATION = () -> null;
 
-	private final List<@Nullable DecisionFactor> factors = new ArrayList<>(DecisionMap.MAX_FACTOR_COUNT);
-	private final List<@Nullable Rule<T>> rules = new LinkedList<>();
-	private Supplier<T> defaultOperation = EMPTY_OPERATION;
+	private final List<@Nullable DecisionFactor> factors          = new ArrayList<>(DecisionMap.MAX_FACTOR_COUNT);
+	private final List<@Nullable Rule<T>>        rules            = new LinkedList<>();
+	private       Supplier<T>                    defaultOperation = EMPTY_OPERATION;
 
 	private int lastFactorIndex = -1;
 
-	DecisionMapBuilder() {
+	DecisionMapBuilder () {
 	}
 
 	/**
 	 * 清空所有规则并重置默认值
 	 */
-	public DecisionMapBuilder<T> clearRules() {
+	public DecisionMapBuilder<T> clearRules () {
 		rules.clear();
 		defaultOperation = EMPTY_OPERATION;
 		return this;
@@ -39,10 +39,9 @@ public class DecisionMapBuilder <T> {
 	 * @param name 名称
 	 * @throws IllegalArgumentException 不存在给定名称的因素
 	 */
-	public DecisionFactor factor(String name) {
-		for (var factor : factors) {
-			if (factor!=null && factor.getName()
-				.equals(name)) {
+	public DecisionFactor factor (String name) {
+		for (var factor: factors) {
+			if (factor != null && factor.getName().equals(name)) {
 				return factor;
 			}
 		}
@@ -55,7 +54,7 @@ public class DecisionMapBuilder <T> {
 	 * @param name     名称
 	 * @param supplier 计算因素的函数
 	 */
-	public DecisionMapBuilder<T> factor(String name, BooleanSupplier supplier) {
+	public DecisionMapBuilder<T> factor (String name, BooleanSupplier supplier) {
 		return factor(lastFactorIndex + 1, name, supplier);
 	}
 
@@ -70,20 +69,19 @@ public class DecisionMapBuilder <T> {
 	 * @throws IllegalArgumentException  索引或名称重复，或名称不合法
 	 * @throws IllegalStateException     因素的数量已达到上限
 	 */
-	public DecisionMapBuilder<T> factor(int index, String name, BooleanSupplier supplier) {
+	public DecisionMapBuilder<T> factor (int index, String name, BooleanSupplier supplier) {
 		if (index < 0 || index >= DecisionMap.MAX_FACTOR_COUNT) {
 			throw new IndexOutOfBoundsException(String.format("Index %d out of bounds [%d, %d)", index, 0, DecisionMap.MAX_FACTOR_COUNT));
 		}
-		if (REVERSE_MARKER.indexOf(name.charAt(0))!=-1) {
+		if (REVERSE_MARKER.indexOf(name.charAt(0)) != -1) {
 			throw new IllegalArgumentException(String.format("Invalid factor name: %s", name));
 		}
-		for (var factor : factors) {
-			if (factor!=null) {
-				if (factor.index==index) {
+		for (var factor: factors) {
+			if (factor != null) {
+				if (factor.index == index) {
 					throw new IllegalArgumentException("Duplicated factor index: " + index);
 				}
-				if (factor.getName()
-					.equals(name)) {
+				if (factor.getName().equals(name)) {
 					throw new IllegalArgumentException("Duplicated factor name: " + name);
 				}
 			}
@@ -98,7 +96,7 @@ public class DecisionMapBuilder <T> {
 		return this;
 	}
 
-	public DecisionMapBuilder<T> clearFactors() {
+	public DecisionMapBuilder<T> clearFactors () {
 		factors.clear();
 		return this;
 	}
@@ -108,7 +106,7 @@ public class DecisionMapBuilder <T> {
 	 *
 	 * @param operation null 表示什么也不做
 	 */
-	public DecisionMapBuilder<T> whenDefault(@Nullable Supplier<T> operation) {
+	public DecisionMapBuilder<T> whenDefault (@Nullable Supplier<T> operation) {
 		defaultOperation = Objects.requireNonNullElse(operation, EMPTY_OPERATION);
 		return this;
 	}
@@ -118,7 +116,7 @@ public class DecisionMapBuilder <T> {
 	 *
 	 * @see DecisionMapBuilder#when(String, boolean, Supplier)
 	 */
-	public DecisionMapBuilder<T> when(String name, Supplier<T> operation) {
+	public DecisionMapBuilder<T> when (String name, Supplier<T> operation) {
 		return when(name, true, operation);
 	}
 
@@ -130,37 +128,37 @@ public class DecisionMapBuilder <T> {
 	 * @param operation 操作
 	 * @see DecisionMapBuilder#when(int, int, Supplier)
 	 */
-	public DecisionMapBuilder<T> when(String name, boolean value, Supplier<T> operation) {
+	public DecisionMapBuilder<T> when (String name, boolean value, Supplier<T> operation) {
 		var index = factor(name).index;
-		return when(1 << index, (value ? 1:0) << index, operation);
+		return when(1 << index, (value ? 1: 0) << index, operation);
 	}
 
 	/**
 	 * 当给定的名称列表对应的因素全都为给定值时
 	 */
-	public DecisionMapBuilder<T> when(List<String> names, boolean value, Supplier<T> operation) {
+	public DecisionMapBuilder<T> when (List<String> names, boolean value, Supplier<T> operation) {
 		int mask = 0;
-		for (var name : names) {
+		for (var name: names) {
 			mask |= factor(name).getMask();
 		}
-		int flags = value ? mask & ~0:0;
+		int flags = value ? mask & ~0: 0;
 		when(mask, flags, operation);
 		return this;
 	}
 
-	public DecisionMapBuilder<T> when(List<String> expressions, Supplier<T> operation) {
-		int mask = 0;
+	public DecisionMapBuilder<T> when (List<String> expressions, Supplier<T> operation) {
+		int mask  = 0;
 		int flags = 0;
-		for (var expr : expressions) {
-			String name = expr;
+		for (var expr: expressions) {
+			String  name  = expr;
 			boolean value = true;
-			if (REVERSE_MARKER.indexOf(expr.charAt(0))!=-1) {
-				name = expr.substring(1);
+			if (REVERSE_MARKER.indexOf(expr.charAt(0)) != -1) {
+				name  = expr.substring(1);
 				value = false;
 			}
 			var factorMask = factor(name).getMask();
 			mask |= factorMask;
-			flags |= value ? factorMask:0;
+			flags |= value ? factorMask: 0;
 		}
 		when(mask, flags, operation);
 		return this;
@@ -173,8 +171,8 @@ public class DecisionMapBuilder <T> {
 	 * @param value     当索引等于何值时
 	 * @param operation 操作
 	 */
-	public DecisionMapBuilder<T> when(int index, boolean value, Supplier<T> operation) {
-		return when(1 << index, (value ? 1:0) << index, operation);
+	public DecisionMapBuilder<T> when (int index, boolean value, Supplier<T> operation) {
+		return when(1 << index, (value ? 1: 0) << index, operation);
 	}
 
 	/**
@@ -183,7 +181,7 @@ public class DecisionMapBuilder <T> {
 	 * @param flags     所有因素的值
 	 * @param operation 操作
 	 */
-	public DecisionMapBuilder<T> whenAll(int flags, Supplier<T> operation) {
+	public DecisionMapBuilder<T> whenAll (int flags, Supplier<T> operation) {
 		return when(~0, flags, operation);
 	}
 
@@ -196,7 +194,7 @@ public class DecisionMapBuilder <T> {
 	 *                  注意：可能被之后定义的规则覆盖。
 	 * @param operation 当满足上述因素时执行的操作
 	 */
-	public DecisionMapBuilder<T> when(int mask, int flags, Supplier<T> operation) {
+	public DecisionMapBuilder<T> when (int mask, int flags, Supplier<T> operation) {
 		rules.add(new Rule<>(mask, flags, operation));
 		return this;
 	}
@@ -208,9 +206,9 @@ public class DecisionMapBuilder <T> {
 	 *
 	 * @throws IllegalStateException 因素列表中存在null。因素的索引必须从0开始，必须连续
 	 */
-	public DecisionMap<T> build() {
+	public DecisionMap<T> build () {
 		for (int i = 0; i < factors.size(); i++) {
-			if (factors.get(i)==null) {
+			if (factors.get(i) == null) {
 				throw new IllegalStateException(String.format("Factor[%d] has not been specified", i));
 			}
 		}
@@ -218,13 +216,13 @@ public class DecisionMapBuilder <T> {
 		var strategyMap = new HashMap<Integer, Supplier<T>>();
 		// 有效位的掩码
 		// 例如：若共有3个因素，则 filter = 0b111
-		int filter = (int) ((1L << factors.size()) - 1);
+		int filter = (int)((1L << factors.size()) - 1);
 
-		for (var rule : rules) {
-			if (rule!=null) {
+		for (var rule: rules) {
+			if (rule != null) {
 				rule.filter(filter);
 				for (int flags = 0; flags <= filter; flags++) {
-					if ((rule.mask & flags)==rule.flags) {
+					if ((rule.mask & flags) == rule.flags) {
 						strategyMap.put(flags, rule.operation);
 					}
 				}
@@ -233,18 +231,18 @@ public class DecisionMapBuilder <T> {
 		return new DecisionMap<>(factors, strategyMap, defaultOperation);
 	}
 
-	private static class Rule <T> {
+	private static class Rule<T> {
 		int mask;
 		int flags;
 		final Supplier<T> operation;
 
-		Rule(int mask, int flags, Supplier<T> operation) {
-			this.mask = mask;
-			this.flags = flags;
+		Rule (int mask, int flags, Supplier<T> operation) {
+			this.mask      = mask;
+			this.flags     = flags;
 			this.operation = operation;
 		}
 
-		void filter(int filter) {
+		void filter (int filter) {
 			mask &= filter;
 			flags &= mask;
 		}

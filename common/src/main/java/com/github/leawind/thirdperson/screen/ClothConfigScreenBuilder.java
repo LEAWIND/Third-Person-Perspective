@@ -151,7 +151,7 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 	}
 
 	private BooleanListEntry buildBooleanEntry (String name, boolean defaultValue, boolean currentValue, Consumer<Boolean> setter, ConfigEntryBuilder entryBuilder) {
-		return entryBuilder.startBooleanToggle(ConfigManager.getText("option." + name), currentValue).setTooltip(ConfigManager.getText("option." + name + ".desc")).setDefaultValue(defaultValue).setSaveConsumer(setter).build();
+		return booleanEntry(name, defaultValue, currentValue, setter, entryBuilder).build();
 	}
 
 	private SubCategoryBuilder buildSubCategory (String name, ConfigEntryBuilder entryBuilder) {
