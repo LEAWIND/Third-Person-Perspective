@@ -51,7 +51,7 @@ public class EntityAgent {
 	 * 在 clientTick 中更新
 	 */
 	public           double           vehicleTotalSizeCached = 1D;
-	private @NotNull RotateTargetEnum rotateTarget           = RotateTargetEnum.DEFAULT;
+	private @NotNull RotateTargetEnum rotateTarget           = RotateTargetEnum.STAY;
 	private @NotNull SmoothTypeEnum   smoothRotationType     = SmoothTypeEnum.EXP_LINEAR;
 	/**
 	 * 在上一个 client tick 中的 isAiming() 的值
@@ -157,6 +157,7 @@ public class EntityAgent {
 		ThirdPerson.getConfig().getCameraOffsetScheme().setAiming(wasAiming());
 
 		updateRotateStrategy();
+		updateBodyRotation();
 		updateSmoothOpacity(ThirdPersonConstants.VANILLA_CLIENT_TICK_TIME, 1);
 		smoothRotation.update(ThirdPersonConstants.VANILLA_CLIENT_TICK_TIME);
 
@@ -358,7 +359,21 @@ public class EntityAgent {
 	 */
 	private void updateRotateStrategy () {
 		setSmoothRotationHalflife(rotateDecisionMap.updateAll().make());
-		updateBodyRotation();
+		//		{
+		//			if (isAiming()) {
+		//				setRotateTarget(RotateTargetEnum.PREDICTED_TARGET_ENTITY);
+		//				setRotationSmoothType(SmoothTypeEnum.HARD);
+		//				setSmoothRotationHalflife(0);
+		//			} else if (getRawCameraEntity().isSwimming()) {
+		//				setRotateTarget(RotateTargetEnum.IMPULSE_DIRECTION);
+		//				setRotationSmoothType(SmoothTypeEnum.LINEAR);
+		//				setSmoothRotationHalflife(0.01D);
+		//			} else if (isFallFlying()) {
+		//				setRotateTarget(RotateTargetEnum.CAMERA_ROTATION);
+		//				setRotationSmoothType(SmoothTypeEnum.HARD);
+		//				setSmoothRotationHalflife(0);
+		//			}
+		//		}
 	}
 
 	/**

@@ -7,7 +7,6 @@ import com.github.leawind.thirdperson.ThirdPersonStatus;
 import com.github.leawind.thirdperson.core.CameraAgent;
 import com.github.leawind.util.math.LMath;
 import com.github.leawind.util.math.vector.Vector2d;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.HitResult.Type;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,18 +19,18 @@ public enum RotateTargetEnum {
 	/**
 	 * 保持当前朝向，不旋转
 	 */
-	NONE(partialTick -> ThirdPerson.ENTITY_AGENT.getRawRotation(1)),
+	STAY(partialTick -> ThirdPerson.ENTITY_AGENT.getRawRotation(1)),
 	INTEREST_POINT(partialTick -> {
 		var point = ThirdPerson.ENTITY_AGENT.getInterestPoint();
 		if (point == null) {
-			return NONE.getRotation(partialTick);
+			return STAY.getRotation(partialTick);
 		}
 
 		var player = ThirdPerson.ENTITY_AGENT.getRawPlayerEntity();
 
 		var toInterestedPoint = point.subtract(player.getEyePosition(partialTick));
 		if (toInterestedPoint.length() < 1e-5) {
-			return NONE.getRotation(partialTick);
+			return STAY.getRotation(partialTick);
 		}
 
 		var playerRot = ThirdPerson.ENTITY_AGENT.getRawRotation(1);
@@ -51,13 +50,6 @@ public enum RotateTargetEnum {
 
 		playerRot.x(rot.x());
 		return playerRot;
-	}),
-	DEFAULT(partialTick -> {
-		var entity = ThirdPerson.ENTITY_AGENT.getRawCameraEntity();
-		if (!ThirdPerson.getConfig().player_rotate_to_interest_point || entity.getControlledVehicle() instanceof LivingEntity) {
-			return NONE.getRotation(partialTick);
-		}
-		return INTEREST_POINT.getRotation(partialTick);
 	}),
 	/**
 	 * 与相机朝向相同
@@ -119,7 +111,7 @@ public enum RotateTargetEnum {
 	 * 当没有使用键盘控制时保持当前朝向
 	 */
 	IMPULSE_DIRECTION(partialTick -> ThirdPersonStatus.impulseHorizon.length() < 1e-5    //
-									 ? DEFAULT.getRotation(partialTick)    //
+									 ? STAY.getRotation(partialTick)    //
 									 : LMath.rotationDegreeFromDirection(ThirdPersonStatus.impulse)),
 	/**
 	 * 使用键盘控制的移动方向（仅水平）
@@ -128,7 +120,7 @@ public enum RotateTargetEnum {
 	 */
 	HORIZONTAL_IMPULSE_DIRECTION(partialTick -> {
 		if (ThirdPersonStatus.impulseHorizon.length() < 1e-5) {
-			return DEFAULT.getRotation(partialTick);
+			return STAY.getRotation(partialTick);
 		}
 		double absoluteYRotDegree = LMath.rotationDegreeFromDirection(ThirdPersonStatus.impulseHorizon);
 		return Vector2d.of(0.1, absoluteYRotDegree);

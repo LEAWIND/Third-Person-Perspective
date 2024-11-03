@@ -20,6 +20,10 @@ public class DecisionFactor {
 		this.supplier = supplier;
 	}
 
+	int getMask () {
+		return 1 << index;
+	}
+
 	public String getName () {
 		return name;
 	}
