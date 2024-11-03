@@ -71,6 +71,7 @@ public abstract class AbstractConfig {
 	@Expose public double             rotate_center_height_offset             = 0.3;
 	@Expose public boolean            enable_target_entity_predict            = true;
 	@Expose public boolean            skip_vanilla_second_person_camera       = true;
+	@Expose public boolean            disable_third_person_bob_view           = false;
 	@Expose public boolean            allow_double_tap_sprint                 = false;
 	@Expose public boolean            lock_camera_pitch_angle                 = false;
 	@Expose public boolean            use_camera_pick_in_creative             = false;
@@ -87,7 +88,7 @@ public abstract class AbstractConfig {
 		NONE("none"),
 		;
 		public static final String KEY = "option.normal_rotate_mode";
-		private final String key;
+		private final       String key;
 
 		PlayerRotateMode (String key) {
 			this.key = key;
@@ -106,9 +107,9 @@ public abstract class AbstractConfig {
 		PLANE(true, "plane"),
 		STRAIGHT(false, "straight");
 
-		public static final String KEY = "option.camera_distance_mode";
-		private final boolean bool;
-		private final String  key;
+		public static final String  KEY = "option.camera_distance_mode";
+		private final       boolean bool;
+		private final       String  key;
 
 		CameraDistanceMode (boolean bool, String key) {
 			this.bool = bool;

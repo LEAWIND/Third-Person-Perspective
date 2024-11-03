@@ -8,6 +8,7 @@ import com.github.leawind.thirdperson.ThirdPersonStatus;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -97,6 +98,16 @@ public abstract class GameRendererMixin {
 	private void preRender (float partialTick, long nanoTime, boolean doRenderLevel, CallbackInfo ci) {
 		if (GameEvents.renderTickStart != null) {
 			GameEvents.renderTickStart.accept(new RenderTickStartEvent(partialTick));
+		}
+	}
+
+	/**
+	 * 禁用第三人称视角摇晃
+	 */
+	@Inject(method="bobView", at=@At("HEAD"), cancellable=true)
+	private void cancelBobView (PoseStack poseStack, float partialTick, CallbackInfo ci) {
+		if (ThirdPerson.isAvailable() && ThirdPersonStatus.isRenderingInThirdPerson() && ThirdPerson.getConfig().disable_third_person_bob_view) {
+			ci.cancel();
 		}
 	}
 }

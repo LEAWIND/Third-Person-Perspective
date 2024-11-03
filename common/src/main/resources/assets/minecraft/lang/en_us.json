@@ -113,6 +113,8 @@
 	"leawind_third_person.option.enable_target_entity_predict.desc": "When aiming, predict the target entity you want to shoot, calculate the player's rotation based on this, for better aiming at the target.",
 	"leawind_third_person.option.skip_vanilla_second_person_camera": "Skip vanilla second person",
 	"leawind_third_person.option.skip_vanilla_second_person_camera.desc": "Only first-person and third-person perspectives are retained",
+	"leawind_third_person.option.disable_third_person_bob_view": "Disable third person view bobbing",
+	"leawind_third_person.option.disable_third_person_bob_view.desc": "In third person, disable view bobbing",
 	"leawind_third_person.option.allow_double_tap_sprint": "Allow double-tap sprinting",
 	"leawind_third_person.option.allow_double_tap_sprint.desc": "In third person mode, allow the vanilla double-tap sprinting feature",
 	"leawind_third_person.option.auto_rotate_interacting": "Automatically rotate when interacting",

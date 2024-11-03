@@ -44,10 +44,10 @@ public class YaclConfigScreenBuilder extends ConfigScreenBuilder {
 														  .option(booleanOption("temp_first_person_in_narrow_space", defaults.temp_first_person_in_narrow_space, () -> config.temp_first_person_in_narrow_space, v -> config.temp_first_person_in_narrow_space = v).build()) //
 														  .group(group("player_rotation") //
 																						  .option(option("normal_rotate_mode", defaults.normal_rotate_mode, () -> config.normal_rotate_mode, v -> config.normal_rotate_mode = v) //
-																																																										 .controller(opt -> EnumControllerBuilder.create(opt) //
-																																																																				 .enumClass(AbstractConfig.PlayerRotateMode.class) //
-																																																																				 .formatValue(AbstractConfig.PlayerRotateMode::formatter)) //
-																																																										 .build()) //
+																																																								 .controller(opt -> EnumControllerBuilder.create(opt) //
+																																																																		 .enumClass(AbstractConfig.PlayerRotateMode.class) //
+																																																																		 .formatValue(AbstractConfig.PlayerRotateMode::formatter)) //
+																																																								 .build()) //
 																						  .option(booleanOption("auto_rotate_interacting", defaults.auto_rotate_interacting, () -> config.auto_rotate_interacting, v -> config.auto_rotate_interacting = v).build()) //
 																						  .option(booleanOption("do_not_rotate_when_eating", defaults.do_not_rotate_when_eating, () -> config.do_not_rotate_when_eating, v -> config.do_not_rotate_when_eating = v).build()) //
 																						  .option(booleanOption("auto_turn_body_drawing_a_bow", defaults.auto_turn_body_drawing_a_bow, () -> config.auto_turn_body_drawing_a_bow, v -> config.auto_turn_body_drawing_a_bow = v).build()) //
@@ -145,7 +145,8 @@ public class YaclConfigScreenBuilder extends ConfigScreenBuilder {
 														  .option(option("rotate_center_height_offset", defaults.rotate_center_height_offset, -0.5, 0.5, 0.02, () -> config.rotate_center_height_offset, v -> config.rotate_center_height_offset = v).build()) //
 														  .option(booleanOption("enable_target_entity_predict", defaults.enable_target_entity_predict, () -> config.enable_target_entity_predict, v -> config.enable_target_entity_predict = v).build()) //
 														  .option(booleanOption("skip_vanilla_second_person_camera", defaults.skip_vanilla_second_person_camera, () -> config.skip_vanilla_second_person_camera, v -> config.skip_vanilla_second_person_camera = v).build()) //
-														  .option(booleanOption("allow_double_tap_sprint", defaults.allow_double_tap_sprint, () -> config.allow_double_tap_sprint, v -> config.allow_double_tap_sprint = v).build()) // <- This is the new line
+														  .option(booleanOption("disable_third_person_bob_view", defaults.disable_third_person_bob_view, () -> config.disable_third_person_bob_view, v -> config.disable_third_person_bob_view = v).build()) //
+														  .option(booleanOption("allow_double_tap_sprint", defaults.allow_double_tap_sprint, () -> config.allow_double_tap_sprint, v -> config.allow_double_tap_sprint = v).build()) //
 														  .option(booleanOption("lock_camera_pitch_angle", defaults.lock_camera_pitch_angle, () -> config.lock_camera_pitch_angle, v -> config.lock_camera_pitch_angle = v).build()) //
 														  .option(booleanOption("use_camera_pick_in_creative", defaults.use_camera_pick_in_creative, () -> config.use_camera_pick_in_creative, v -> config.use_camera_pick_in_creative = v).build()) //
 														  .option(option("camera_ray_trace_length", defaults.camera_ray_trace_length, 32D, 2048D, 1D, () -> config.camera_ray_trace_length, v -> config.camera_ray_trace_length = v).build()) //

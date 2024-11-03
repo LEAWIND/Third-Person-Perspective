@@ -113,6 +113,8 @@
 	"leawind_third_person.option.enable_target_entity_predict.desc": "瞄准时，自动预测想要射击的目标实体，据此计算玩家朝向，以便更好地瞄准目标。",
 	"leawind_third_person.option.skip_vanilla_second_person_camera": "跳过原版第二人称",
 	"leawind_third_person.option.skip_vanilla_second_person_camera.desc": "仅保留第一人称和第三人称视角",
+	"leawind_third_person.option.disable_third_person_bob_view": "禁用第三人称视角摇晃",
+	"leawind_third_person.option.disable_third_person_bob_view.desc": "第三人称下禁用视角摇晃",
 	"leawind_third_person.option.allow_double_tap_sprint": "允许双击疾跑",
 	"leawind_third_person.option.allow_double_tap_sprint.desc": "第三人称下允许原版的双击方向键疾跑功能",
 	"leawind_third_person.option.auto_rotate_interacting": "交互时自动转身",
