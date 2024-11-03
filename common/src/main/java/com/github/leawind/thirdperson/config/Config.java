@@ -39,6 +39,11 @@ public class Config extends AbstractConfig {
 	 * 在配置项发生变化时更新
 	 */
 	public void update () {
+		// 确保不存在非法值
+		if (normal_rotate_mode == null) {
+			normal_rotate_mode = DEFAULTS.normal_rotate_mode;
+		}
+
 		updateDistancesMonoList();
 		updateItemPredicates();
 	}

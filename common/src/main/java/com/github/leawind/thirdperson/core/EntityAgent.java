@@ -43,7 +43,9 @@ public class EntityAgent {
 	private final Minecraft minecraft;
 
 	private final ExpSmoothRotation smoothRotation = ExpSmoothRotation.createWithHalflife(0.5);
-	private final ExpSmoothDouble   smoothOpacity;
+	// private final ExpRotSmoothDouble smoothYBodyRotation = ExpRotSmoothDouble.createWithHalflife(360, 0.5);
+
+	private final ExpSmoothDouble smoothOpacity;
 
 	private final DecisionMap<Double> rotateDecisionMap = RotateStrategy.build();
 
@@ -51,7 +53,7 @@ public class EntityAgent {
 	 * 在 clientTick 中更新
 	 */
 	public           double           vehicleTotalSizeCached = 1D;
-	private @NotNull RotateTargetEnum rotateTarget           = RotateTargetEnum.STAY;
+	private @NotNull RotateTargetEnum rotateTarget           = RotateTargetEnum.NONE;
 	private @NotNull SmoothTypeEnum   smoothRotationType     = SmoothTypeEnum.EXP_LINEAR;
 	/**
 	 * 在上一个 client tick 中的 isAiming() 的值
@@ -133,6 +135,7 @@ public class EntityAgent {
 	public void onRenderTickStart (double now, double period, float partialTick) {
 		if (ThirdPersonStatus.isRenderingInThirdPerson() && isControlled() && !ThirdPersonStatus.shouldCameraTurnWithEntity()) {
 			var targetRotation = getRotateTarget().getRotation(partialTick);
+
 			smoothRotation.setTarget(targetRotation);
 
 			switch (smoothRotationType) {
@@ -159,13 +162,12 @@ public class EntityAgent {
 		updateRotateStrategy();
 		updateBodyRotation();
 		updateSmoothOpacity(ThirdPersonConstants.VANILLA_CLIENT_TICK_TIME, 1);
-		smoothRotation.update(ThirdPersonConstants.VANILLA_CLIENT_TICK_TIME);
 
 		switch (smoothRotationType) {
 			case HARD, EXP -> {
 			}
 			case LINEAR, EXP_LINEAR -> {
-				smoothRotation.setTarget(getRotateTarget().getRotation(0));
+				smoothRotation.setTarget(getRotateTarget().getRotation(1));
 				smoothRotation.update(ThirdPersonConstants.VANILLA_CLIENT_TICK_TIME);
 			}
 		}
@@ -359,29 +361,23 @@ public class EntityAgent {
 	 */
 	private void updateRotateStrategy () {
 		setSmoothRotationHalflife(rotateDecisionMap.updateAll().make());
-		//		{
-		//			if (isAiming()) {
-		//				setRotateTarget(RotateTargetEnum.PREDICTED_TARGET_ENTITY);
-		//				setRotationSmoothType(SmoothTypeEnum.HARD);
-		//				setSmoothRotationHalflife(0);
-		//			} else if (getRawCameraEntity().isSwimming()) {
-		//				setRotateTarget(RotateTargetEnum.IMPULSE_DIRECTION);
-		//				setRotationSmoothType(SmoothTypeEnum.LINEAR);
-		//				setSmoothRotationHalflife(0.01D);
-		//			} else if (isFallFlying()) {
-		//				setRotateTarget(RotateTargetEnum.CAMERA_ROTATION);
-		//				setRotationSmoothType(SmoothTypeEnum.HARD);
-		//				setSmoothRotationHalflife(0);
-		//			}
-		//		}
 	}
 
 	/**
+	 * TODO 接管身体的转动
+	 * <p>
 	 * 脖子最多左右转85度
 	 *
 	 * @see net.minecraft.client.renderer.entity.LivingEntityRenderer#render
 	 */
 	private void updateBodyRotation () {
+
+		//  if (getRotateTarget() == RotateTargetEnum.INTEREST_POINT) {
+		//  	if (ThirdPersonStatus.impulseHorizon.length() >= 1e-5) {
+		//  		var rot    = RotateTargetEnum.HORIZONTAL_IMPULSE_DIRECTION.getRotation(1);
+		//  	}
+		//  }
+
 		// net.minecraft.client.renderer.entity.LivingEntityRenderer.render
 		var config = ThirdPerson.getConfig();
 		if (config.auto_turn_body_drawing_a_bow && ThirdPerson.ENTITY_AGENT.isControlled()) {

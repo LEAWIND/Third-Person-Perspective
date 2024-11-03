@@ -38,9 +38,7 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 
 			// SubCategory: Player Rotation
 			final var SUBCATEGORY_PLAYER_ROTATION = buildSubCategory("player_rotation", entryBuilder);
-			SUBCATEGORY_PLAYER_ROTATION.add(buildBooleanEntry("player_rotate_with_camera_when_not_aiming", defaults.player_rotate_with_camera_when_not_aiming, config.player_rotate_with_camera_when_not_aiming, v -> config.player_rotate_with_camera_when_not_aiming = v, entryBuilder));
-			SUBCATEGORY_PLAYER_ROTATION.add(buildBooleanEntry("player_rotate_to_interest_point", defaults.player_rotate_to_interest_point, config.player_rotate_to_interest_point, v -> config.player_rotate_to_interest_point = v, entryBuilder));
-			SUBCATEGORY_PLAYER_ROTATION.add(buildBooleanEntry("rotate_to_moving_direction", defaults.rotate_to_moving_direction, config.rotate_to_moving_direction, v -> config.rotate_to_moving_direction = v, entryBuilder));
+			SUBCATEGORY_PLAYER_ROTATION.add(entryBuilder.startEnumSelector(ConfigManager.getText(AbstractConfig.PlayerRotateMode.KEY), AbstractConfig.PlayerRotateMode.class, config.normal_rotate_mode).setEnumNameProvider(AbstractConfig.PlayerRotateMode::formatter).build());
 			SUBCATEGORY_PLAYER_ROTATION.add(buildBooleanEntry("auto_rotate_interacting", defaults.auto_rotate_interacting, config.auto_rotate_interacting, v -> config.auto_rotate_interacting = v, entryBuilder));
 			SUBCATEGORY_PLAYER_ROTATION.add(buildBooleanEntry("do_not_rotate_when_eating", defaults.do_not_rotate_when_eating, config.do_not_rotate_when_eating, v -> config.do_not_rotate_when_eating = v, entryBuilder));
 			SUBCATEGORY_PLAYER_ROTATION.add(buildBooleanEntry("auto_turn_body_drawing_a_bow", defaults.auto_turn_body_drawing_a_bow, config.auto_turn_body_drawing_a_bow, v -> config.auto_turn_body_drawing_a_bow = v, entryBuilder));
@@ -128,8 +126,7 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 			if (getAvailableBuidlers().size() > 1) {
 				CATEGORY_OTHER.addEntry(entryBuilder.startDropdownMenu(ConfigManager.getText("option.config_screen_api"), config.config_screen_api, v -> config.config_screen_api = v).setSelections(getAvailableBuidlers().keySet()).build());
 			}
-			CATEGORY_OTHER.addEntry(booleanEntry("camera_distance_mode", defaults.camera_distance_mode.bool(), config.camera_distance_mode.bool(), v -> config.camera_distance_mode = AbstractConfig.CameraDistanceMode.of(v), entryBuilder) //
-																																																											 .setYesNoTextSupplier(AbstractConfig.CameraDistanceMode::formatter).build());
+			CATEGORY_OTHER.addEntry(entryBuilder.startEnumSelector(ConfigManager.getText(AbstractConfig.CameraDistanceMode.KEY), AbstractConfig.CameraDistanceMode.class, config.camera_distance_mode).setEnumNameProvider(AbstractConfig.CameraDistanceMode::formatter).build());
 			CATEGORY_OTHER.addEntry(buildDoubleEntry("rotate_center_height_offset", -0.5, 0.5, defaults.rotate_center_height_offset, config.rotate_center_height_offset, v -> config.rotate_center_height_offset = v, entryBuilder));
 			CATEGORY_OTHER.addEntry(buildBooleanEntry("enable_target_entity_predict", defaults.enable_target_entity_predict, config.enable_target_entity_predict, v -> config.enable_target_entity_predict = v, entryBuilder));
 			CATEGORY_OTHER.addEntry(buildBooleanEntry("skip_vanilla_second_person_camera", defaults.skip_vanilla_second_person_camera, config.skip_vanilla_second_person_camera, v -> config.skip_vanilla_second_person_camera = v, entryBuilder));

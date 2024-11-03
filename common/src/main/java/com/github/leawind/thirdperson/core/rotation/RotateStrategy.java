@@ -3,6 +3,7 @@ package com.github.leawind.thirdperson.core.rotation;
 
 import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.thirdperson.ThirdPersonStatus;
+import com.github.leawind.thirdperson.config.AbstractConfig;
 import com.github.leawind.util.math.decisionmap.DecisionMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,30 +43,30 @@ public final class RotateStrategy {
 			return ThirdPerson.ENTITY_AGENT.getRawCameraEntity().getVehicle() instanceof LivingEntity;
 		}
 
-		static boolean isRidingNonLivingEntity () {
-			var entity = ThirdPerson.ENTITY_AGENT.getRawCameraEntity();
-			return entity.isPassenger() && !(entity.getVehicle() instanceof LivingEntity);
+		static boolean forceRotate () {
+			return ThirdPerson.getConfig().normal_rotate_mode != AbstractConfig.PlayerRotateMode.INTEREST_POINT;
 		}
 	}
 
 	public static DecisionMap<Double> build () {
 		var builder = DecisionMap.<Double>builder();
-		builder.factor(0, "swimming", Factor::isSwimming);
-		builder.factor(1, "aiming", Factor::isAiming);
-		builder.factor(3, "interacting", Factor::shouldTurnToInteractPoint);
-		builder.factor(4, "sprint", Factor::wantToSprint);
-		builder.factor(2, "fall_flying", Factor::isFallFlying);
-		builder.factor(5, "is_passenger", Factor::isPassenger);
-		builder.factor(6, "is_vehicle_living_entity", Factor::isVehicleLivingEntity);
+		builder.factor("aiming", Factor::isAiming);
+		builder.factor("swimming", Factor::isSwimming);
+		builder.factor("sprint", Factor::wantToSprint);
+		builder.factor("fall_flying", Factor::isFallFlying);
+		builder.factor("interacting", Factor::shouldTurnToInteractPoint);
+		builder.factor("force_rotate", Factor::forceRotate);
+		builder.factor("is_passenger", Factor::isPassenger);
+		builder.factor("is_vehicle_living_entity", Factor::isVehicleLivingEntity);
 
-		// Define rules
 		builder.whenDefault(Do::defaultOperation);
-		builder.when("interacting", Do::interacting);
 		builder.when(List.of("is_passenger", "~is_vehicle_living_entity"), Do::ridingNonLivingEntity);
 		builder.when(List.of("is_passenger", "is_vehicle_living_entity"), Do::ridingLivingEntity);
 		builder.when("sprint", Do::sprint);
-		builder.when("fall_flying", Do::fallFlying);
 		builder.when("swimming", Do::swimming);
+		builder.when("interacting", Do::interacting);
+		builder.when("fall_flying", Do::fallFlying);
+		builder.when("force_rotate", Do::defaultOperation);
 		builder.when("aiming", Do::aiming);
 		return builder.build();
 	}
@@ -76,9 +77,13 @@ public final class RotateStrategy {
 			double rotateHalflife = 0;
 			switch (ThirdPerson.getConfig().normal_rotate_mode) {
 				case INTEREST_POINT -> {
-					ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.INTEREST_POINT);
+					if (ThirdPersonStatus.impulseHorizon.length() < 1e-5) {
+						ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.INTEREST_POINT);
+					} else {
+						ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.HORIZONTAL_IMPULSE_DIRECTION);
+					}
 					ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.EXP_LINEAR);
-					rotateHalflife = 0.1;
+					rotateHalflife = 0.06;
 				}
 				case CAMERA_CROSSHAIR -> {
 					ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.CAMERA_HIT_RESULT);
@@ -88,23 +93,22 @@ public final class RotateStrategy {
 					ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.CAMERA_ROTATION);
 					ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.LINEAR);
 				}
-				case STAY -> {
+				case NONE -> {
+					ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.NONE);
+					ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.LINEAR);
 				}
-			}
-			if (ThirdPersonStatus.impulseHorizon.length() >= 1e-5) {
-				ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.HORIZONTAL_IMPULSE_DIRECTION);
 			}
 			return rotateHalflife;
 		}
 
 		static double ridingNonLivingEntity () {
-			ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.INTEREST_POINT);//TODO
+			ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.INTEREST_POINT);
 			ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.EXP_LINEAR);
 			return 0.15;
 		}
 
 		static double ridingLivingEntity () {
-			ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.HORIZONTAL_IMPULSE_DIRECTION);//TODO
+			ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.HORIZONTAL_IMPULSE_DIRECTION);
 			ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.EXP);
 			return 0.1;
 		}

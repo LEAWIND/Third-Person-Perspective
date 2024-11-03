@@ -19,18 +19,18 @@ public enum RotateTargetEnum {
 	/**
 	 * 保持当前朝向，不旋转
 	 */
-	STAY(partialTick -> ThirdPerson.ENTITY_AGENT.getRawRotation(1)),
+	NONE(partialTick -> ThirdPerson.ENTITY_AGENT.getRawRotation(partialTick)),
 	INTEREST_POINT(partialTick -> {
 		var point = ThirdPerson.ENTITY_AGENT.getInterestPoint();
 		if (point == null) {
-			return STAY.getRotation(partialTick);
+			return NONE.getRotation(partialTick);
 		}
 
 		var player = ThirdPerson.ENTITY_AGENT.getRawPlayerEntity();
 
 		var toInterestedPoint = point.subtract(player.getEyePosition(partialTick));
 		if (toInterestedPoint.length() < 1e-5) {
-			return STAY.getRotation(partialTick);
+			return NONE.getRotation(partialTick);
 		}
 
 		var playerRot = ThirdPerson.ENTITY_AGENT.getRawRotation(1);
@@ -111,7 +111,7 @@ public enum RotateTargetEnum {
 	 * 当没有使用键盘控制时保持当前朝向
 	 */
 	IMPULSE_DIRECTION(partialTick -> ThirdPersonStatus.impulseHorizon.length() < 1e-5    //
-									 ? STAY.getRotation(partialTick)    //
+									 ? NONE.getRotation(partialTick)    //
 									 : LMath.rotationDegreeFromDirection(ThirdPersonStatus.impulse)),
 	/**
 	 * 使用键盘控制的移动方向（仅水平）
@@ -120,7 +120,7 @@ public enum RotateTargetEnum {
 	 */
 	HORIZONTAL_IMPULSE_DIRECTION(partialTick -> {
 		if (ThirdPersonStatus.impulseHorizon.length() < 1e-5) {
-			return STAY.getRotation(partialTick);
+			return NONE.getRotation(partialTick);
 		}
 		double absoluteYRotDegree = LMath.rotationDegreeFromDirection(ThirdPersonStatus.impulseHorizon);
 		return Vector2d.of(0.1, absoluteYRotDegree);

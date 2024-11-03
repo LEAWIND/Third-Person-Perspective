@@ -14,18 +14,11 @@ import java.util.List;
  */
 public abstract class AbstractConfig {
 	// ================================================================================常用 //
-	@Expose public boolean          is_mod_enabled                            = true;
-	@Expose public boolean          center_offset_when_flying                 = true;
-	@Expose public boolean          temp_first_person_in_narrow_space         = true;
+	@Expose public boolean            is_mod_enabled                          = true;
+	@Expose public boolean            center_offset_when_flying               = true;
+	@Expose public boolean            temp_first_person_in_narrow_space       = true;
 	//------------------------------玩家旋转
-	@Expose public PlayerRotateMode normal_rotate_mode                        = PlayerRotateMode.INTEREST_POINT;
-	// TODO
-	@Expose public boolean          player_rotate_to_interest_point           = true;
-	// TODO
-	@Expose public boolean          player_rotate_with_camera_when_not_aiming = false;
-	// TODO
-	@Expose public boolean          rotate_to_moving_direction                = true;
-
+	@Expose public PlayerRotateMode   normal_rotate_mode                      = PlayerRotateMode.INTEREST_POINT;
 	@Expose public boolean            auto_rotate_interacting                 = true;
 	@Expose public boolean            do_not_rotate_when_eating               = true;
 	@Expose public boolean            auto_turn_body_drawing_a_bow            = false;
@@ -88,38 +81,58 @@ public abstract class AbstractConfig {
 	@Expose public boolean            hide_crosshair_when_flying              = true;
 
 	public enum PlayerRotateMode {
-		INTEREST_POINT,
-		CAMERA_CROSSHAIR,
-		PARALLEL_WITH_CAMERA,
-		STAY,
+		INTEREST_POINT("interest_point"),
+		CAMERA_CROSSHAIR("camera_crosshair"),
+		PARALLEL_WITH_CAMERA("parallel_with_camera"),
+		NONE("none"),
+		;
+		public static final String KEY = "option.normal_rotate_mode";
+		private final String key;
+
+		PlayerRotateMode (String key) {
+			this.key = key;
+		}
+
+		public static Component formatter (Enum<PlayerRotateMode> value) {
+			return formatter((PlayerRotateMode)value);
+		}
+
+		public static Component formatter (PlayerRotateMode value) {
+			return ConfigManager.getText(KEY + "." + value.key);
+		}
 	}
 
 	public enum CameraDistanceMode {
-		PLANE(true, "option.camera_distance_mode.plane"),
-		STRAIGHT(false, "option.camera_distance_mode.straight");
+		PLANE(true, "plane"),
+		STRAIGHT(false, "straight");
 
-		final boolean bool;
-		final String  key;
+		public static final String KEY = "option.camera_distance_mode";
+		private final boolean bool;
+		private final String  key;
 
 		CameraDistanceMode (boolean bool, String key) {
 			this.bool = bool;
 			this.key  = key;
 		}
 
-		public static CameraDistanceMode of (boolean b) {
-			return b ? PLANE: STRAIGHT;
-		}
-
 		public boolean bool () {
 			return bool;
 		}
 
+		public static CameraDistanceMode of (boolean b) {
+			return b ? PLANE: STRAIGHT;
+		}
+
 		public static Component formatter (boolean v) {
-			return ConfigManager.getText(of(v).key);
+			return ConfigManager.getText(KEY + "." + of(v).key);
+		}
+
+		public static Component formatter (Enum<CameraDistanceMode> value) {
+			return formatter((CameraDistanceMode)value);
 		}
 
 		public static Component formatter (CameraDistanceMode value) {
-			return ConfigManager.getText(value.key);
+			return ConfigManager.getText(KEY + "." + value.key);
 		}
 	}
 }

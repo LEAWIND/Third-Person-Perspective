@@ -43,9 +43,11 @@ public class YaclConfigScreenBuilder extends ConfigScreenBuilder {
 														  .option(booleanOption("center_offset_when_flying", defaults.center_offset_when_flying, () -> config.center_offset_when_flying, v -> config.center_offset_when_flying = v).build()) //
 														  .option(booleanOption("temp_first_person_in_narrow_space", defaults.temp_first_person_in_narrow_space, () -> config.temp_first_person_in_narrow_space, v -> config.temp_first_person_in_narrow_space = v).build()) //
 														  .group(group("player_rotation") //
-																						  .option(booleanOption("player_rotate_with_camera_when_not_aiming", defaults.player_rotate_with_camera_when_not_aiming, () -> config.player_rotate_with_camera_when_not_aiming, v -> config.player_rotate_with_camera_when_not_aiming = v).build()) //
-																						  .option(booleanOption("player_rotate_to_interest_point", defaults.player_rotate_to_interest_point, () -> config.player_rotate_to_interest_point, v -> config.player_rotate_to_interest_point = v).build()) //
-																						  .option(booleanOption("rotate_to_moving_direction", defaults.rotate_to_moving_direction, () -> config.rotate_to_moving_direction, v -> config.rotate_to_moving_direction = v).build()) //
+																						  .option(option("normal_rotate_mode", defaults.normal_rotate_mode, () -> config.normal_rotate_mode, v -> config.normal_rotate_mode = v) //
+																																																										 .controller(opt -> EnumControllerBuilder.create(opt) //
+																																																																				 .enumClass(AbstractConfig.PlayerRotateMode.class) //
+																																																																				 .formatValue(AbstractConfig.PlayerRotateMode::formatter)) //
+																																																										 .build()) //
 																						  .option(booleanOption("auto_rotate_interacting", defaults.auto_rotate_interacting, () -> config.auto_rotate_interacting, v -> config.auto_rotate_interacting = v).build()) //
 																						  .option(booleanOption("do_not_rotate_when_eating", defaults.do_not_rotate_when_eating, () -> config.do_not_rotate_when_eating, v -> config.do_not_rotate_when_eating = v).build()) //
 																						  .option(booleanOption("auto_turn_body_drawing_a_bow", defaults.auto_turn_body_drawing_a_bow, () -> config.auto_turn_body_drawing_a_bow, v -> config.auto_turn_body_drawing_a_bow = v).build()) //
