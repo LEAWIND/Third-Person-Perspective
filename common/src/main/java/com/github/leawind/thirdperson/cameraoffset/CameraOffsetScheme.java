@@ -29,6 +29,14 @@ public class CameraOffsetScheme {
 		return isAiming() ? aimingMode: normalMode;
 	}
 
+	public AbstractCameraOffsetMode getNormalMode () {
+		return normalMode;
+	}
+
+	public AbstractCameraOffsetMode getAimingMode () {
+		return aimingMode;
+	}
+
 	/**
 	 * 获取当前未启用的模式
 	 */
