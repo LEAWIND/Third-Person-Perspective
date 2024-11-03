@@ -20,6 +20,11 @@ public enum RotateTargetEnum {
 	 * 保持当前朝向，不旋转
 	 */
 	NONE(partialTick -> ThirdPerson.ENTITY_AGENT.getRawRotation(partialTick)),
+	/**
+	 * 兴趣点
+	 * <p>
+	 * 当相机位于后方时，玩家看向准星处，相机位于前方时，玩家看向相机
+	 */
 	INTEREST_POINT(partialTick -> {
 		var point = ThirdPerson.ENTITY_AGENT.getInterestPoint();
 		if (point == null) {
@@ -125,6 +130,7 @@ public enum RotateTargetEnum {
 		double absoluteYRotDegree = LMath.rotationDegreeFromDirection(ThirdPersonStatus.impulseHorizon);
 		return Vector2d.of(0.1, absoluteYRotDegree);
 	});
+
 	private final Function<Float, Vector2d> rotationGetter;
 
 	RotateTargetEnum (@NotNull Function<Float, Vector2d> rotationGetter) {

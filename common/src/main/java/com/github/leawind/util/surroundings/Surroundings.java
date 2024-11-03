@@ -29,6 +29,25 @@ public class Surroundings {
 	 */
 	private final Map<String, Matches>        matchesMap    = new HashMap<>();
 
+	/**
+	 * 解析提供的多行字符串表达式，该表达式定义一个3x3x3区域的方块布局。
+	 * <p>
+	 * 表达式中的每个字符代表一个标识符，用于区分不同的方块类型或位置。
+	 * <p>
+	 * 表达式可以由多个部分组成，每个部分之间通过空格、换行符或竖线（|）分隔，每个部分内部也使用相同的分隔符来组织字符。
+	 * <p>
+	 * 示例：
+	 * <pre>
+	 * new Surroundings("""
+	 *     B B B  M M M  T T T
+	 *     B B B  M M M  T T T
+	 *     B B B  M M M  T T T
+	 * """);
+	 * </pre>
+	 * 在此示例中，'B', 'M', 'T' 都是不同的标识符，它们分别代表了不同类型的方块或位置。
+	 * <p>
+	 * 其中 B 表示下层 3x1x3 的方块，M 表示中间 3x1x3 的一层方块，T 表示上层 3x1x3 的方块
+	 */
 	public Surroundings (String expr) {
 		var tokens = SEPARATOR_PATTERN.split(BLANK_PATTERN.matcher(expr).replaceAll(" ").trim());
 		for (int i = 0; i < tokens.length; i++) {

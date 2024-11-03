@@ -23,8 +23,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
@@ -68,7 +66,7 @@ public final class ThirdPersonEvents {
 			// 如果位于狭窄空间内，暂时进入第一人称
 			ThirdPersonStatus.ticksSinceLeaveNarrowSpace = Math.min(ThirdPersonConstants.LEAVE_NARROW_SPACE_DELAY_TICKS, ThirdPersonStatus.ticksSinceLeaveNarrowSpace + 1);
 			if (config.temp_first_person_in_narrow_space && !cameraEntity.isSpectator()) {
-				boolean isInNarrowSpace = calcIsInNarrowSpace(minecraft, cameraEntity);
+				boolean isInNarrowSpace = ThirdPersonStatus.calcIsInNarrowSpace(cameraEntity);
 				if (isInNarrowSpace) {
 					ThirdPersonStatus.ticksSinceLeaveNarrowSpace = 0;
 				}
@@ -77,19 +75,6 @@ public final class ThirdPersonEvents {
 		}
 		ThirdPerson.ENTITY_AGENT.onClientTickStart();
 		ThirdPerson.CAMERA_AGENT.onClientTickStart();
-	}
-
-	public static boolean calcIsInNarrowSpace (Minecraft minecraft, Entity entity) {
-		boolean isInNarrowSpace = true;
-		var     center          = BlockPos.containing(entity.getEyePosition(1));
-
-		ThirdPersonConstants.SURROUNDINGS_MATCHING.rematch(center, minecraft.level, s -> s.isViewBlocking(minecraft.level, center));
-		int countT = ThirdPersonConstants.SURROUNDINGS_MATCHING.getMatches("T").count();
-		int countM = ThirdPersonConstants.SURROUNDINGS_MATCHING.getMatches("M").count();
-
-		isInNarrowSpace &= countT >= 3;
-		isInNarrowSpace &= countM >= 1;
-		return isInNarrowSpace;
 	}
 
 	private static void onClientStopping (Minecraft minecraft) {

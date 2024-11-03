@@ -6,6 +6,8 @@ import com.github.leawind.thirdperson.core.rotation.SmoothTypeEnum;
 import com.github.leawind.util.math.vector.Vector2d;
 import com.github.leawind.util.math.vector.Vector3d;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -122,5 +124,21 @@ public final class ThirdPersonStatus {
 	 */
 	public static boolean shouldCameraTurnWithEntity () {
 		return ThirdPerson.ENTITY_AGENT.getRotateTarget() == RotateTargetEnum.CAMERA_ROTATION && ThirdPerson.ENTITY_AGENT.getRotationSmoothType() == SmoothTypeEnum.HARD;
+	}
+
+	/**
+	 * 实体是否位于狭窄空间内
+	 */
+	public static boolean calcIsInNarrowSpace (Entity entity) {
+		boolean isInNarrowSpace = true;
+		var     center          = BlockPos.containing(entity.getEyePosition(1));
+		ThirdPersonConstants.SURROUNDINGS_MATCHING.rematch(center, entity.level(), s -> s.isViewBlocking(entity.level(), center));
+
+		int countT = ThirdPersonConstants.SURROUNDINGS_MATCHING.getMatches("T").count();
+		int countM = ThirdPersonConstants.SURROUNDINGS_MATCHING.getMatches("M").count();
+
+		isInNarrowSpace &= countT >= 3;
+		isInNarrowSpace &= countM >= 1;
+		return isInNarrowSpace;
 	}
 }
