@@ -6,8 +6,8 @@
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/41e70a17218c4773aefb62382b9547a6)](https://app.codacy.com/gh/Leawind/Third-Person/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
-[![Codacy Badge](https://img.shields.io/codacy/grade/41e70a17218c4773aefb62382b9547a6)](https://app.codacy.com/gh/Leawind/Third-Person/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-[![Codacy Badge](https://img.shields.io/codacy/grade/41e70a17218c4773aefb62382b9547a6?label=代码质量)](https://app.codacy.com/gh/Leawind/Third-Person/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://img.shields.io/codacy/grade/41e70a17218c4773aefb62382b9547a6?logo=codacy)](https://app.codacy.com/gh/Leawind/Third-Person/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://img.shields.io/codacy/grade/41e70a17218c4773aefb62382b9547a6?logo=codacy&label=代码质量)](https://app.codacy.com/gh/Leawind/Third-Person/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 ## 链接
 
