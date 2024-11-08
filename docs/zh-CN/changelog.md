@@ -12,7 +12,7 @@
 ### 其他
 -->
 
-## v2.2.0-beta.2-mc1.20-1.20.1 （预览）
+## v2.2.0-beta.4-mc1.20-1.20.1 （预览）
 
 ### 新增
 
@@ -27,6 +27,55 @@
 ### 其他
 
 :::
+
+## v2.2.0-beta.3-mc1.20-1.20.1
+
+### 新增
+
+-   枚举类型的配置选项，指定玩家实体通常如何旋转：`normal_rotate_mode`
+
+    枚举值：
+
+    -   兴趣点
+    -   相机准星
+    -   与相机平行
+    -   无
+
+-   允许在第三人称中禁用视角摇晃
+    -   配置选项：`disable_third_person_bob_view`
+
+### 移除
+
+-   以一个枚举类型选项替换了多个选项
+    -   `player_rotate_to_interest_point`
+    -   `player_rotate_with_camera_when_not_aiming`
+    -   `rotate_to_moving_direction`
+
+### 修复
+
+-   视野 mixin 错误
+-   玩家实体在进入第三人称时旋转错误
+
+### 兼容性
+
+-   勉强兼容 _Valkyrien Skies_，只要将选项“普通旋转模式”设置为“相机准星”
+
+## v2.2.0-beta.2-mc1.20-1.20.1
+
+### 新增
+
+-   在瞄准时改变视野（滑动变焦）
+    -   配置选项：`aiming_fov_divisor`
+-   在狭窄空间内自动进入第一人称
+    -   配置选项：`temp_first_person_in_narrow_space`
+-   可调节的旋转中心垂直偏移量
+    -   配置选项：`rotate_center_height_offset`
+
+### 修改
+
+-   更新配置选项的默认值
+-   重命名配置类别名称：“瞄准检查” -> “物品谓词”
+-   更改某些配置选项的默认值
 
 ## v2.2.0-beta.1-mc1.20-1.20.1
 
