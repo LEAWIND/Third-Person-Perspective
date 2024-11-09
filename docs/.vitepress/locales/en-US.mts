@@ -28,7 +28,6 @@ export default {
 			'/en-US/Details': buildSidebar(`/${lang}/Details`),
 		},
 		footer: {
-			copyright: 'Copyright © 2024 Leawind',
 		},
 		editLink: {
 			pattern: 'https://github.com/Leawind/Third-Person/edit/gh-pages/docs/:path',
