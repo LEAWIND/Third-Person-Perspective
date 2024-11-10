@@ -136,7 +136,7 @@ public class Zone {
 	 */
 	public @NotNull Zone squeezeSafely (double d) {
 		double r = Math.min(d, radius());
-		return new Zone(min + r, max - r);
+		return Zone.ofAuto(min + r, max - r);
 	}
 
 	/**
