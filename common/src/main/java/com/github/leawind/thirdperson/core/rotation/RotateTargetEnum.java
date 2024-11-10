@@ -6,9 +6,9 @@ import com.github.leawind.thirdperson.ThirdPersonConstants;
 import com.github.leawind.thirdperson.ThirdPersonStatus;
 import com.github.leawind.thirdperson.core.CameraAgent;
 import com.github.leawind.util.math.LMath;
-import com.github.leawind.util.math.vector.Vector2d;
 import net.minecraft.world.phys.HitResult.Type;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector2d;
 
 import java.util.function.Function;
 
@@ -39,21 +39,21 @@ public enum RotateTargetEnum {
 		}
 
 		var playerRot = ThirdPerson.ENTITY_AGENT.getRawRotation(1);
-		ThirdPerson.FINITE_CHECKER.checkOnce(playerRot.x(), playerRot.y());
+		ThirdPerson.FINITE_CHECKER.checkOnce(playerRot.x, playerRot.y);
 
 		var rot = LMath.rotationDegreeFromDirection(LMath.toVector3d(toInterestedPoint));
-		ThirdPerson.FINITE_CHECKER.checkOnce(rot.x(), rot.y());
+		ThirdPerson.FINITE_CHECKER.checkOnce(rot.x, rot.y);
 
 		double leftBound  = player.yBodyRot - ThirdPersonConstants.VANILLA_PLAYER_HEAD_ROTATE_LIMIT_DEGREES;
 		double rightBound = player.yBodyRot + ThirdPersonConstants.VANILLA_PLAYER_HEAD_ROTATE_LIMIT_DEGREES;
 
-		if (LMath.isWithinDegrees(rot.y(), leftBound, rightBound)) {
-			playerRot.y(rot.y());
+		if (LMath.isWithinDegrees(rot.y, leftBound, rightBound)) {
+			playerRot.y = rot.y;
 		} else {
-			playerRot.y(LMath.subtractDegrees(rot.y(), leftBound) < LMath.subtractDegrees(rot.y(), rightBound) ? leftBound: rightBound);
+			playerRot.y = LMath.subtractDegrees(rot.y, leftBound) < LMath.subtractDegrees(rot.y, rightBound) ? leftBound: rightBound;
 		}
 
-		playerRot.x(rot.x());
+		playerRot.x = rot.x;
 		return playerRot;
 	}),
 	/**
@@ -128,7 +128,7 @@ public enum RotateTargetEnum {
 			return NONE.getRotation(partialTick);
 		}
 		double absoluteYRotDegree = LMath.rotationDegreeFromDirection(ThirdPersonStatus.impulseHorizon);
-		return Vector2d.of(0.1, absoluteYRotDegree);
+		return new Vector2d(0.1, absoluteYRotDegree);
 	});
 
 	private final Function<Float, Vector2d> rotationGetter;
@@ -142,7 +142,7 @@ public enum RotateTargetEnum {
 	 */
 	public @NotNull Vector2d getRotation (float partialTick) {
 		var rotation = rotationGetter.apply(partialTick);
-		ThirdPerson.FINITE_CHECKER.checkOnce(rotation.x(), rotation.y());
+		ThirdPerson.FINITE_CHECKER.checkOnce(rotation.x, rotation.y);
 		return rotation;
 	}
 }

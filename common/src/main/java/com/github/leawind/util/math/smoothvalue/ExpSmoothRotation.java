@@ -2,8 +2,8 @@ package com.github.leawind.util.math.smoothvalue;
 
 
 import com.github.leawind.util.math.LMath;
-import com.github.leawind.util.math.vector.Vector2d;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector2d;
 
 /**
  * 平滑旋转
@@ -41,8 +41,8 @@ public class ExpSmoothRotation {
 	}
 
 	public void setTarget (@NotNull Vector2d rot) {
-		y.setTarget(rot.y());
-		x.setTarget(LMath.clamp(rot.x(), -90, 90));
+		y.setTarget(rot.y);
+		x.setTarget(LMath.clamp(rot.x, -90, 90));
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class ExpSmoothRotation {
 	 * 应当使用 {@link ISmoothValue#get(double)}
 	 */
 	public @NotNull Vector2d get () {
-		return Vector2d.of(x.get(), y.get());
+		return new Vector2d(x.get(), y.get());
 	}
 
 	/**
@@ -82,12 +82,12 @@ public class ExpSmoothRotation {
 	 * @param t 自上次更新以来经过的时间占更新间隔的比例，用于线性插值。
 	 */
 	public @NotNull Vector2d get (double t) {
-		return Vector2d.of(x.get(t), y.get(t));
+		return new Vector2d(x.get(t), y.get(t));
 	}
 
 	public void set (@NotNull Vector2d v) {
-		y.set(v.y());
-		x.set(LMath.clamp(v.x(), -90, 90));
+		y.set(v.y);
+		x.set(LMath.clamp(v.x, -90, 90));
 	}
 
 	public void setSmoothFactorWeight (double weight) {
@@ -96,15 +96,15 @@ public class ExpSmoothRotation {
 	}
 
 	public void setValue (@NotNull Vector2d v) {
-		y.setValue(v.y());
-		x.setValue(LMath.clamp(v.x(), -90, 90));
+		y.setValue(v.y);
+		x.setValue(LMath.clamp(v.x, -90, 90));
 	}
 
 	/**
 	 * 获取上次更新前的平滑值（旧值）
 	 */
 	public @NotNull Vector2d getLast () {
-		return Vector2d.of(x.getLast(), y.getLast());
+		return new Vector2d(x.getLast(), y.getLast());
 	}
 
 	public static @NotNull ExpSmoothRotation createWithHalflife (double halflife) {

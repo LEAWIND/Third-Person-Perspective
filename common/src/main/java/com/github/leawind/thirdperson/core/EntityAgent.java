@@ -15,8 +15,6 @@ import com.github.leawind.util.math.LMath;
 import com.github.leawind.util.math.decisionmap.DecisionMap;
 import com.github.leawind.util.math.smoothvalue.ExpSmoothDouble;
 import com.github.leawind.util.math.smoothvalue.ExpSmoothRotation;
-import com.github.leawind.util.math.vector.Vector2d;
-import com.github.leawind.util.math.vector.Vector3d;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -34,6 +32,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import org.apache.logging.log4j.util.PerformanceSensitive;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2d;
+import org.joml.Vector3d;
 
 import java.util.Objects;
 
@@ -181,11 +181,11 @@ public class EntityAgent {
 	 * 设置实体朝向
 	 */
 	public void setRawRotation (@NotNull Vector2d rot) {
-		FINITE_CHECKER.checkOnce(rot.x(), rot.y());
+		FINITE_CHECKER.checkOnce(rot.x, rot.y);
 		var entity = getRawPlayerEntity();
 
-		entity.setYRot(entity.yRotO = (float)rot.y());
-		entity.setXRot(entity.xRotO = (float)rot.x());
+		entity.setYRot(entity.yRotO = (float)rot.y);
+		entity.setXRot(entity.xRotO = (float)rot.x);
 	}
 
 	/**
@@ -224,7 +224,7 @@ public class EntityAgent {
 	@VersionSensitive
 	public @NotNull Vector2d getRawRotation (float partialTick) {
 		var entity = getRawCameraEntity();
-		return Vector2d.of(entity.getViewXRot(partialTick), entity.getViewYRot(partialTick));
+		return new Vector2d(entity.getViewXRot(partialTick), entity.getViewYRot(partialTick));
 	}
 
 	/**
@@ -235,7 +235,7 @@ public class EntityAgent {
 	public boolean isEyeInWall (@NotNull ClipContext.ShapeGetter shapeGetter) {
 		var cameraEntity = getRawCameraEntity();
 		var eyePos       = cameraEntity.getEyePosition();
-		var blockPos     = BlockPos.containing(eyePos.x(), eyePos.y(), eyePos.z());
+		var blockPos     = BlockPos.containing(eyePos.x, eyePos.y, eyePos.z);
 		var blockState   = cameraEntity.level().getBlockState(blockPos);
 		var eyeAabb      = AABB.ofSize(eyePos, 0.8, 1e-6, 0.8);
 		return shapeGetter.get(blockState, cameraEntity.level(), blockPos, CollisionContext.empty()).toAabbs().stream().anyMatch(a -> a.move(blockPos).intersects(eyeAabb));
@@ -332,12 +332,7 @@ public class EntityAgent {
 	 */
 	public double boxDistanceTo (@NotNull Vector3d target, float partialTick) {
 		var aabb = getBoundingBox(partialTick);
-		var c    = Vector3d.of();
-
-		c.x(LMath.clamp(target.x(), aabb.minX, aabb.maxX));
-		c.y(LMath.clamp(target.y(), aabb.minY, aabb.maxY));
-		c.z(LMath.clamp(target.z(), aabb.minZ, aabb.maxZ));
-
+		var c    = new Vector3d(LMath.clamp(target.x, aabb.minX, aabb.maxX), LMath.clamp(target.y, aabb.minY, aabb.maxY), LMath.clamp(target.z, aabb.minZ, aabb.maxZ));
 		return c.distance(target);
 	}
 
@@ -349,10 +344,10 @@ public class EntityAgent {
 		var entity = getRawCameraEntity();
 
 		var    c    = LMath.toVector3d(entity.getPosition(partialTick));
-		double maxY = c.y() + entity.getEyeHeight();
-		c.y(LMath.clamp(target.y(), c.y(), maxY));
+		double maxY = c.y + entity.getEyeHeight();
+		c.y = LMath.clamp(target.y, c.y, maxY);
 		double dist = c.distance(target);
-		if (maxY > target.y() && target.y() > c.y()) {
+		if (maxY > target.y && target.y > c.y) {
 			dist = Math.max(0, dist - getBodyRadius());
 		}
 		return dist;
@@ -426,7 +421,7 @@ public class EntityAgent {
 	 * 当相机在面前时，兴趣点是相机
 	 */
 	public @Nullable Vec3 getInterestPoint () {
-		if (LMath.subtractDegrees(getRawPlayerEntity().yBodyRot, ThirdPerson.CAMERA_AGENT.getRelativeRotation().y()) > 90) {
+		if (LMath.subtractDegrees(getRawPlayerEntity().yBodyRot, ThirdPerson.CAMERA_AGENT.getRelativeRotation().y) > 90) {
 			return ThirdPerson.CAMERA_AGENT.getHitResult().getLocation();
 		} else {
 			return LMath.toVec3(ThirdPerson.CAMERA_AGENT.getRawCameraPosition());

@@ -4,6 +4,23 @@ package com.github.leawind.util;
 import java.util.function.Consumer;
 
 public final class FiniteChecker {
+	public static void assertFinite (Object... objects) {
+		for (int i = 0; i < objects.length; i++) {
+			var obj = objects[i];
+			if (notFinite(obj)) {
+				throw new InfiniteException(obj, String.format("objects[%d] is not finite", i));
+			}
+		}
+	}
+
+	private static boolean isFinite (Object obj) {
+		return (obj instanceof Float && Float.isFinite((Float)obj)) || (obj instanceof Double && Double.isFinite((Double)obj));
+	}
+
+	private static boolean notFinite (Object obj) {
+		return !isFinite(obj);
+	}
+
 	private final Consumer<InfiniteException> printer;
 	private       boolean                     failedOnce = false;
 
@@ -25,7 +42,7 @@ public final class FiniteChecker {
 			var obj = objects[i];
 			if (notFinite(obj)) {
 				if (!failedOnce) {
-					var err = new InfiniteException(String.format("objects[%d] is not finite: %s", i, obj));
+					var err = new InfiniteException(obj, String.format("objects[%d] is not finite", i));
 					printer.accept(err);
 					failedOnce = true;
 				}
@@ -39,7 +56,7 @@ public final class FiniteChecker {
 		for (int i = 0; i < objects.length; i++) {
 			var obj = objects[i];
 			if (notFinite(obj)) {
-				var err = new InfiniteException(String.format("objects[%d] is not finite: %s", i, obj));
+				var err = new InfiniteException(obj, String.format("objects[%d] is not finite", i));
 				printer.accept(err);
 				failedOnce = true;
 				return true;
@@ -48,25 +65,25 @@ public final class FiniteChecker {
 		return false;
 	}
 
-	private static boolean isFinite (Object obj) {
-		return (obj instanceof Float && Float.isFinite((Float)obj)) || (obj instanceof Double && Double.isFinite((Double)obj));
-	}
-
-	private static boolean notFinite (Object obj) {
-		return !isFinite(obj);
-	}
-
 	public static class InfiniteException extends RuntimeException {
-		private final String msg;
+		public final Object object;
+		public final String message;
 
-		public InfiniteException (String msg) {
-			this.msg = msg;
+		public InfiniteException (Object object) {
+			this(object, "Object is not finite");
+		}
+
+		public InfiniteException (Object object, String message) {
+			this.object  = object;
+			this.message = message;
 		}
 
 		@Override
 		public String toString () {
-			StringBuilder s = new StringBuilder("InfiniteException:\n");
-			s.append("\t").append(msg).append("\n");
+			StringBuilder s = new StringBuilder();
+			s.append(String.format("InfiniteException: %s\n", message));
+			s.append(String.format("Object: %s\n", object));
+			s.append("Stacktrace:\n");
 			var trace = Thread.currentThread().getStackTrace();
 			for (StackTraceElement traceElement: trace) {
 				s.append("\tat ").append(traceElement).append("\n");

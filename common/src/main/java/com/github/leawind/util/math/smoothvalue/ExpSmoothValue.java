@@ -66,13 +66,11 @@ public abstract class ExpSmoothValue<T> implements ISmoothValue<T> {
 	}
 
 	/**
-	 * 记录下更新前的平滑值（旧值），存储在 lastValue 中。
+	 * 将当前的平滑值 value 存储在 lastValue 中
 	 * <p>
-	 * 应当在 update 方法中写入新值前调用
+	 * 在 update 方法中写入新值前被调用
 	 */
-	final protected void saveLastValue () {
-		lastValue = value;
-	}
+	abstract protected void saveLastValue ();
 
 	abstract protected void updateWithOutSavingLastValue (double period);
 

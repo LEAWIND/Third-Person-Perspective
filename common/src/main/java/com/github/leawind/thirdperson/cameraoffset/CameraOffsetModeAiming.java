@@ -4,9 +4,9 @@ package com.github.leawind.thirdperson.cameraoffset;
 import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.thirdperson.config.Config;
 import com.github.leawind.util.math.LMath;
-import com.github.leawind.util.math.vector.Vector2d;
-import com.github.leawind.util.math.vector.Vector3d;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector2d;
+import org.joml.Vector3d;
 
 public class CameraOffsetModeAiming extends AbstractCameraOffsetMode {
 	public CameraOffsetModeAiming (@NotNull Config config) {
@@ -15,7 +15,7 @@ public class CameraOffsetModeAiming extends AbstractCameraOffsetMode {
 
 	@Override
 	public @NotNull Vector3d getEyeSmoothHalflife () {
-		return Vector3d.of(config.aiming_smooth_halflife_horizon, config.aiming_smooth_halflife_vertical, config.aiming_smooth_halflife_horizon);
+		return new Vector3d(config.aiming_smooth_halflife_horizon, config.aiming_smooth_halflife_vertical, config.aiming_smooth_halflife_horizon);
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class CameraOffsetModeAiming extends AbstractCameraOffsetMode {
 
 	@Override
 	public @NotNull Vector2d getOffsetSmoothHalflife () {
-		return Vector2d.of(config.aiming_camera_offset_smooth_halflife);
+		return new Vector2d(config.aiming_camera_offset_smooth_halflife);
 	}
 
 	@Override
@@ -65,8 +65,8 @@ public class CameraOffsetModeAiming extends AbstractCameraOffsetMode {
 
 	@Override
 	public void setSideOffsetRatio (@NotNull Vector2d v) {
-		config.aiming_offset_x = LMath.clamp(v.x(), -1, 1);
-		config.aiming_offset_y = LMath.clamp(v.y(), -1, 1);
+		config.aiming_offset_x = LMath.clamp(v.x, -1, 1);
+		config.aiming_offset_y = LMath.clamp(v.y, -1, 1);
 	}
 
 	@Override

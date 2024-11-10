@@ -2,10 +2,10 @@ package com.github.leawind.thirdperson.core;
 
 
 import com.github.leawind.util.math.LMath;
-import com.github.leawind.util.math.vector.Vector3d;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3d;
 
 import java.util.Comparator;
 

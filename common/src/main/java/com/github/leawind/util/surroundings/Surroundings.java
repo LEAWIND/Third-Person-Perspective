@@ -2,10 +2,10 @@ package com.github.leawind.util.surroundings;
 
 
 import com.github.leawind.util.math.LMath;
-import com.github.leawind.util.math.vector.Vector3i;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
+import org.joml.Vector3i;
 
 import java.util.ArrayList;
 import java.util.HashMap;

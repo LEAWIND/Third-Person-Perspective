@@ -2,9 +2,9 @@ package com.github.leawind.thirdperson.cameraoffset;
 
 
 import com.github.leawind.thirdperson.config.Config;
-import com.github.leawind.util.math.vector.Vector2d;
-import com.github.leawind.util.math.vector.Vector3d;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector2d;
+import org.joml.Vector3d;
 
 /**
  * 相机偏移模式

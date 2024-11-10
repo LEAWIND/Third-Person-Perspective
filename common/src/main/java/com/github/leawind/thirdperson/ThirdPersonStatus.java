@@ -3,23 +3,23 @@ package com.github.leawind.thirdperson;
 
 import com.github.leawind.thirdperson.core.rotation.RotateTargetEnum;
 import com.github.leawind.thirdperson.core.rotation.SmoothTypeEnum;
-import com.github.leawind.util.math.vector.Vector2d;
-import com.github.leawind.util.math.vector.Vector3d;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector2d;
+import org.joml.Vector3d;
 
 public final class ThirdPersonStatus {
 	/**
 	 * 移动脉冲
 	 */
-	public static final @NotNull Vector3d impulse                              = Vector3d.of(0);
+	public static final @NotNull Vector3d impulse                              = new Vector3d(0);
 	/**
 	 * 移动脉冲的水平分量
 	 */
-	public static final @NotNull Vector2d impulseHorizon                       = Vector2d.of(0);
+	public static final @NotNull Vector2d impulseHorizon                       = new Vector2d(0);
 	public static                int      clientTicks                          = 0;
 	/**
 	 * @see ThirdPersonKeys#TOGGLE_AIMING

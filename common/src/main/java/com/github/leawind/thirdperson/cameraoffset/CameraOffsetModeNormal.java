@@ -2,9 +2,9 @@ package com.github.leawind.thirdperson.cameraoffset;
 
 
 import com.github.leawind.thirdperson.config.Config;
-import com.github.leawind.util.math.vector.Vector2d;
-import com.github.leawind.util.math.vector.Vector3d;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector2d;
+import org.joml.Vector3d;
 
 public class CameraOffsetModeNormal extends AbstractCameraOffsetMode {
 	public CameraOffsetModeNormal (@NotNull Config config) {
@@ -13,7 +13,7 @@ public class CameraOffsetModeNormal extends AbstractCameraOffsetMode {
 
 	@Override
 	public @NotNull Vector3d getEyeSmoothHalflife () {
-		return Vector3d.of(config.normal_smooth_halflife_horizon, config.normal_smooth_halflife_vertical, config.normal_smooth_halflife_horizon);
+		return new Vector3d(config.normal_smooth_halflife_horizon, config.normal_smooth_halflife_vertical, config.normal_smooth_halflife_horizon);
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class CameraOffsetModeNormal extends AbstractCameraOffsetMode {
 
 	@Override
 	public @NotNull Vector2d getOffsetSmoothHalflife () {
-		return Vector2d.of(config.normal_camera_offset_smooth_halflife);
+		return new Vector2d(config.normal_camera_offset_smooth_halflife);
 	}
 
 	@Override
@@ -62,8 +62,8 @@ public class CameraOffsetModeNormal extends AbstractCameraOffsetMode {
 
 	@Override
 	public void setSideOffsetRatio (@NotNull Vector2d v) {
-		config.normal_offset_x = v.x();
-		config.normal_offset_y = v.y();
+		config.normal_offset_x = v.x;
+		config.normal_offset_y = v.y;
 	}
 
 	@Override

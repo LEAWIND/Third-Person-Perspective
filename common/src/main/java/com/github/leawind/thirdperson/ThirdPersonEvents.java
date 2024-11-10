@@ -12,7 +12,6 @@ import com.github.leawind.api.client.event.ThirdPersonCameraSetupEvent;
 import com.github.leawind.util.ItemPredicateUtil;
 import com.github.leawind.util.annotation.VersionSensitive;
 import com.github.leawind.util.math.LMath;
-import com.github.leawind.util.math.vector.Vector2d;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.event.events.client.ClientPlayerEvent;
@@ -25,6 +24,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector2d;
 
 @SuppressWarnings("unused")
 public final class ThirdPersonEvents {
@@ -194,8 +194,8 @@ public final class ThirdPersonEvents {
 			var leftImpulse = LMath.toVector3d(camera.getLeftVector()).normalize();
 
 			// 水平方向上的视线向量
-			var lookImpulseHorizon = Vector2d.of(lookImpulse.x(), lookImpulse.z()).normalize(event.forwardImpulse);
-			var leftImpulseHorizon = Vector2d.of(leftImpulse.x(), leftImpulse.z()).normalize(event.leftImpulse);
+			var lookImpulseHorizon = new Vector2d(lookImpulse.x, lookImpulse.z).normalize(event.forwardImpulse);
+			var leftImpulseHorizon = new Vector2d(leftImpulse.x, leftImpulse.z).normalize(event.leftImpulse);
 			lookImpulseHorizon.add(leftImpulseHorizon, ThirdPersonStatus.impulseHorizon);
 
 			// 世界坐标系下的 impulse
@@ -249,21 +249,21 @@ public final class ThirdPersonEvents {
 			}
 			var config     = ThirdPerson.getConfig();
 			var window     = Minecraft.getInstance().getWindow();
-			var screenSize = Vector2d.of(window.getScreenWidth(), window.getScreenHeight());
+			var screenSize = new Vector2d(window.getScreenWidth(), window.getScreenHeight());
 			var scheme     = config.getCameraOffsetScheme();
 			var mode       = scheme.getMode();
 			if (mode.isCentered()) {
 				// 相机在头顶，只能上下调整
 				double topOffset = mode.getCenterOffsetRatio();
-				topOffset += -event.accumulatedDY / screenSize.y();
+				topOffset += -event.accumulatedDY / screenSize.y;
 				topOffset = LMath.clamp(topOffset, -1, 1);
 				mode.setCenterOffsetRatio(topOffset);
 			} else {
 				// 相机没固定在头顶，可以上下左右调整
-				var offset = mode.getSideOffsetRatio(Vector2d.of());
-				offset.sub(Vector2d.of(event.accumulatedDX, event.accumulatedDY).div(screenSize));
-				offset.clamp(-1, 1);
-				scheme.setSide(Math.signum(offset.x()));
+				var offset = mode.getSideOffsetRatio(new Vector2d());
+				offset.sub(new Vector2d(event.accumulatedDX, event.accumulatedDY).div(screenSize));
+				LMath.clamp(offset, -1, 1);
+				scheme.setSide(Math.signum(offset.x));
 				mode.setSideOffsetRatio(offset);
 			}
 			event.cancelDefault();
