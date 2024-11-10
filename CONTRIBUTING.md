@@ -1,10 +1,7 @@
 # Contributing
 
-## Basic
-
-* Use UTF-8 encoding.
-* Use LF line ending.
-* Use .editorconfig to format code.
+* Use UTF-8 encoding
+* Use google-java-format
 
 ## Commit message format
 
@@ -39,8 +36,17 @@ fix: too many downloads #999
 
 ## How to add a new config item
 
-1. Define config item in `AbstractConfig`
-   `@Expose public double my_option = 0.5;`
-2. Use the config item somewhere.
-3. Find all screen builders in `ConfigScreenBuilder#builders`, and add the config item to the builder.
-4. Add translation to `resource/assets/minecraft/lang/*.json`
+Define config item in `AbstractConfig`
+
+```java
+public abstract class AbstractConfig {
+  @Expose public double my_option = 0.5;
+}
+
+```
+
+Use the config item somewhere.
+
+Find all screen builders in `ConfigScreenBuilder#builders`, and add the config item to the builder.
+
+Add translation to `resource/assets/minecraft/lang/*.json`

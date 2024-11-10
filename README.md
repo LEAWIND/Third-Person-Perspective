@@ -21,13 +21,19 @@ A practical, smooth, feature-rich third person mod for all Minecraft players.
 
 * **Free Rotation** Freely rotate the view while keeping the player's body stationary.
 * **Free Adjustment of Camera Position**
-	* While holding `Z`, moving the mouse adjusts the camera offset (the player's position on the screen), and the mouse wheel adjusts the distance between the camera and the player
-	* **Quick Switching of Camera Offset (Left|Center|Right)** Short press `CapsLock` to toggle between left and right. Hold `CapsLock` to center the camera
-* **Smart Aim Mode** Automatically switches to aim mode based on the item the player is holding and its using status. Rules can be customized. So it can be compatible with items from other mods
-* **Shooting like first-person** When aiming at enemies in third-person, it predicts the target entity you want to shoot at, allowing you to simply place the crosshair above the enemy as if in first-person
-* **Player Transparency** When the player entity obstructs the view, it becomes semi-transparent (May not be compatible with Sodium. This feature is disabled by default)
+	* While holding `Z`, moving the mouse adjusts the camera offset (the player's position on the screen), and the mouse
+	  wheel adjusts the distance between the camera and the player
+	* **Quick Switching of Camera Offset (Left|Center|Right)** Short press `CapsLock` to toggle between left and right.
+	  Hold `CapsLock` to center the camera
+* **Smart Aim Mode** Automatically switches to aim mode based on the item the player is holding and its using status.
+  Rules can be customized. So it can be compatible with items from other mods
+* **Shooting like first-person** When aiming at enemies in third-person, it predicts the target entity you want to shoot
+  at, allowing you to simply place the crosshair above the enemy as if in first-person
+* **Player Transparency** When the player entity obstructs the view, it becomes semi-transparent (May not be compatible
+  with Sodium. This feature is disabled by default)
 * **Smooth Perspective Switching** Smooth transition between first and third person perspectives
-* **Disable Anytime** If the mod causes issues, you can disable it anytime in-game through the configuration menu or hotkey, reverting to the original third-person perspective
+* **Disable Anytime** If the mod causes issues, you can disable it anytime in-game through the configuration menu or
+  hotkey, reverting to the original third-person perspective
 * **Client Side Only** No need to install on server. So you can join servers with this mod.
 
 <div align=center>

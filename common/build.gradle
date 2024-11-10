@@ -7,12 +7,9 @@ loom {
 dependencies {
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 	mappings loom.officialMojangMappings()
-
 	testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_jupiter_version}"
 	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit_jupiter_version}"
-
 	modImplementation "org.joml:joml:${joml_version}"
-
 	modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
 	modApi "dev.architectury:architectury:${architectury_version}"
 	// Cloth config
@@ -27,7 +24,6 @@ publishing {
 	publications {}
 	repositories {}
 }
-
-test{
+test {
 	useJUnitPlatform()
 }

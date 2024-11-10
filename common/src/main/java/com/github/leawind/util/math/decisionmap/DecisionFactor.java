@@ -1,45 +1,42 @@
 package com.github.leawind.util.math.decisionmap;
 
-
 import java.util.function.BooleanSupplier;
 
 public class DecisionFactor {
-	private final String          name;
-	private final BooleanSupplier supplier;
+  private final String name;
+  private final BooleanSupplier supplier;
 
-	int index;
+  int index;
 
-	private boolean value = false;
+  private boolean value = false;
 
-	/**
-	 * @param name     因素的名称
-	 * @param supplier 用于计算因素的值的函数
-	 */
-	public DecisionFactor (String name, BooleanSupplier supplier) {
-		this.name     = name;
-		this.supplier = supplier;
-	}
+  /**
+   * @param name 因素的名称
+   * @param supplier 用于计算因素的值的函数
+   */
+  public DecisionFactor(String name, BooleanSupplier supplier) {
+    this.name = name;
+    this.supplier = supplier;
+  }
 
-	int getMask () {
-		return 1 << index;
-	}
+  int getMask() {
+    return 1 << index;
+  }
 
-	public String getName () {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	/**
-	 * 重新计算因素的值
-	 */
-	public boolean update () {
-		return value = supplier.getAsBoolean();
-	}
+  /** 重新计算因素的值 */
+  public boolean update() {
+    return value = supplier.getAsBoolean();
+  }
 
-	public boolean get () {
-		return value;
-	}
+  public boolean get() {
+    return value;
+  }
 
-	public int getInt () {
-		return value ? 1: 0;
-	}
+  public int getInt() {
+    return value ? 1 : 0;
+  }
 }

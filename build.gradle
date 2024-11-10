@@ -1,6 +1,7 @@
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import me.modmuss50.mpp.ReleaseType
+
 import java.nio.file.Files
 
 plugins {
@@ -13,9 +14,11 @@ plugins {
 	// https://github.com/modmuss50/mod-publish-plugin
 	id "me.modmuss50.mod-publish-plugin" version "0.7.4"
 }
+
 architectury {
 	minecraft = minecraft_version
 }
+
 subprojects {
 	apply plugin: "dev.architectury.loom"
 	loom {
@@ -24,14 +27,14 @@ subprojects {
 	processResources {
 		filesMatching("pack.mcmeta") { fcd ->
 			File f = fcd.file
-			if (!f.exists()) {
+			if(!f.exists()){
 				println "File not exist: " + f
 				return
 			}
 			Map meta
-			try {
+			try{
 				meta = new JsonSlurper().parse(f) as Map
-			} catch (Exception e) {
+			}catch(Exception e){
 				throw new RuntimeException("Invalid json file: ${f}\n$e.message}")
 			}
 			((Map) meta.pack).pack_format = Integer.parseInt(resource_pack_format)
@@ -45,17 +48,17 @@ subprojects {
 		}
 	}
 	tasks.named("build") {
-		if (project.name in getLoaders()) {
+		if(project.name in getLoaders()){
 			doLast {
 				var fileName = "${archiveFileNameOfLoader(project.name)}.jar"
 				var srcFile = project.file("build/libs/${fileName}")
-				if (srcFile.exists()) {
+				if(srcFile.exists()){
 					var dstFile = project.rootProject.file("build/libs/${fileName}")
-					if (dstFile.exists())
+					if(dstFile.exists())
 						delete dstFile.toPath()
 					println "Copying from \n\t${srcFile} to \n\t${dstFile}"
 					Files.copy(srcFile.toPath(), dstFile.toPath())
-				} else {
+				}else{
 					println "Jar file not found: ${srcFile}"
 				}
 			}
@@ -115,20 +118,20 @@ allprojects {
 	}
 }
 
-String[] getLoaders() {
+String[] getLoaders(){
 	return enabled_loaders.split(/\s*,\s*/)
 }
 
 // 版本名
 //     2.1.0-mc1.20.1-fabric
 //     2.1.0-mc1.20-1.20.1-forge
-String archiveVersionNameOfLoader(String loader) {
+String archiveVersionNameOfLoader(String loader){
 	final MC_VERSION_PATTERN = '^\\d+(\\.\\d+){1,2}$'
 	assert getLoaders().contains(loader)
 	def minecraft_version_text = minecraft_version
-	if (minecraft_version_min =~ MC_VERSION_PATTERN)
+	if(minecraft_version_min =~ MC_VERSION_PATTERN)
 		minecraft_version_text = "${minecraft_version_min}"
-	if (minecraft_version_max =~ MC_VERSION_PATTERN)
+	if(minecraft_version_max =~ MC_VERSION_PATTERN)
 		minecraft_version_text += "-${minecraft_version_max}"
 	return "${mod_version}-mc${minecraft_version_text}-${loader}"
 }
@@ -137,14 +140,14 @@ String archiveVersionNameOfLoader(String loader) {
 //     leawind_third_person_v2.1.0-mc1.20.1-fabric
 //     leawind_third_person_v2.1.0-mc1.20-1.20.1-fabric
 //     leawind_third_person_v2.1.0-mc1.19-1.19.4-fabric
-String archiveFileNameOfLoader(String loader) {
+String archiveFileNameOfLoader(String loader){
 	return "${mod_id}-v${archiveVersionNameOfLoader(loader)}"
 }
 
 // 检查更新日志的格式
-static void validateChangelog(String cl) {
+static void validateChangelog(String cl){
 	cl.eachLine {
-		if (it.startsWith("###"))
+		if(it.startsWith("###"))
 			assert it =~ /^### (Added|Changed|Removed|Fixed|Compatibility|Other)$/
 		// 首字母不能小写
 		assert !(it =~ (/\s*^\*\s+[a-z]/))
@@ -161,13 +164,13 @@ static void validateChangelog(String cl) {
  *
  * @param doCheck 是否检查合法性
  */
-String readChangelog(boolean doCheck = false) {
+String readChangelog(boolean doCheck = false){
 	String cl = rootProject.file(changelog_file).text
-	if (doCheck)
+	if(doCheck)
 		validateChangelog(cl)
 	return cl.replaceAll(/### [A-Za-z]+[\s\n]+(?=###|\u0024)/, '')
-			 .replaceAll(/\n\s+\n/, '\n\n')
-			 .replaceAll(/\n+$/, '\n')
+			.replaceAll(/\n\s+\n/, '\n\n')
+			.replaceAll(/\n+$/, '\n')
 }
 
 // 注册任务：检查更新日志
@@ -192,36 +195,36 @@ tasks.register("linkRuns") {
 	group "loom"
 	description "Link running dirs"
 	def linkFileTo = { File src, File tar ->
-		if (tar.exists()) {
-			if (!src.isFile() || !Files.isSameFile(src.toPath(), tar.toPath())) {
+		if(tar.exists()){
+			if(!src.isFile() || !Files.isSameFile(src.toPath(), tar.toPath())){
 				delete src.toPath()
 				Files.createLink(src.toPath(), tar.toPath())
 			}
-		} else {
-			if (src.isFile()) {
+		}else{
+			if(src.isFile()){
 				Files.move(src.toPath(), tar.toPath())
 				Files.createLink(src.toPath(), tar.toPath())
 			}
 		}
 	}
 	def linkDirTo = { File src, File tar ->
-		if (src.exists()) {
-			if (tar.exists()) {
-				if (!Files.isSameFile(src.toPath(), tar.toPath())) {
+		if(src.exists()){
+			if(tar.exists()){
+				if(!Files.isSameFile(src.toPath(), tar.toPath())){
 					src.listFiles().each {
 						var dFile = new File(tar, it.name)
-						if (dFile.exists()) {
+						if(dFile.exists()){
 							delete it.toPath()
-						} else {
+						}else{
 							Files.move(it.toPath(), dFile.toPath())
 						}
 					}
 					delete src.toPath()
 				}
-			} else {
+			}else{
 				Files.move(src.toPath(), tar.toPath())
 			}
-		} else if (tar.exists()) {
+		}else if(tar.exists()){
 			Files.createSymbolicLink(src.toPath(), tar.toPath())
 		}
 	}
@@ -239,7 +242,7 @@ tasks.register("linkRuns") {
 		}
 		getLoaders().each {
 			File loaderRunDir = project(it).file("run")
-			if (!loaderRunDir.isDirectory()) {
+			if(!loaderRunDir.isDirectory()){
 				mkdir loaderRunDir
 				return
 			}
@@ -252,9 +255,10 @@ tasks.register("linkRuns") {
 		}
 	}
 }
+
 publishMods {
 	def toVersionType = { String type ->
-		switch (type) {
+		switch(type) {
 			case "release":
 				return ReleaseType.STABLE
 			case "stable":
@@ -272,7 +276,7 @@ publishMods {
 	// me.modmuss50.mpp.ReleaseType
 	type = toVersionType(mod_version_type)
 	changelog = readChangelog(true)
-	if (!dryRun) {
+	if(!dryRun){
 		assert providers.environmentVariable("MODRINTH_TOKEN").present
 		assert providers.environmentVariable("CURSEFORGE_TOKEN").present
 	}

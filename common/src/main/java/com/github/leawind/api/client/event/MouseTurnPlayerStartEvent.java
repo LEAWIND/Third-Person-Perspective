@@ -1,35 +1,31 @@
 package com.github.leawind.api.client.event;
 
-
 import com.github.leawind.api.base.ModEvent;
 
 public class MouseTurnPlayerStartEvent implements ModEvent {
-	/**
-	 * 累积变化量
-	 */
-	public final double accumulatedDX;
-	public final double accumulatedDY;
+  /** 累积变化量 */
+  public final double accumulatedDX;
 
-	private boolean isDefaultCancelled = false;
+  public final double accumulatedDY;
 
-	public MouseTurnPlayerStartEvent (double accumulatedDX, double accumulatedDY) {
-		this.accumulatedDX = accumulatedDX;
-		this.accumulatedDY = accumulatedDY;
-	}
+  private boolean isDefaultCancelled = false;
 
-	/**
-	 * 取消默认操作
-	 */
-	public void cancelDefault () {
-		isDefaultCancelled = true;
-	}
+  public MouseTurnPlayerStartEvent(double accumulatedDX, double accumulatedDY) {
+    this.accumulatedDX = accumulatedDX;
+    this.accumulatedDY = accumulatedDY;
+  }
 
-	public boolean isDefaultCancelled () {
-		return isDefaultCancelled;
-	}
+  /** 取消默认操作 */
+  public void cancelDefault() {
+    isDefaultCancelled = true;
+  }
 
-	@Override
-	public boolean set () {
-		return false;
-	}
+  public boolean isDefaultCancelled() {
+    return isDefaultCancelled;
+  }
+
+  @Override
+  public boolean set() {
+    return false;
+  }
 }
