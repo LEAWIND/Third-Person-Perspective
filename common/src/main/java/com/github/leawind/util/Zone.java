@@ -181,6 +181,9 @@ public class Zone {
 	 * @throws IllegalArgumentException length < 0
 	 */
 	public @NotNull Zone lessNeighbor (double length) throws IllegalArgumentException {
+		if (length < 0) {
+			throw new IllegalArgumentException("Length must be non-negative, not " + length);
+		}
 		return new Zone(min - length, min);
 	}
 
@@ -196,6 +199,9 @@ public class Zone {
 	 * @throws IllegalArgumentException length < 0
 	 */
 	public @NotNull Zone greaterNeighbor (double length) throws IllegalArgumentException {
+		if (length < 0) {
+			throw new IllegalArgumentException("Length must be non-negative, not " + length);
+		}
 		return new Zone(max, max + length);
 	}
 
