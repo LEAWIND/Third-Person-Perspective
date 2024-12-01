@@ -1,4 +1,4 @@
-package com.github.leawind.api.client.event;
+package com.github.leawind.thirdperson.api.client.event;
 
 import net.minecraft.world.entity.Entity;
 

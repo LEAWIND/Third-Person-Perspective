@@ -1,7 +1,7 @@
 package com.github.leawind.thirdperson.mixin;
 
-import com.github.leawind.api.base.GameEvents;
-import com.github.leawind.api.client.event.MouseTurnPlayerStartEvent;
+import com.github.leawind.thirdperson.api.base.GameEvents;
+import com.github.leawind.thirdperson.api.client.event.MouseTurnPlayerStartEvent;
 import net.minecraft.client.MouseHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

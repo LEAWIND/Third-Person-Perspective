@@ -1,10 +1,9 @@
 package com.github.leawind.thirdperson.core;
 
-import com.github.leawind.api.base.GameStatus;
-import com.github.leawind.api.client.event.ThirdPersonCameraSetupEvent;
 import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.thirdperson.ThirdPersonConstants;
 import com.github.leawind.thirdperson.ThirdPersonStatus;
+import com.github.leawind.thirdperson.api.client.event.ThirdPersonCameraSetupEvent;
 import com.github.leawind.thirdperson.config.AbstractConfig;
 import com.github.leawind.thirdperson.mixin.CameraInvoker;
 import com.github.leawind.thirdperson.mixin.ClientLevelInvoker;
@@ -96,7 +95,7 @@ public class CameraAgent {
 
   public void checkGameStatus() {
     if (minecraft.options.getCameraType() == CameraType.FIRST_PERSON) {
-      GameStatus.isPerspectiveInverted =
+      ThirdPersonStatus.isPerspectiveInverted =
           smoothDistance.get() > ThirdPersonConstants.FIRST_PERSON_TRANSITION_END_THRESHOLD;
     }
   }

@@ -40,6 +40,17 @@ public final class ThirdPersonStatus {
   public static int ticksSinceLeaveNarrowSpace =
       ThirdPersonConstants.LEAVE_NARROW_SPACE_DELAY_TICKS;
 
+  /**
+   * 第三人称下是否强制显示准星
+   *
+   * <p>false 表示按照原版（不显示）
+   *
+   * <p>true 表示显示准星
+   */
+  public static boolean forceThirdPersonCrosshair = false;
+
+  public static boolean isPerspectiveInverted = false;
+
   /** 是否正在调整摄像机偏移量 */
   public static boolean isAdjustingCameraOffset() {
     return isAdjustingCameraDistance();

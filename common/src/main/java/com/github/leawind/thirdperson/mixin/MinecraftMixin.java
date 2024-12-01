@@ -1,6 +1,6 @@
 package com.github.leawind.thirdperson.mixin;
 
-import com.github.leawind.api.base.GameEvents;
+import com.github.leawind.thirdperson.api.base.GameEvents;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

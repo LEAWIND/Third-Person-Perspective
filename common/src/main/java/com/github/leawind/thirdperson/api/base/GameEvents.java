@@ -1,11 +1,11 @@
-package com.github.leawind.api.base;
+package com.github.leawind.thirdperson.api.base;
 
-import com.github.leawind.api.client.event.CalculateMoveImpulseEvent;
-import com.github.leawind.api.client.event.EntityTurnStartEvent;
-import com.github.leawind.api.client.event.MouseTurnPlayerStartEvent;
-import com.github.leawind.api.client.event.RenderEntityEvent;
-import com.github.leawind.api.client.event.RenderTickStartEvent;
-import com.github.leawind.api.client.event.ThirdPersonCameraSetupEvent;
+import com.github.leawind.thirdperson.api.client.event.CalculateMoveImpulseEvent;
+import com.github.leawind.thirdperson.api.client.event.EntityTurnStartEvent;
+import com.github.leawind.thirdperson.api.client.event.MouseTurnPlayerStartEvent;
+import com.github.leawind.thirdperson.api.client.event.RenderEntityEvent;
+import com.github.leawind.thirdperson.api.client.event.RenderTickStartEvent;
+import com.github.leawind.thirdperson.api.client.event.ThirdPersonCameraSetupEvent;
 import java.util.function.Consumer;
 import java.util.function.Function;
 

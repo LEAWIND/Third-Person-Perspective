@@ -1,6 +1,6 @@
-package com.github.leawind.api.client.event;
+package com.github.leawind.thirdperson.api.client.event;
 
-import com.github.leawind.api.base.ModEvent;
+import com.github.leawind.thirdperson.api.base.ModEvent;
 
 public final class RenderTickStartEvent implements ModEvent {
   public final float partialTick;

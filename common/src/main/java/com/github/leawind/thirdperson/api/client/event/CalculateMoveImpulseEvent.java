@@ -1,6 +1,6 @@
-package com.github.leawind.api.client.event;
+package com.github.leawind.thirdperson.api.client.event;
 
-import com.github.leawind.api.base.ModEvent;
+import com.github.leawind.thirdperson.api.base.ModEvent;
 import net.minecraft.client.player.KeyboardInput;
 
 public class CalculateMoveImpulseEvent implements ModEvent {

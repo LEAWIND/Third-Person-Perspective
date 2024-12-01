@@ -1,7 +1,7 @@
 package com.github.leawind.thirdperson.mixin;
 
-import com.github.leawind.api.base.GameEvents;
-import com.github.leawind.api.client.event.CalculateMoveImpulseEvent;
+import com.github.leawind.thirdperson.api.base.GameEvents;
+import com.github.leawind.thirdperson.api.client.event.CalculateMoveImpulseEvent;
 import net.minecraft.client.player.KeyboardInput;
 import org.apache.logging.log4j.util.PerformanceSensitive;
 import org.spongepowered.asm.mixin.Mixin;

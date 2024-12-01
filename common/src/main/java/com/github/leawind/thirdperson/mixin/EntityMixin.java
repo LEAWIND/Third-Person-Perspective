@@ -1,7 +1,7 @@
 package com.github.leawind.thirdperson.mixin;
 
-import com.github.leawind.api.base.GameEvents;
-import com.github.leawind.api.client.event.EntityTurnStartEvent;
+import com.github.leawind.thirdperson.api.base.GameEvents;
+import com.github.leawind.thirdperson.api.client.event.EntityTurnStartEvent;
 import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.thirdperson.ThirdPersonStatus;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;

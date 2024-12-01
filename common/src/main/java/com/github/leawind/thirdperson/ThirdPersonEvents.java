@@ -1,13 +1,12 @@
 package com.github.leawind.thirdperson;
 
-import com.github.leawind.api.base.GameEvents;
-import com.github.leawind.api.base.GameStatus;
-import com.github.leawind.api.client.event.CalculateMoveImpulseEvent;
-import com.github.leawind.api.client.event.EntityTurnStartEvent;
-import com.github.leawind.api.client.event.MouseTurnPlayerStartEvent;
-import com.github.leawind.api.client.event.RenderEntityEvent;
-import com.github.leawind.api.client.event.RenderTickStartEvent;
-import com.github.leawind.api.client.event.ThirdPersonCameraSetupEvent;
+import com.github.leawind.thirdperson.api.base.GameEvents;
+import com.github.leawind.thirdperson.api.client.event.CalculateMoveImpulseEvent;
+import com.github.leawind.thirdperson.api.client.event.EntityTurnStartEvent;
+import com.github.leawind.thirdperson.api.client.event.MouseTurnPlayerStartEvent;
+import com.github.leawind.thirdperson.api.client.event.RenderEntityEvent;
+import com.github.leawind.thirdperson.api.client.event.RenderTickStartEvent;
+import com.github.leawind.thirdperson.api.client.event.ThirdPersonCameraSetupEvent;
 import com.github.leawind.util.ItemPredicateUtil;
 import com.github.leawind.util.annotation.VersionSensitive;
 import com.github.leawind.util.math.LMath;
@@ -57,10 +56,10 @@ public final class ThirdPersonEvents {
       // 目标是第三人称
       var cameraEntity = ThirdPerson.ENTITY_AGENT.getRawCameraEntity();
       // 如果非旁观者模式的玩家在墙里边，就暂时切换到第一人称
-      GameStatus.isPerspectiveInverted = !cameraEntity.isSpectator() && cameraEntity.isInWall();
+      ThirdPersonStatus.isPerspectiveInverted = !cameraEntity.isSpectator() && cameraEntity.isInWall();
       // 如果正在使用的物品符合相关配置，就暂时切换到第一人称
       if (cameraEntity instanceof LivingEntity livingEntity && livingEntity.isUsingItem()) {
-        GameStatus.isPerspectiveInverted |=
+        ThirdPersonStatus.isPerspectiveInverted |=
             ItemPredicateUtil.anyMatches(
                 livingEntity.getUseItem(),
                 config.getUseToFirstPersonItemPredicates(),
@@ -76,7 +75,7 @@ public final class ThirdPersonEvents {
         if (isInNarrowSpace) {
           ThirdPersonStatus.ticksSinceLeaveNarrowSpace = 0;
         }
-        GameStatus.isPerspectiveInverted |=
+        ThirdPersonStatus.isPerspectiveInverted |=
             ThirdPersonStatus.ticksSinceLeaveNarrowSpace
                 < ThirdPersonConstants.LEAVE_NARROW_SPACE_DELAY_TICKS;
       }
@@ -135,7 +134,7 @@ public final class ThirdPersonEvents {
    * @see GameRenderer#render(float, long, boolean)
    */
   private static void onRenderTickStart(RenderTickStartEvent event) {
-    GameStatus.forceThirdPersonCrosshair = ThirdPersonStatus.shouldRenderThirdPersonCrosshair();
+    ThirdPersonStatus.forceThirdPersonCrosshair = ThirdPersonStatus.shouldRenderThirdPersonCrosshair();
     if (!ThirdPerson.getConfig().is_mod_enabled) {
       return;
     }

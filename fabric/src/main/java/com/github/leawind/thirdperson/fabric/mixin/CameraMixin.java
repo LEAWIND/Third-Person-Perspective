@@ -1,7 +1,7 @@
 package com.github.leawind.thirdperson.fabric.mixin;
 
-import com.github.leawind.api.base.GameEvents;
-import com.github.leawind.api.client.event.ThirdPersonCameraSetupEvent;
+import com.github.leawind.thirdperson.api.base.GameEvents;
+import com.github.leawind.thirdperson.api.client.event.ThirdPersonCameraSetupEvent;
 import com.github.leawind.thirdperson.mixin.CameraInvoker;
 import net.minecraft.client.Camera;
 import net.minecraft.world.entity.Entity;

@@ -1,6 +1,6 @@
 package com.github.leawind.thirdperson.mixin;
 
-import com.github.leawind.api.base.GameStatus;
+import com.github.leawind.thirdperson.ThirdPersonStatus;
 import com.github.leawind.thirdperson.ThirdPerson;
 import net.minecraft.client.CameraType;
 import org.jetbrains.annotations.NotNull;
@@ -25,16 +25,16 @@ public class CameraTypeMixin {
   /**
    * 应用此 Mixin 后，此方法的语义变为：
    *
-   * <p>要么当前目标为第一人称且 {@link GameStatus#isPerspectiveInverted} 为 false，要么当前为第三人称且 {@link
-   * GameStatus#isPerspectiveInverted} 为 true。
+   * <p>要么当前目标为第一人称且 {@link ThirdPersonStatus#isPerspectiveInverted} 为 false，要么当前为第三人称且 {@link
+   * ThirdPersonStatus#isPerspectiveInverted} 为 true。
    *
    * @see CameraTypeMixin#firstPerson
-   * @see GameStatus#isPerspectiveInverted
+   * @see ThirdPersonStatus#isPerspectiveInverted
    */
   @Inject(method = "isFirstPerson", at = @At("RETURN"), cancellable = true)
   private void isFirstPerson(@NotNull CallbackInfoReturnable<Boolean> ci) {
     if (ThirdPerson.isAvailable()) {
-      ci.setReturnValue(firstPerson ^ GameStatus.isPerspectiveInverted);
+      ci.setReturnValue(firstPerson ^ ThirdPersonStatus.isPerspectiveInverted);
       ci.cancel();
     }
   }
