@@ -39,4 +39,9 @@ public class DecisionFactor {
   public int getInt() {
     return value ? 1 : 0;
   }
+
+  @Override
+  public String toString() {
+    return String.format("DecisionFactor(%s)[%d]{%b}", name, index, value);
+  }
 }

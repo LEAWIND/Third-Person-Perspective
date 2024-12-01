@@ -2,7 +2,6 @@ package com.github.leawind.thirdperson.core.rotation;
 
 import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.thirdperson.ThirdPersonStatus;
-import com.github.leawind.thirdperson.config.AbstractConfig;
 import com.github.leawind.util.math.decisionmap.DecisionMap;
 import java.util.List;
 import net.minecraft.client.Minecraft;
@@ -67,8 +66,10 @@ public final class RotateStrategy {
     }
 
     static boolean forceRotate() {
-      return ThirdPerson.getConfig().normal_rotate_mode
-          != AbstractConfig.PlayerRotateMode.INTEREST_POINT;
+      return switch (ThirdPerson.getConfig().normal_rotate_mode) {
+        case INTEREST_POINT, MOVING_DIRECTION -> false;
+        default -> true;
+      };
     }
   }
 
@@ -84,11 +85,16 @@ public final class RotateStrategy {
             ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.HORIZONTAL_IMPULSE_DIRECTION);
           }
           ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.EXP_LINEAR);
-          rotateHalflife = 0.06;
+          rotateHalflife = 0.03;
         }
         case CAMERA_CROSSHAIR -> {
           ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.CAMERA_HIT_RESULT);
           ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.HARD);
+        }
+        case MOVING_DIRECTION -> {
+          ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.HORIZONTAL_IMPULSE_DIRECTION);
+          ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.LINEAR);
+          rotateHalflife = 0.06;
         }
         case PARALLEL_WITH_CAMERA -> {
           ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.CAMERA_ROTATION);
@@ -117,7 +123,7 @@ public final class RotateStrategy {
     static double sprint() {
       ThirdPerson.ENTITY_AGENT.setRotateTarget(RotateTargetEnum.HORIZONTAL_IMPULSE_DIRECTION);
       ThirdPerson.ENTITY_AGENT.setRotationSmoothType(SmoothTypeEnum.LINEAR);
-      return 0.04;
+      return 0.025;
     }
 
     static double swimming() {

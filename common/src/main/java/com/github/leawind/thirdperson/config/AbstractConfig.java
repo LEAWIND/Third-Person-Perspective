@@ -87,6 +87,7 @@ public abstract class AbstractConfig {
   public enum PlayerRotateMode {
     INTEREST_POINT("interest_point"),
     CAMERA_CROSSHAIR("camera_crosshair"),
+    MOVING_DIRECTION("moving_direction"),
     PARALLEL_WITH_CAMERA("parallel_with_camera"),
     NONE("none"),
     ;
