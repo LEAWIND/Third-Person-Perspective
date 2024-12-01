@@ -69,7 +69,7 @@ public class ExpSmoothVector2d extends ExpSmoothValue<Vector2d> {
       throw new IllegalArgumentException("Invalid time, non-negative required, but got " + time);
     }
     this.smoothFactor.set(
-        time.x == 0 ? 0 : Math.pow(multiplier.x, 1 / time.x), //
+        time.x == 0 ? 0 : Math.pow(multiplier.x, 1 / time.x),
         time.y == 0 ? 0 : Math.pow(multiplier.y, 1 / time.y));
   }
 

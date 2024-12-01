@@ -22,9 +22,9 @@ import org.jetbrains.annotations.Nullable;
 public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
   public @NotNull Screen build(@NotNull Config config, @Nullable Screen parent) {
     final var builder =
-        ConfigBuilder.create() //
-            .setParentScreen(parent) //
-            .setTitle(ConfigManager.getText("text.title")) //
+        ConfigBuilder.create()
+            .setParentScreen(parent)
+            .setTitle(ConfigManager.getText("text.title"))
             .setSavingRunnable(ThirdPerson.CONFIG_MANAGER::trySave);
     final var entryBuilder = builder.entryBuilder();
     var defaults = Config.DEFAULTS;

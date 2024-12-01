@@ -75,8 +75,8 @@ public class ExpSmoothVector3d extends ExpSmoothValue<Vector3d> {
       throw new IllegalArgumentException("Invalid time, non-negative required, but got " + time);
     }
     this.smoothFactor.set(
-        time.x == 0 ? 0 : Math.pow(multiplier.x, 1 / time.x), //
-        time.y == 0 ? 0 : Math.pow(multiplier.y, 1 / time.y), //
+        time.x == 0 ? 0 : Math.pow(multiplier.x, 1 / time.x),
+        time.y == 0 ? 0 : Math.pow(multiplier.y, 1 / time.y),
         time.z == 0 ? 0 : Math.pow(multiplier.z, 1 / time.z));
   }
 

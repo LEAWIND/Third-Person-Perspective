@@ -291,8 +291,7 @@ public class EntityAgent {
                   livingEntity.getMainHandItem(),
                   config.getHoldToAimItemPredicates(),
                   ThirdPersonResources.itemPredicateManager.holdToAimItemPredicates)
-              || //
-              ItemPredicateUtil.anyMatches(
+              || ItemPredicateUtil.anyMatches(
                   livingEntity.getOffhandItem(),
                   config.getHoldToAimItemPredicates(),
                   ThirdPersonResources.itemPredicateManager.holdToAimItemPredicates);

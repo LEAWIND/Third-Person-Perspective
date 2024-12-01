@@ -243,8 +243,8 @@ public class CameraAgent {
       var rotateCenterTarget = getRotateCenterTarget(partialTick);
       rotateCenter =
           new Vector3d(
-              isHorizontalZero ? rotateCenterTarget.x : rotateCenter.x, //
-              isVerticalZero ? rotateCenterTarget.y : rotateCenter.y, //
+              isHorizontalZero ? rotateCenterTarget.x : rotateCenter.x,
+              isVerticalZero ? rotateCenterTarget.y : rotateCenter.y,
               isHorizontalZero ? rotateCenterTarget.z : rotateCenter.z);
     }
 
@@ -448,8 +448,16 @@ public class CameraAgent {
     return aabb.contains(from) || aabb.clip(from, to).isPresent();
   }
 
-  /** 预测玩家可能想要射击的目标实体 */
+  /**
+   * 预测玩家可能想要射击的目标实体
+   *
+   * @return 玩家当前想要使用弓箭射击的实体是哪个
+   */
   public @Nullable Entity predictTargetEntity(float partialTick) {
+    if (hitResult.getType() == HitResult.Type.BLOCK) {
+      return null;
+    }
+
     var config = ThirdPerson.getConfig();
 
     // 候选目标实体

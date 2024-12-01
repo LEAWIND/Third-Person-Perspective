@@ -58,10 +58,10 @@ public final class ThirdPersonConstants {
   public static final Surroundings SURROUNDINGS_MATCHING =
       new Surroundings(
           """
-																									   B B B  C M C  T S T
-																									   B B B  M C M  S T S
-																									   B B B  C M C  T S T
-																									   """);
+                  B B B  C M C  T S T
+                  B B B  M C M  S T S
+                  B B B  C M C  T S T
+                """);
 
   /**
    * 成像平面到相机的距离

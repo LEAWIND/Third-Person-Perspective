@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 public final class ThirdPersonKeys {
   public static final ModKeyMapping ADJUST_POSITION =
       ModKeyMapping.of(
-              getId("adjust_position"), InputConstants.KEY_Z, ThirdPersonConstants.KEY_CATEGORY) //
-          .onDown(ThirdPersonEvents::onStartAdjustingCameraOffset) //
+              getId("adjust_position"), InputConstants.KEY_Z, ThirdPersonConstants.KEY_CATEGORY)
+          .onDown(ThirdPersonEvents::onStartAdjustingCameraOffset)
           .onUp(ThirdPersonEvents::onStopAdjustingCameraOffset);
   public static final ModKeyMapping FORCE_AIMING =
       ModKeyMapping.of(getId("force_aiming"), ThirdPersonConstants.KEY_CATEGORY);
@@ -41,9 +41,7 @@ public final class ThirdPersonKeys {
               });
   public static final ModKeyMapping TOGGLE_SIDE =
       ModKeyMapping.of(
-              getId("toggle_side"),
-              InputConstants.KEY_CAPSLOCK,
-              ThirdPersonConstants.KEY_CATEGORY) //
+              getId("toggle_side"), InputConstants.KEY_CAPSLOCK, ThirdPersonConstants.KEY_CATEGORY)
           .onDown(
               () -> {
                 var scheme = ThirdPerson.getConfig().getCameraOffsetScheme();
@@ -53,7 +51,7 @@ public final class ThirdPersonKeys {
                 }
                 return wasCentered;
               }) //
-          .onHold(() -> ThirdPerson.getConfig().getCameraOffsetScheme().setCentered(true)) //
+          .onHold(() -> ThirdPerson.getConfig().getCameraOffsetScheme().setCentered(true))
           .onPress(() -> ThirdPerson.getConfig().getCameraOffsetScheme().toNextSide());
   public static final ModKeyMapping TOGGLE_AIMING =
       ModKeyMapping.of(getId("toggle_aiming"), ThirdPersonConstants.KEY_CATEGORY)

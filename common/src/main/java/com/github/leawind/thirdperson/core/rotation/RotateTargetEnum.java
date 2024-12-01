@@ -119,8 +119,8 @@ public enum RotateTargetEnum {
    */
   IMPULSE_DIRECTION(
       partialTick ->
-          ThirdPersonStatus.impulseHorizon.length() < 1e-5 //
-              ? NONE.getRotation(partialTick) //
+          ThirdPersonStatus.impulseHorizon.length() < 1e-5
+              ? NONE.getRotation(partialTick)
               : LMath.rotationDegreeFromDirection(ThirdPersonStatus.impulse)),
   /**
    * 使用键盘控制的移动方向（仅水平）

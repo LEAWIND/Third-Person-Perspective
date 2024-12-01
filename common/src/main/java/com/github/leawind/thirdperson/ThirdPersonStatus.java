@@ -99,7 +99,7 @@ public final class ThirdPersonStatus {
    */
   public static boolean shouldRenderCameraEntity(float partialTick) {
     return ThirdPerson.ENTITY_AGENT.getSmoothOpacity(partialTick)
-            > ThirdPersonConstants.RENDERED_OPACITY_THRESHOLD_MIN //
+            > ThirdPersonConstants.RENDERED_OPACITY_THRESHOLD_MIN
         && ThirdPerson.ENTITY_AGENT.columnDistanceTo(
                 ThirdPerson.CAMERA_AGENT.getRawCameraPosition(), partialTick)
             > ThirdPerson.getConfig().player_invisible_threshold;
