@@ -7,20 +7,15 @@ import net.minecraft.client.KeyMapping;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("unused")
 public final class ModKeyMappingImpl extends KeyMapping implements ModKeyMapping {
-  private static boolean handle(@Nullable Supplier<Boolean> handler) {
-    return handler != null && handler.get();
-  }
-
-  private long holdLength = 300;
-  private long pressLength = 300;
+  private long holdMs = 300;
+  private long pressMs = 300;
   private long keyDownTime = 0;
   private @Nullable Timer timer = null;
-  private @Nullable Supplier<Boolean> ondown = null;
-  private @Nullable Supplier<Boolean> onup = null;
-  private @Nullable Supplier<Boolean> onhold = null;
-  private @Nullable Supplier<Boolean> onpress = null;
+  private @Nullable Supplier<Boolean> onDown = null;
+  private @Nullable Supplier<Boolean> onUp = null;
+  private @Nullable Supplier<Boolean> onHold = null;
+  private @Nullable Supplier<Boolean> onPress = null;
 
   /**
    * @param id 按键映射的标识符，用于可翻译文本
@@ -44,47 +39,47 @@ public final class ModKeyMappingImpl extends KeyMapping implements ModKeyMapping
     long now = System.currentTimeMillis();
     if (!wasDown && down) {
       // key down
-      if (handle(ondown)) {
+      if (runIfNonNull(onDown)) {
         return;
       }
       keyDownTime = now;
-      if (onhold != null) {
+      if (onHold != null) {
         timer = new Timer();
         timer.schedule(
             new TimerTask() {
               @Override
               public void run() {
-                handle(onhold);
+                runIfNonNull(onHold);
                 timer = null;
               }
             },
-            holdLength);
+            holdMs);
       }
     } else if (wasDown && !down) {
       // key up
       long sinceKeydown = now - keyDownTime;
-      if (handle(onup)) {
+      if (runIfNonNull(onUp)) {
         return;
       }
-      if (sinceKeydown < pressLength) {
+      if (sinceKeydown < pressMs) {
         if (timer != null) {
           timer.cancel();
           timer = null;
         }
-        handle(onpress);
+        runIfNonNull(onPress);
       }
     }
   }
 
   @Override
-  public ModKeyMappingImpl holdLength(long holdLength) {
-    this.holdLength = holdLength;
+  public ModKeyMappingImpl holdMs(long holdLength) {
+    this.holdMs = holdLength;
     return this;
   }
 
   @Override
-  public ModKeyMappingImpl pressLength(long pressLength) {
-    this.pressLength = pressLength;
+  public ModKeyMappingImpl pressMs(long pressLength) {
+    this.pressMs = pressLength;
     return this;
   }
 
@@ -99,7 +94,7 @@ public final class ModKeyMappingImpl extends KeyMapping implements ModKeyMapping
 
   @Override
   public ModKeyMappingImpl onDown(@NotNull Supplier<Boolean> handler) {
-    ondown = handler;
+    onDown = handler;
     return this;
   }
 
@@ -114,7 +109,7 @@ public final class ModKeyMappingImpl extends KeyMapping implements ModKeyMapping
 
   @Override
   public ModKeyMappingImpl onUp(@NotNull Supplier<Boolean> handler) {
-    onup = handler;
+    onUp = handler;
     return this;
   }
 
@@ -129,7 +124,7 @@ public final class ModKeyMappingImpl extends KeyMapping implements ModKeyMapping
 
   @Override
   public ModKeyMappingImpl onPress(@NotNull Supplier<Boolean> handler) {
-    onpress = handler;
+    onPress = handler;
     return this;
   }
 
@@ -144,7 +139,11 @@ public final class ModKeyMappingImpl extends KeyMapping implements ModKeyMapping
 
   @Override
   public ModKeyMappingImpl onHold(@NotNull Supplier<Boolean> handler) {
-    onhold = handler;
+    onHold = handler;
     return this;
+  }
+
+  private static boolean runIfNonNull(@Nullable Supplier<Boolean> handler) {
+    return handler != null && handler.get();
   }
 }

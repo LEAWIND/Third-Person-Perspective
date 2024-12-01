@@ -108,17 +108,13 @@ public abstract class AbstractConfig {
   }
 
   public enum CameraDistanceMode {
-    PLANE(true, "plane"),
-    STRAIGHT(false, "straight");
+    PLANE("plane"),
+    STRAIGHT("straight");
 
     public static final String KEY = "option.camera_distance_mode";
 
     public static CameraDistanceMode of(boolean b) {
       return b ? PLANE : STRAIGHT;
-    }
-
-    public static Component formatter(boolean v) {
-      return ConfigManager.getText(KEY + "." + of(v).key);
     }
 
     public static Component formatter(Enum<CameraDistanceMode> value) {
@@ -129,16 +125,10 @@ public abstract class AbstractConfig {
       return ConfigManager.getText(KEY + "." + value.key);
     }
 
-    private final boolean bool;
     private final String key;
 
-    CameraDistanceMode(boolean bool, String key) {
-      this.bool = bool;
+    CameraDistanceMode(String key) {
       this.key = key;
-    }
-
-    public boolean bool() {
-      return bool;
     }
   }
 }

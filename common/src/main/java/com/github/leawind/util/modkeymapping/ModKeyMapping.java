@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
  * }
  * </pre>
  */
-@SuppressWarnings("unused")
 public interface ModKeyMapping extends Comparable<KeyMapping> {
   HashMap<String, ModKeyMappingImpl> mappings = new HashMap<>();
 
@@ -72,7 +71,7 @@ public interface ModKeyMapping extends Comparable<KeyMapping> {
    * @param holdLength 长按时长，单位是 ms
    */
   @Contract("_ -> this")
-  ModKeyMapping holdLength(long holdLength);
+  ModKeyMapping holdMs(long holdLength);
 
   /**
    * 短按时长
@@ -82,7 +81,7 @@ public interface ModKeyMapping extends Comparable<KeyMapping> {
    * @param pressLength 短按时长，单位是 ms
    */
   @Contract("_ -> this")
-  ModKeyMapping pressLength(long pressLength);
+  ModKeyMapping pressMs(long pressLength);
 
   /** 当按键被按下时立即触发 */
   @Contract("_ -> this")

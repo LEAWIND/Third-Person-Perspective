@@ -13,8 +13,10 @@ public final class ThirdPersonKeys {
               getId("adjust_position"), InputConstants.KEY_Z, ThirdPersonConstants.KEY_CATEGORY)
           .onDown(ThirdPersonEvents::onStartAdjustingCameraOffset)
           .onUp(ThirdPersonEvents::onStopAdjustingCameraOffset);
+
   public static final ModKeyMapping FORCE_AIMING =
       ModKeyMapping.of(getId("force_aiming"), ThirdPersonConstants.KEY_CATEGORY);
+
   public static final ModKeyMapping TOGGLE_MOD_ENABLE =
       ModKeyMapping.of(getId("toggle_mod_enable"), ThirdPersonConstants.KEY_CATEGORY)
           .onDown(
@@ -30,6 +32,7 @@ public final class ThirdPersonKeys {
                   config.is_mod_enabled = !config.is_mod_enabled;
                 }
               });
+
   public static final ModKeyMapping OPEN_CONFIG_MENU =
       ModKeyMapping.of(getId("open_config_menu"), ThirdPersonConstants.KEY_CATEGORY)
           .onDown(
@@ -39,6 +42,7 @@ public final class ThirdPersonKeys {
                   mc.setScreen(ThirdPerson.CONFIG_MANAGER.getConfigScreen(null));
                 }
               });
+
   public static final ModKeyMapping TOGGLE_SIDE =
       ModKeyMapping.of(
               getId("toggle_side"), InputConstants.KEY_CAPSLOCK, ThirdPersonConstants.KEY_CATEGORY)
@@ -53,6 +57,7 @@ public final class ThirdPersonKeys {
               }) //
           .onHold(() -> ThirdPerson.getConfig().getCameraOffsetScheme().setCentered(true))
           .onPress(() -> ThirdPerson.getConfig().getCameraOffsetScheme().toNextSide());
+
   public static final ModKeyMapping TOGGLE_AIMING =
       ModKeyMapping.of(getId("toggle_aiming"), ThirdPersonConstants.KEY_CATEGORY)
           .onDown(
@@ -61,6 +66,7 @@ public final class ThirdPersonKeys {
                   ThirdPersonStatus.isToggleToAiming = !ThirdPersonStatus.isToggleToAiming;
                 }
               });
+
   public static final ModKeyMapping TOGGLE_PITCH_LOCK =
       ModKeyMapping.of(getId("toggle_pitch_lock"), ThirdPersonConstants.KEY_CATEGORY)
           .onDown(
