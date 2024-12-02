@@ -21,6 +21,9 @@ public final class ThirdPersonConstants {
   public static final double CAMERA_THROUGH_WALL_DETECTION = 0.180;
   public static final double ROTATE_CENTER_RADIUS = 0.5;
 
+  /// 当俯仰角的绝对值大于这个阈值时，将偏移量减小，以便与头顶和脚下的方块交互（角度制）
+  public static final double CAMERA_OFFSET_SQUEEZE_PITCH_THRESHOLD = 80;
+
   /**
    * true: 相机距离为从相机平面到旋转中心的距离
    *

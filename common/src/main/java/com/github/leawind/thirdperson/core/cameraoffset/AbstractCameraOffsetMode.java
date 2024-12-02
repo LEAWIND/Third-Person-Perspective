@@ -38,6 +38,12 @@ public abstract class AbstractCameraOffsetMode {
     }
   }
 
+  public Vector2d getOffsetRatio() {
+    var v = new Vector2d();
+    getOffsetRatio(v);
+    return v;
+  }
+
   /** 眼睛平滑半衰期 */
   @NotNull
   public abstract Vector3d getEyeSmoothHalflife();

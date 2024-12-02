@@ -9,9 +9,9 @@ import com.github.leawind.thirdperson.mixin.CameraInvoker;
 import com.github.leawind.thirdperson.mixin.ClientLevelInvoker;
 import com.github.leawind.thirdperson.mixin.GameRendererInvoker;
 import com.github.leawind.thirdperson.util.FiniteChecker;
-import com.github.leawind.thirdperson.util.math.Zone;
 import com.github.leawind.thirdperson.util.annotation.VersionSensitive;
 import com.github.leawind.thirdperson.util.math.LMath;
+import com.github.leawind.thirdperson.util.math.Zone;
 import com.github.leawind.thirdperson.util.math.smoothvalue.ExpSmoothDouble;
 import com.github.leawind.thirdperson.util.math.smoothvalue.ExpSmoothVector2d;
 import com.github.leawind.thirdperson.util.math.smoothvalue.ExpSmoothVector3d;
@@ -546,7 +546,16 @@ public class CameraAgent {
       double horizontalFovHalf =
           2 * Math.atan(widthHalf / ThirdPersonConstants.VANILLA_NEAR_PLANE_DISTANCE);
 
-      var offsetRatio = smoothOffsetRatio.get();
+      var offsetRatio = smoothOffsetRatio.get(partialTick);
+      {
+        var absPitchDegree = Math.abs(relativeRotation.x);
+        var multiplier =
+            (absPitchDegree > ThirdPersonConstants.CAMERA_OFFSET_SQUEEZE_PITCH_THRESHOLD)
+                ? (90 - absPitchDegree)
+                    / (90 - ThirdPersonConstants.CAMERA_OFFSET_SQUEEZE_PITCH_THRESHOLD)
+                : 1;
+        offsetRatio.mul(multiplier);
+      }
 
       double offsetX = offsetRatio.x;
       double offsetY = offsetRatio.y;
@@ -660,9 +669,8 @@ public class CameraAgent {
     if (config.center_offset_when_flying && ThirdPerson.ENTITY_AGENT.isFallFlying()) {
       smoothOffsetRatio.setTarget(0, 0);
     } else {
-      mode.getOffsetRatio(smoothOffsetRatio.target);
+      smoothOffsetRatio.setTarget(mode.getOffsetRatio());
     }
-
     smoothOffsetRatio.update(period);
   }
 
