@@ -1,0 +1,8 @@
+name: Other Issue Form
+description: Report an other type of issue
+body:
+    -   type: textarea
+        attributes:
+            label: Content
+        validations:
+            required: true
