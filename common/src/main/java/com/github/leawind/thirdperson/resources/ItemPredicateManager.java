@@ -2,8 +2,8 @@ package com.github.leawind.thirdperson.resources;
 
 import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.thirdperson.config.Config;
-import com.github.leawind.util.ItemPredicateUtil;
-import com.github.leawind.util.annotation.VersionSensitive;
+import com.github.leawind.thirdperson.util.ItemPredicateUtil;
+import com.github.leawind.thirdperson.util.annotation.VersionSensitive;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;

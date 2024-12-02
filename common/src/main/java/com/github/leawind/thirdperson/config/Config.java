@@ -1,11 +1,11 @@
 package com.github.leawind.thirdperson.config;
 
 import com.github.leawind.thirdperson.ThirdPerson;
-import com.github.leawind.thirdperson.cameraoffset.CameraOffsetScheme;
+import com.github.leawind.thirdperson.core.cameraoffset.CameraOffsetScheme;
 import com.github.leawind.thirdperson.resources.ItemPredicateManager;
-import com.github.leawind.util.ItemPredicateUtil;
-import com.github.leawind.util.math.monolist.MonoList;
-import com.github.leawind.util.math.monolist.StaticMonoList;
+import com.github.leawind.thirdperson.util.ItemPredicateUtil;
+import com.github.leawind.thirdperson.util.math.monolist.MonoList;
+import com.github.leawind.thirdperson.util.math.monolist.StaticMonoList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

@@ -1,6 +1,6 @@
 package com.github.leawind.thirdperson.core;
 
-import com.github.leawind.util.math.LMath;
+import com.github.leawind.thirdperson.util.math.LMath;
 import java.util.Comparator;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;

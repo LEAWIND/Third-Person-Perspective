@@ -1,7 +1,7 @@
 package com.github.leawind.thirdperson;
 
 import com.github.leawind.thirdperson.core.rotation.RotateTargetEnum;
-import com.github.leawind.util.modkeymapping.ModKeyMapping;
+import com.github.leawind.thirdperson.util.modkeymapping.ModKeyMapping;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;

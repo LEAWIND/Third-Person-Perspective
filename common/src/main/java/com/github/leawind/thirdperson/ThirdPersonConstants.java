@@ -1,7 +1,7 @@
 package com.github.leawind.thirdperson;
 
 import com.github.leawind.thirdperson.core.EntityAgent;
-import com.github.leawind.util.surroundings.Surroundings;
+import com.github.leawind.thirdperson.util.Surroundings;
 import java.io.File;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;

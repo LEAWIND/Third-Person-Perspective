@@ -4,7 +4,7 @@ import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.thirdperson.ThirdPersonConstants;
 import com.github.leawind.thirdperson.ThirdPersonStatus;
 import com.github.leawind.thirdperson.core.CameraAgent;
-import com.github.leawind.util.math.LMath;
+import com.github.leawind.thirdperson.util.math.LMath;
 import java.util.function.Function;
 import net.minecraft.world.phys.HitResult.Type;
 import org.jetbrains.annotations.NotNull;

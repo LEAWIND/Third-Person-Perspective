@@ -4,7 +4,7 @@ import com.github.leawind.thirdperson.config.Config;
 import com.github.leawind.thirdperson.config.ConfigManager;
 import com.github.leawind.thirdperson.core.CameraAgent;
 import com.github.leawind.thirdperson.core.EntityAgent;
-import com.github.leawind.util.FiniteChecker;
+import com.github.leawind.thirdperson.util.FiniteChecker;
 import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import dev.architectury.platform.Platform;
 import net.minecraft.client.Minecraft;

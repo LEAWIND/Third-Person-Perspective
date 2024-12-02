@@ -7,9 +7,9 @@ import com.github.leawind.thirdperson.api.client.event.MouseTurnPlayerStartEvent
 import com.github.leawind.thirdperson.api.client.event.RenderEntityEvent;
 import com.github.leawind.thirdperson.api.client.event.RenderTickStartEvent;
 import com.github.leawind.thirdperson.api.client.event.ThirdPersonCameraSetupEvent;
-import com.github.leawind.util.ItemPredicateUtil;
-import com.github.leawind.util.annotation.VersionSensitive;
-import com.github.leawind.util.math.LMath;
+import com.github.leawind.thirdperson.util.ItemPredicateUtil;
+import com.github.leawind.thirdperson.util.annotation.VersionSensitive;
+import com.github.leawind.thirdperson.util.math.LMath;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.event.events.client.ClientPlayerEvent;

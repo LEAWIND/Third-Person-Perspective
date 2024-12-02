@@ -3,7 +3,7 @@ package com.github.leawind.thirdperson.mixin;
 import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.thirdperson.ThirdPersonStatus;
 import com.github.leawind.thirdperson.core.EntityAgent;
-import com.github.leawind.util.annotation.VersionSensitive;
+import com.github.leawind.thirdperson.util.annotation.VersionSensitive;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import java.util.function.Function;

@@ -2,7 +2,7 @@ package com.github.leawind.thirdperson.core.rotation;
 
 import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.thirdperson.ThirdPersonStatus;
-import com.github.leawind.util.math.decisionmap.DecisionMap;
+import com.github.leawind.thirdperson.util.math.decisionmap.DecisionMap;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;

@@ -4,7 +4,7 @@ import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.thirdperson.config.AbstractConfig;
 import com.github.leawind.thirdperson.config.Config;
 import com.github.leawind.thirdperson.config.ConfigManager;
-import com.github.leawind.util.ItemPredicateUtil;
+import com.github.leawind.thirdperson.util.ItemPredicateUtil;
 import java.util.List;
 import java.util.function.Consumer;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
