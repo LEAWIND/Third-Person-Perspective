@@ -618,7 +618,7 @@ public class YaclConfigScreenBuilder extends ConfigScreenBuilder {
   private Option.Builder<Double> smoothingOption(
       String name, double defaultValue, Supplier<Double> getter, Consumer<Double> setter) {
     return option(name, defaultValue, getter, setter)
-        .controller(opt -> DoubleSliderControllerBuilder.create(opt).range(0D, 2D).step(0.01));
+        .controller(opt -> DoubleSliderControllerBuilder.create(opt).range(0D, 1D).step(0.005));
   }
 
   private ListOption.Builder<String> itemPredicatesOption(

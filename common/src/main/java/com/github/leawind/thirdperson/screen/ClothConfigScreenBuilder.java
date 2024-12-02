@@ -575,7 +575,7 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
       double currentValue,
       Consumer<Double> setter,
       ConfigEntryBuilder entryBuilder) {
-    return buildDoubleEntry(name, 0, 4, defaultValue, currentValue, setter, entryBuilder);
+    return buildDoubleEntry(name, 0, 1, defaultValue, currentValue, setter, entryBuilder);
   }
 
   private StringListListEntry buildStringListEntry(
