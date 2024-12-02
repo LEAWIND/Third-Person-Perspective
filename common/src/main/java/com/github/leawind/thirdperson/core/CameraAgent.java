@@ -353,12 +353,16 @@ public class CameraAgent {
    */
   @VersionSensitive
   public @NotNull HitResult pick(double pickRange) {
-    var entityHitResult = pickEntity(pickRange);
+    var cameraPos = getRawCamera().getPosition();
+
     var blockHitResult = pickBlock(pickRange);
+    double blockDistance = cameraPos.distanceTo(blockHitResult.getLocation());
+
+    pickRange = Math.min(pickRange, blockDistance + 1);
+
+    var entityHitResult = pickEntity(pickRange);
 
     if (entityHitResult != null) {
-      var cameraPos = getRawCamera().getPosition();
-      double blockDistance = cameraPos.distanceTo(blockHitResult.getLocation());
       double entityDistance = cameraPos.distanceTo(entityHitResult.getLocation());
       if (entityDistance < blockDistance) {
         return entityHitResult;
