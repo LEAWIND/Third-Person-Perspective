@@ -314,7 +314,7 @@ public class CameraAgent {
         yRot %= 360f;
         double xRot;
         if (config.lock_camera_pitch_angle) {
-          xRot = 0;
+          xRot = getRelativeRotation().x;
         } else {
           xRot = getRelativeRotation().x - dXRot;
           xRot =
