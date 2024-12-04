@@ -1,13 +1,9 @@
-### Added
-
 ### Changed
 
-### Removed
+* Add rotate mode: _Turn to Moving Direction_
+* Reduce camera offset when looking up and down
 
 ### Fixed
-
-* Issue url incorrect
-* Errors in floating-point calculation (#173)
 
 ### Compatibility
 
