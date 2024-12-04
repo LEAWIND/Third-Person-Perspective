@@ -19,6 +19,7 @@ A practical, smooth, feature-rich third person mod for all Minecraft players.
 
 </div>
 
+* **Client Side Only** No need to install on server. So you can join servers with this mod.
 * **Free Rotation** Freely rotate the view while keeping the player's body stationary.
 * **Free Adjustment of Camera Position**
 	* While holding `Z`, moving the mouse adjusts the camera offset (the player's position on the screen), and the mouse
@@ -34,7 +35,6 @@ A practical, smooth, feature-rich third person mod for all Minecraft players.
 * **Smooth Perspective Switching** Smooth transition between first and third person perspectives
 * **Disable Anytime** If the mod causes issues, you can disable it anytime in-game through the configuration menu or
   hotkey, reverting to the original third-person perspective
-* **Client Side Only** No need to install on server. So you can join servers with this mod.
 
 <div align=center>
 <details>
