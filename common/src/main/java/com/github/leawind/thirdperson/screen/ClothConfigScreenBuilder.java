@@ -152,7 +152,7 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
     // ===============================================================================================================//
     // Category: smooth factors
     final var CATEGORY_SMOOTH_FACTORS =
-        builder.getOrCreateCategory(ConfigManager.getText("option_category.smooth_halflife"));
+        builder.getOrCreateCategory(ConfigManager.getText("option_category.smoothness"));
     {
       CATEGORY_SMOOTH_FACTORS.addEntry(
           buildSmoothHalflifeEntry(

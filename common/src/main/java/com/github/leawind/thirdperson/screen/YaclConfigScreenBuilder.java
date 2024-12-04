@@ -166,8 +166,8 @@ public class YaclConfigScreenBuilder extends ConfigScreenBuilder {
                 .build())
         .category(
             ConfigCategory.createBuilder()
-                .name(ConfigManager.getText("option_category.smooth_halflife"))
-                .tooltip(ConfigManager.getText("option_category.smooth_halflife.desc"))
+                .name(ConfigManager.getText("option_category.smoothness"))
+                .tooltip(ConfigManager.getText("option_category.smoothness.desc"))
                 .option(
                     smoothingOption(
                             "flying_smooth_halflife",
