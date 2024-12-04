@@ -31,35 +31,6 @@ import org.jetbrains.annotations.NotNull;
 public interface ModKeyMapping extends Comparable<KeyMapping> {
   HashMap<String, ModKeyMappingImpl> mappings = new HashMap<>();
 
-  /**
-   * 不设置默认按键
-   *
-   * <p>需要用户自行设置按键
-   *
-   * @param id 按键映射的标识符，用于可翻译文本
-   * @param categoryKey 类别标识符，用于可翻译文本
-   */
-  @Contract("_,_ -> new")
-  static @NotNull ModKeyMapping of(@NotNull String id, @NotNull String categoryKey) {
-    return of(id, InputConstants.UNKNOWN.getValue(), categoryKey);
-  }
-
-  /**
-   * @param id 按键映射的标识符，用于可翻译文本
-   * @param defaultValue 默认按键
-   * @param categoryKey 类别标识符，用于可翻译文本
-   */
-  @Contract("_,_,_ -> new")
-  static @NotNull ModKeyMapping of(
-      @NotNull String id, int defaultValue, @NotNull String categoryKey) {
-    return new ModKeyMappingImpl(id, defaultValue, categoryKey);
-  }
-
-  /** 使用 Architectury API 注册所有已实例化的按键映射 */
-  static void registerAll() {
-    mappings.values().forEach(KeyMappingRegistry::register);
-  }
-
   /** 按键是否已按下 */
   boolean isDown();
 
@@ -122,4 +93,33 @@ public interface ModKeyMapping extends Comparable<KeyMapping> {
   /** 当按住一个按键时间足够长时触发 */
   @Contract("_ -> this")
   ModKeyMapping onHold(@NotNull Supplier<Boolean> handler);
+
+  /**
+   * 不设置默认按键
+   *
+   * <p>需要用户自行设置按键
+   *
+   * @param id 按键映射的标识符，用于可翻译文本
+   * @param categoryKey 类别标识符，用于可翻译文本
+   */
+  @Contract("_,_ -> new")
+  static @NotNull ModKeyMapping of(@NotNull String id, @NotNull String categoryKey) {
+    return of(id, InputConstants.UNKNOWN.getValue(), categoryKey);
+  }
+
+  /**
+   * @param id 按键映射的标识符，用于可翻译文本
+   * @param defaultValue 默认按键
+   * @param categoryKey 类别标识符，用于可翻译文本
+   */
+  @Contract("_,_,_ -> new")
+  static @NotNull ModKeyMapping of(
+      @NotNull String id, int defaultValue, @NotNull String categoryKey) {
+    return new ModKeyMappingImpl(id, defaultValue, categoryKey);
+  }
+
+  /** 使用 Architectury API 注册所有已实例化的按键映射 */
+  static void registerAll() {
+    mappings.values().forEach(KeyMappingRegistry::register);
+  }
 }

@@ -19,17 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ConfigManager {
-  /**
-   * 在可翻译文本的键前加上mod_id前缀
-   *
-   * @param name 键名
-   * @return ${mod_id}.${id}
-   */
-  @Contract(value = "_ -> new", pure = true)
-  public static @NotNull Component getText(@NotNull String name) {
-    return Component.translatable(ThirdPersonConstants.MOD_ID + "." + name);
-  }
-
   private final Gson GSON =
       new GsonBuilder()
           .excludeFieldsWithoutExposeAnnotation()
@@ -132,5 +121,16 @@ public class ConfigManager {
   /** 获取配置对象 */
   public @NotNull Config getConfig() {
     return this.config;
+  }
+
+  /**
+   * 在可翻译文本的键前加上mod_id前缀
+   *
+   * @param name 键名
+   * @return ${mod_id}.${id}
+   */
+  @Contract(value = "_ -> new", pure = true)
+  public static @NotNull Component getText(@NotNull String name) {
+    return Component.translatable(ThirdPersonConstants.MOD_ID + "." + name);
   }
 }

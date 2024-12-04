@@ -12,39 +12,6 @@ import org.jetbrains.annotations.NotNull;
  */
 @SuppressWarnings("unused")
 public class Zone {
-  /**
-   * @throws IllegalArgumentException min > max
-   */
-  public static @NotNull Zone of(double min, double max) throws IllegalArgumentException {
-    return new Zone(min, max);
-  }
-
-  /**
-   * 由两个端点创建区间，允许 a > b
-   *
-   * @param a 端点
-   * @param b 另一个端点
-   */
-  public static @NotNull Zone ofAuto(double a, double b) {
-    return a < b ? new Zone(a, b) : new Zone(b, a);
-  }
-
-  /**
-   * @throws IllegalArgumentException radius < 0
-   */
-  public static @NotNull Zone ofRadius(double center, double radius)
-      throws IllegalArgumentException {
-    return new Zone(center - radius, center + radius);
-  }
-
-  /**
-   * @throws IllegalArgumentException length < 0
-   */
-  public static @NotNull Zone ofLength(double center, double length)
-      throws IllegalArgumentException {
-    return new Zone(center - length / 2, center + length / 2);
-  }
-
   public final double min;
   public final double max;
 
@@ -280,5 +247,38 @@ public class Zone {
    */
   public @NotNull Zone withMin(double min) throws IllegalArgumentException {
     return new Zone(min, max);
+  }
+
+  /**
+   * @throws IllegalArgumentException min > max
+   */
+  public static @NotNull Zone of(double min, double max) throws IllegalArgumentException {
+    return new Zone(min, max);
+  }
+
+  /**
+   * 由两个端点创建区间，允许 a > b
+   *
+   * @param a 端点
+   * @param b 另一个端点
+   */
+  public static @NotNull Zone ofAuto(double a, double b) {
+    return a < b ? new Zone(a, b) : new Zone(b, a);
+  }
+
+  /**
+   * @throws IllegalArgumentException radius < 0
+   */
+  public static @NotNull Zone ofRadius(double center, double radius)
+      throws IllegalArgumentException {
+    return new Zone(center - radius, center + radius);
+  }
+
+  /**
+   * @throws IllegalArgumentException length < 0
+   */
+  public static @NotNull Zone ofLength(double center, double length)
+      throws IllegalArgumentException {
+    return new Zone(center - length / 2, center + length / 2);
   }
 }

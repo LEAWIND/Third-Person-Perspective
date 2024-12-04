@@ -51,6 +51,11 @@ public class RenderTypeMixin extends RenderStateShard {
                 compositeState);
           });
 
+  @SuppressWarnings("unused")
+  public RenderTypeMixin(String name, Runnable setupState, Runnable clearState) {
+    super(name, setupState, clearState);
+  }
+
   /**
    * 对盔甲和鞘翅使用自定义的 RenderType 提供器，实现半透明效果
    *
@@ -76,10 +81,5 @@ public class RenderTypeMixin extends RenderStateShard {
       ci.setReturnValue(ARMOR_CUTOUT_NO_CULL_TRANSLUCENT.apply(resourceLocation));
       ci.cancel();
     }
-  }
-
-  @SuppressWarnings("unused")
-  public RenderTypeMixin(String name, Runnable setupState, Runnable clearState) {
-    super(name, setupState, clearState);
   }
 }

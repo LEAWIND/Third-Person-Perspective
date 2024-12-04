@@ -20,6 +20,16 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("all")
 @VersionSensitive("YACL version check")
 public abstract class ConfigScreenBuilder {
+  /**
+   * 构建配置屏幕
+   *
+   * @param config 配置实例
+   * @param parent 父屏幕
+   * @return 配置屏幕
+   */
+  @NotNull
+  public abstract Screen build(@NotNull Config config, @Nullable Screen parent);
+
   /** 已经实现或将来可能实现的构建器们 */
   private static Map<String, PossibleSupplier<ConfigScreenBuilder>> builders = new HashMap<>();
 
@@ -73,14 +83,4 @@ public abstract class ConfigScreenBuilder {
         });
     return availableBuilders;
   }
-
-  /**
-   * 构建配置屏幕
-   *
-   * @param config 配置实例
-   * @param parent 父屏幕
-   * @return 配置屏幕
-   */
-  @NotNull
-  public abstract Screen build(@NotNull Config config, @Nullable Screen parent);
 }

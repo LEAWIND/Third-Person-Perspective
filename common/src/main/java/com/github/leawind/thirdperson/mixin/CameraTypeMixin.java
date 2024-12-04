@@ -1,7 +1,7 @@
 package com.github.leawind.thirdperson.mixin;
 
-import com.github.leawind.thirdperson.ThirdPersonStatus;
 import com.github.leawind.thirdperson.ThirdPerson;
+import com.github.leawind.thirdperson.ThirdPersonStatus;
 import net.minecraft.client.CameraType;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;

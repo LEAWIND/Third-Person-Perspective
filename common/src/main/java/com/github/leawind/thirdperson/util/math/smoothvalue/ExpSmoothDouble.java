@@ -5,12 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class ExpSmoothDouble extends ExpSmoothValue<Double> {
-  public static @NotNull ExpSmoothDouble createWithHalflife(double halflife) {
-    var v = new ExpSmoothDouble();
-    v.setHalflife(halflife);
-    return v;
-  }
-
   public ExpSmoothDouble() {
     super(0D, 1D, 0D, 0D, 0D);
   }
@@ -85,5 +79,11 @@ public class ExpSmoothDouble extends ExpSmoothValue<Double> {
 
   public void setValue(double d) {
     value = d;
+  }
+
+  public static @NotNull ExpSmoothDouble createWithHalflife(double halflife) {
+    var v = new ExpSmoothDouble();
+    v.setHalflife(halflife);
+    return v;
   }
 }

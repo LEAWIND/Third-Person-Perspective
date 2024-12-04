@@ -92,6 +92,11 @@ public abstract class AbstractConfig {
     NONE("none"),
     ;
     public static final String KEY = "option.normal_rotate_mode";
+    private final String key;
+
+    PlayerRotateMode(String key) {
+      this.key = key;
+    }
 
     public static Component formatter(Enum<PlayerRotateMode> value) {
       return formatter((PlayerRotateMode) value);
@@ -100,12 +105,6 @@ public abstract class AbstractConfig {
     public static Component formatter(PlayerRotateMode value) {
       return ConfigManager.getText(KEY + "." + value.key);
     }
-
-    private final String key;
-
-    PlayerRotateMode(String key) {
-      this.key = key;
-    }
   }
 
   public enum CameraDistanceMode {
@@ -113,6 +112,11 @@ public abstract class AbstractConfig {
     STRAIGHT("straight");
 
     public static final String KEY = "option.camera_distance_mode";
+    private final String key;
+
+    CameraDistanceMode(String key) {
+      this.key = key;
+    }
 
     public static CameraDistanceMode of(boolean b) {
       return b ? PLANE : STRAIGHT;
@@ -124,12 +128,6 @@ public abstract class AbstractConfig {
 
     public static Component formatter(CameraDistanceMode value) {
       return ConfigManager.getText(KEY + "." + value.key);
-    }
-
-    private final String key;
-
-    CameraDistanceMode(String key) {
-      this.key = key;
     }
   }
 }

@@ -5,12 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class ExpRotSmoothDouble extends ExpSmoothDouble {
-  public static @NotNull ExpRotSmoothDouble createWithHalflife(double cycle, double halflife) {
-    var v = new ExpRotSmoothDouble(cycle);
-    v.setHalflife(halflife);
-    return v;
-  }
-
   private double cycle;
 
   /**
@@ -73,5 +67,11 @@ public class ExpRotSmoothDouble extends ExpSmoothDouble {
   public void setValue(double d) {
     d = LMath.floorMod(d, cycle);
     super.setValue(d);
+  }
+
+  public static @NotNull ExpRotSmoothDouble createWithHalflife(double cycle, double halflife) {
+    var v = new ExpRotSmoothDouble(cycle);
+    v.setHalflife(halflife);
+    return v;
   }
 }

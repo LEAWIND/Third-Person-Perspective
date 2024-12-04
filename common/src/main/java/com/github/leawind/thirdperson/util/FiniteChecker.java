@@ -3,24 +3,6 @@ package com.github.leawind.thirdperson.util;
 import java.util.function.Consumer;
 
 public final class FiniteChecker {
-  public static void assertFinite(Object... objects) {
-    for (int i = 0; i < objects.length; i++) {
-      var obj = objects[i];
-      if (notFinite(obj)) {
-        throw new InfiniteException(obj, String.format("objects[%d] is not finite", i));
-      }
-    }
-  }
-
-  private static boolean isFinite(Object obj) {
-    return (obj instanceof Float && Float.isFinite((Float) obj))
-        || (obj instanceof Double && Double.isFinite((Double) obj));
-  }
-
-  private static boolean notFinite(Object obj) {
-    return !isFinite(obj);
-  }
-
   private final Consumer<InfiniteException> printer;
   private boolean failedOnce = false;
 
@@ -63,6 +45,24 @@ public final class FiniteChecker {
       }
     }
     return false;
+  }
+
+  public static void assertFinite(Object... objects) {
+    for (int i = 0; i < objects.length; i++) {
+      var obj = objects[i];
+      if (notFinite(obj)) {
+        throw new InfiniteException(obj, String.format("objects[%d] is not finite", i));
+      }
+    }
+  }
+
+  private static boolean isFinite(Object obj) {
+    return (obj instanceof Float && Float.isFinite((Float) obj))
+        || (obj instanceof Double && Double.isFinite((Double) obj));
+  }
+
+  private static boolean notFinite(Object obj) {
+    return !isFinite(obj);
   }
 
   public static class InfiniteException extends RuntimeException {

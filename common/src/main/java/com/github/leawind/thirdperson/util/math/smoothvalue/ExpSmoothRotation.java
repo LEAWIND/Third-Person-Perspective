@@ -17,12 +17,6 @@ import org.joml.Vector2d;
  */
 @SuppressWarnings("unused")
 public class ExpSmoothRotation {
-  public static @NotNull ExpSmoothRotation createWithHalflife(double halflife) {
-    var v = new ExpSmoothRotation();
-    v.setHalflife(halflife);
-    return v;
-  }
-
   private final ExpRotSmoothDouble y;
   private final ExpSmoothDouble x;
 
@@ -109,5 +103,11 @@ public class ExpSmoothRotation {
   /** 获取上次更新前的平滑值（旧值） */
   public @NotNull Vector2d getLast() {
     return new Vector2d(x.getLast(), y.getLast());
+  }
+
+  public static @NotNull ExpSmoothRotation createWithHalflife(double halflife) {
+    var v = new ExpSmoothRotation();
+    v.setHalflife(halflife);
+    return v;
   }
 }

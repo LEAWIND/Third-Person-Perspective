@@ -30,15 +30,6 @@ import org.jetbrains.annotations.Nullable;
 public class DecisionMap<T> {
   public static final int MAX_FACTOR_COUNT = 32;
 
-  /**
-   * 创建构造器
-   *
-   * @param <T> 决策结果类型
-   */
-  public static <T> DecisionMapBuilder<T> builder() {
-    return new DecisionMapBuilder<>();
-  }
-
   /** index -> {@link DecisionFactor} */
   private final List<DecisionFactor> factors;
 
@@ -177,5 +168,14 @@ public class DecisionMap<T> {
     }
 
     return s.toString();
+  }
+
+  /**
+   * 创建构造器
+   *
+   * @param <T> 决策结果类型
+   */
+  public static <T> DecisionMapBuilder<T> builder() {
+    return new DecisionMapBuilder<>();
   }
 }

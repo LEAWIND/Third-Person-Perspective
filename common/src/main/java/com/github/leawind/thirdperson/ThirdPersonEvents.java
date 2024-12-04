@@ -56,7 +56,8 @@ public final class ThirdPersonEvents {
       // 目标是第三人称
       var cameraEntity = ThirdPerson.ENTITY_AGENT.getRawCameraEntity();
       // 如果非旁观者模式的玩家在墙里边，就暂时切换到第一人称
-      ThirdPersonStatus.isPerspectiveInverted = !cameraEntity.isSpectator() && cameraEntity.isInWall();
+      ThirdPersonStatus.isPerspectiveInverted =
+          !cameraEntity.isSpectator() && cameraEntity.isInWall();
       // 如果正在使用的物品符合相关配置，就暂时切换到第一人称
       if (cameraEntity instanceof LivingEntity livingEntity && livingEntity.isUsingItem()) {
         ThirdPersonStatus.isPerspectiveInverted |=
@@ -134,7 +135,8 @@ public final class ThirdPersonEvents {
    * @see GameRenderer#render(float, long, boolean)
    */
   private static void onRenderTickStart(RenderTickStartEvent event) {
-    ThirdPersonStatus.forceThirdPersonCrosshair = ThirdPersonStatus.shouldRenderThirdPersonCrosshair();
+    ThirdPersonStatus.forceThirdPersonCrosshair =
+        ThirdPersonStatus.shouldRenderThirdPersonCrosshair();
     if (!ThirdPerson.getConfig().is_mod_enabled) {
       return;
     }

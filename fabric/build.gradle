@@ -26,7 +26,7 @@ dependencies {
 	shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) {
 		transitive false
 	}
-
+	
 	// Architectury-api
 	modImplementation "dev.architectury:architectury-fabric:${architectury_version}"
 	// MixinExtras

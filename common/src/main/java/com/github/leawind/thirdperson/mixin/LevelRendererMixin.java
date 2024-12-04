@@ -1,9 +1,9 @@
 package com.github.leawind.thirdperson.mixin;
 
-import com.github.leawind.thirdperson.api.base.GameEvents;
-import com.github.leawind.thirdperson.api.client.event.RenderEntityEvent;
 import com.github.leawind.thirdperson.ThirdPerson;
 import com.github.leawind.thirdperson.ThirdPersonStatus;
+import com.github.leawind.thirdperson.api.base.GameEvents;
+import com.github.leawind.thirdperson.api.client.event.RenderEntityEvent;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;

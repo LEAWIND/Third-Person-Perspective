@@ -13,18 +13,6 @@ import org.jetbrains.annotations.NotNull;
  */
 @SuppressWarnings("unused")
 public class DeferedMonoList implements MonoList {
-  public static @NotNull DeferedMonoList exp(int length) {
-    return new DeferedMonoList(length, Math::exp);
-  }
-
-  public static @NotNull DeferedMonoList squared(int length) {
-    return new DeferedMonoList(length, i -> (double) (i * i));
-  }
-
-  public static @NotNull DeferedMonoList of(int length, @NotNull Function<Integer, Double> getter) {
-    return new DeferedMonoList(length, getter);
-  }
-
   private final int length;
   private final @NotNull Function<Integer, Double> getter;
   private final int sgn;
@@ -102,5 +90,17 @@ public class DeferedMonoList implements MonoList {
   @Override
   public int length() {
     return length;
+  }
+
+  public static @NotNull DeferedMonoList exp(int length) {
+    return new DeferedMonoList(length, Math::exp);
+  }
+
+  public static @NotNull DeferedMonoList squared(int length) {
+    return new DeferedMonoList(length, i -> (double) (i * i));
+  }
+
+  public static @NotNull DeferedMonoList of(int length, @NotNull Function<Integer, Double> getter) {
+    return new DeferedMonoList(length, getter);
   }
 }
