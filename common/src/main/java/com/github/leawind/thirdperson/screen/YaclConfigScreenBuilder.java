@@ -61,6 +61,7 @@ public class YaclConfigScreenBuilder extends ConfigScreenBuilder {
                         .build())
                 .group(
                     group("player_rotation")
+                        .collapsed(true)
                         .option(
                             option(
                                     "normal_rotate_mode",
@@ -98,6 +99,7 @@ public class YaclConfigScreenBuilder extends ConfigScreenBuilder {
                         .build())
                 .group(
                     group("player_fade_out")
+                        .collapsed(true)
                         .option(
                             booleanOption(
                                     "player_fade_out_enabled",
@@ -128,6 +130,7 @@ public class YaclConfigScreenBuilder extends ConfigScreenBuilder {
                         .build())
                 .group(
                     group("camera_distance_adjustment")
+                        .collapsed(true)
                         .option(
                             option(
                                     "available_distance_count",

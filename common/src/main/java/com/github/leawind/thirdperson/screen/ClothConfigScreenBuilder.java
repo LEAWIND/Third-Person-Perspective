@@ -55,7 +55,8 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
               entryBuilder));
 
       // SubCategory: Player Rotation
-      final var SUBCATEGORY_PLAYER_ROTATION = buildSubCategory("player_rotation", entryBuilder);
+      final var SUBCATEGORY_PLAYER_ROTATION =
+          buildSubCategory("player_rotation", entryBuilder).setExpanded(false);
       SUBCATEGORY_PLAYER_ROTATION.add(
           entryBuilder
               .startEnumSelector(
@@ -89,7 +90,8 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
       CATEGORY_COMMON.addEntry(SUBCATEGORY_PLAYER_ROTATION.build());
 
       // SubCategory: Player Fade out
-      final var Subcategory_Player_Fade_Out = buildSubCategory("player_fade_out", entryBuilder);
+      final var Subcategory_Player_Fade_Out =
+          buildSubCategory("player_fade_out", entryBuilder).setExpanded(false);
       Subcategory_Player_Fade_Out.add(
           buildBooleanEntry(
               "player_fade_out_enabled",
@@ -119,7 +121,7 @@ public class ClothConfigScreenBuilder extends ConfigScreenBuilder {
 
       // SubCategory: Camera Distance Adjustment
       final var Subcategory_Camera_Distance_Adjustment =
-          buildSubCategory("camera_distance_adjustment", entryBuilder);
+          buildSubCategory("camera_distance_adjustment", entryBuilder).setExpanded(false);
       Subcategory_Camera_Distance_Adjustment.add(
           buildIntSliderEntry(
               "available_distance_count",
