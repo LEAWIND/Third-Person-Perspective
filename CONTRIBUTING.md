@@ -1,35 +1,20 @@
 # Contributing
 
-Welcome contributions!
+* Use google-java-format
 
-According to Github Community Standards I put this file here.
+## How to add a new config item
 
-## About this repository
+Define config item in class `AbstractConfig`
 
-### branches
+```java
+public abstract class AbstractConfig {
+  @Expose public double my_option = 0.5;
+}
 
-#### `1.19.2`
+```
 
-It's obviously the main branch for Minecraft 1.19.2, so does `1.19.4` and `1.20.1` .etc.
+Use the config item somewhere.
 
-#### `Documentation`
+Find all screen builders in `ConfigScreenBuilder#builders`, and add the config item to the builder.
 
-It's an independent branch for documentation.
-
-## About files
-
-### [`.editorconfig`](./.editorconfig)
-
-EditorConfig defines code format.
-
-### [`changelog_latest.md`](./changelog_latest.md)
-
-It contains changes since last published version.
-
-It should be manually edited before publishing a new version.
-
-It should be manually cleared once a new version is published.
-
-### Versioning
-
-Reference to [SemVer](https://semver.org/)
+Add translation to `resource/assets/minecraft/lang/*.json`

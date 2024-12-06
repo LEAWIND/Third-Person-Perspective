@@ -1,11 +1,11 @@
 modLoader = "javafml"
-loaderVersion = "[45,)"
+loaderVersion = "*"
 license = "${mod_license}"
-showAsResourcePack = true
+showAsResourcePack = false
 issueTrackerURL = "${mod_url_issue}"
 
 [[mods]]
-modId = "${mod_id}"
+modId = "leawind_third_person"
 version = "${mod_version}"
 displayName = "${mod_name}"
 description = "${mod_description}"
@@ -13,41 +13,34 @@ authors = "${mod_authors}"
 logoFile = "TODO"
 displayURL = "${mod_url_home}"
 
-[[dependencies."${mod_id}"]]
+[[dependencies.leawind_third_person]]
 modId = "forge"
 mandatory = true
-versionRange = "[45,)"
+versionRange = "*"
 ordering = "NONE"
 side = "CLIENT"
 referraUrl = "https://files.minecraftforge.net/"
 
-[[dependencies."${mod_id}"]]
+[[dependencies.leawind_third_person]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[${minecraft_version},)"
+versionRange = "${minecraft_version}"
 ordering = "NONE"
 side = "CLIENT"
 referraUrl = "https://www.minecraft.net/"
 
-[[dependencies."${mod_id}"]]
+[[dependencies.leawind_third_person]]
 modId = "architectury"
 mandatory = true
-versionRange = "[${architectury_version},)"
+versionRange = "*"
 ordering = "AFTER"
 side = "CLIENT"
 referraUrl = "https://modrinth.com/mod/architectury-api"
 
-[[dependencies."${mod_id}"]]
+[[dependencies.leawind_third_person]]
 modId = "cloth_config"
 mandatory = false
-versionRange = "[${cloth_config_api_version},)"
+versionRange = "*"
 ordering = "NONE"
 side = "CLIENT"
 referraUrl = "https://modrinth.com/mod/cloth-config"
-
-[[dependencies."${mod_id}"]]
-modId = "yet_another_config_lib_v3"
-mandatory = true
-versionRange = "[${yacl_version},)"
-ordering = "NONE"
-side = "CLIENT"
