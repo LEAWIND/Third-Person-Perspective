@@ -1,9 +1,11 @@
 {
 	"required": true,
-	"package": "net.leawind.mc.thirdperson.fabric.mixin",
+	"package": "com.github.leawind.thirdperson.fabric.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"minVersion": "0.8",
-	"client": [],
+	"client": [
+		"CameraMixin"
+	],
 	"mixins": [],
 	"injectors": {
 		"defaultRequire": 1
