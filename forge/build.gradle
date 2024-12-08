@@ -1,8 +1,6 @@
 plugins {
 	id "com.github.johnrengelman.shadow" version "7.1.2"
-	id "com.modrinth.minotaur" version "2.+"
 }
-
 architectury {
 	platformSetupLoomIde()
 	forge()
@@ -24,13 +22,27 @@ configurations {
 	developmentForge.extendsFrom common
 }
 dependencies {
+	minecraft "com.mojang:minecraft:${minecraft_version}"
+	mappings loom.officialMojangMappings()
 	forge "net.minecraftforge:forge:${forge_version}"
-	common(project(path: ":common", configuration: "namedElements")) { transitive false }
-	shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+	common(project(path: ":common", configuration: "namedElements")) {
+		transitive false
+	}
+	shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {
+		transitive false
+	}
+	
+	include modImplementation("org.joml:joml:${joml_version}")
+	
 	// Architectury-api
 	modApi "dev.architectury:architectury-forge:${architectury_version}"
+	// MixinExtras
+	compileOnly annotationProcessor("io.github.llamalad7:mixinextras-common:${forge_mixin_extras_version}")
+	include implementation("io.github.llamalad7:mixinextras-forge:${forge_mixin_extras_version}")
 	// Cloth Config API
 	modApi "me.shedaniel.cloth:cloth-config-forge:${cloth_config_api_version}"
+	// YACL
+	//	modImplementation "dev.isxander.yacl:yet-another-config-lib-forge:${yacl_mc_version}"
 }
 shadowJar {
 	exclude "fabric.mod.json"
@@ -39,18 +51,18 @@ shadowJar {
 	archiveClassifier = "dev-shadow"
 }
 remapJar {
-	input.set shadowJar.archiveFile
+	inputFile.set shadowJar.archiveFile
 	dependsOn shadowJar
 }
 sourcesJar {
-	def commonSources = project(":common").sourcesJar
+	Task commonSources = project(":common").sourcesJar
 	dependsOn commonSources
 	from commonSources.archiveFile.map {
 		zipTree(it)
 	}
 }
 base {
-	archivesName = rootProject.archiveFileNameOfPlatform("forge")
+	archivesName = rootProject.archiveFileNameOfLoader("forge")
 	version = ""
 }
 components.java {
@@ -59,33 +71,6 @@ components.java {
 	}
 }
 publishing {
-	publications {
-		mavenForge(MavenPublication) {
-			artifactId = mod_id + "-" + project.name
-			from components.java
-		}
-	}
-	
-	repositories {
-	}
-}
-
-// https://github.com/modrinth/minotaur/blob/a151c425fb128cd5384242f25b6fbb0a1d18e325/README.md
-modrinth {
-	debugMode = Boolean.parseBoolean(publish_debug_mode)
-	
-	token = System.getenv("MODRINTH_TOKEN")
-	
-	projectId = modrinth_project_id
-	versionNumber = mod_version
-	versionType = mod_version_type
-	versionName = "${mod_version}-mc${minecraft_version}-forge"
-	changelog = readChangeLog()
-	
-	uploadFile = remapJar
-	autoAddDependsOn = false
-	dependencies {
-		required.project "architectury-api"
-		optional.project "cloth-config"
-	}
+	publications {}
+	repositories {}
 }

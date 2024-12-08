@@ -9,7 +9,9 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
+
+rootProject.name = mod_name
+
 include("common")
 include("fabric")
 include("forge")
-rootProject.name = mod_name
