@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[40,)"
+loaderVersion = "*"
 license = "${mod_license}"
 showAsResourcePack = false
 issueTrackerURL = "${mod_url_issue}"
@@ -16,7 +16,7 @@ displayURL = "${mod_url_home}"
 [[dependencies.leawind_third_person]]
 modId = "forge"
 mandatory = true
-versionRange = "[40,)"
+versionRange = "*"
 ordering = "NONE"
 side = "CLIENT"
 referraUrl = "https://files.minecraftforge.net/"
@@ -24,7 +24,7 @@ referraUrl = "https://files.minecraftforge.net/"
 [[dependencies.leawind_third_person]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[${minecraft_version},)"
+versionRange = "${minecraft_version}"
 ordering = "NONE"
 side = "CLIENT"
 referraUrl = "https://www.minecraft.net/"
@@ -32,7 +32,7 @@ referraUrl = "https://www.minecraft.net/"
 [[dependencies.leawind_third_person]]
 modId = "architectury"
 mandatory = true
-versionRange = "[${architectury_version},)"
+versionRange = "*"
 ordering = "AFTER"
 side = "CLIENT"
 referraUrl = "https://modrinth.com/mod/architectury-api"
@@ -40,7 +40,7 @@ referraUrl = "https://modrinth.com/mod/architectury-api"
 [[dependencies.leawind_third_person]]
 modId = "cloth_config"
 mandatory = false
-versionRange = "[${cloth_config_api_version},)"
+versionRange = "*"
 ordering = "NONE"
 side = "CLIENT"
 referraUrl = "https://modrinth.com/mod/cloth-config"

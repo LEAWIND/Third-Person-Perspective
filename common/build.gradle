@@ -1,21 +1,31 @@
 architectury {
-	common(enabled_platforms.split(","))
+	common(enabled_loaders.split(","))
 }
 loom {
 	accessWidenerPath = file("src/main/resources/${mod_id}.accesswidener")
 }
 dependencies {
+	minecraft "com.mojang:minecraft:${minecraft_version}"
+	mappings loom.officialMojangMappings()
+	testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_jupiter_version}"
+	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit_jupiter_version}"
+
+	modImplementation "org.joml:joml:${joml_version}"
+
 	modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
 	modApi "dev.architectury:architectury:${architectury_version}"
 	// Cloth config
 	modApi("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_api_version}") {
-		exclude(group: "net.fabricmc.fabric-api")
+		exclude group: "net.fabricmc.fabric-api"
 		exclude module: 'modmenu'
 	}
-	// MixinExtras
-	compileOnly("io.github.llamalad7:mixinextras-fabric:${fabric_mixin_extras_version}")
+	// YACL
+	//	modImplementation "dev.isxander.yacl:yet-another-config-lib-fabric:${yacl_mc_version}"
 }
 publishing {
 	publications {}
 	repositories {}
+}
+test {
+	useJUnitPlatform()
 }
