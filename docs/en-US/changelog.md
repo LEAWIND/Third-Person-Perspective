@@ -4,21 +4,15 @@
 
 <!--
 ## v (Preview)
-### Added
 ### Changed
-### Removed
 ### Fixed
 ### Compatibility
 ### Other
 -->
 
-## v2.2.0-beta.4-mc1.20-1.20.1 (Preview)
-
-### Added
+## (Preview)
 
 ### Changed
-
-### Removed
 
 ### Fixed
 
@@ -27,6 +21,34 @@
 ### Other
 
 :::
+
+
+## v2.2.0-mc1.18.2
+
+## v2.2.0-mc1.19-1.19.2
+
+## v2.2.0-mc1.19.3
+
+## v2.2.0-mc1.19.4
+
+### Changed
+
+* Port from v2.2.0-mc1.20-1.20.1
+
+## v2.2.0-mc1.20-1.20.1
+
+### Changed
+
+* Add rotate mode: *Turn to Moving Direction*
+* Reduce camera offset when looking up and down
+* Update adjustable range of some config items
+
+## v2.2.0-beta.4-mc1.20-1.20.1
+
+### Fixed
+
+* Issue url incorrect
+* Errors in floating-point calculation (#173)
 
 ## v2.2.0-beta.3-mc1.20-1.20.1
 
