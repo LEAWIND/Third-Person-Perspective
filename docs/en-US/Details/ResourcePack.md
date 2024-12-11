@@ -2,7 +2,7 @@
 
 ## Built-in Resource Pack
 
-The built-in resource pack of this mod only includes [ItemPatterns](./ItemPattern) that are applicable to vanilla MC.
+The built-in resource pack of this mod only includes [ItemPatterns](./ItemPredicate) that are applicable to vanilla MC.
 
 ### Aim While Holding
 

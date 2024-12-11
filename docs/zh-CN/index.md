@@ -21,7 +21,7 @@ hero:
           text: 💡报告Bug
           link: https://github.com/LEAWIND/Third-Person/issues/new/choose
         - theme: brand
-          text: 📥i下载
+          text: 📥下载
           link: https://www.curseforge.com/minecraft/mc-mods/leawind-third-person/files/all
 ---
 

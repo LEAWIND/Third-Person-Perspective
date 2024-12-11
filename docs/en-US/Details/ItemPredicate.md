@@ -1,4 +1,25 @@
-# Item Pattern
+# Item Predicate
+
+In third-person perspective, this mod determines whether to enter aim mode based on the item held by the player and using state.
+
+Conventions:
+
+-   **Item predicate** refers to `net.minecraft.advancements.criteria.ItemPredicate` object, which represents a kind of rules that can determine if an ItemStack matches its criteria.
+-   **[Item pattern](#item-pattern)** is a human-edited string that can be parsed into an Item-Predicate.  
+	Format: `[#][namespace:]<id>[nbt]` or `<nbt>`
+
+During gameplay, this mod maintains 3 sets of item predicates:
+
+-   **Aim While Holding**: When any item the player is holding matches any item predicate in this set, aim mode is activated.
+-   **Aim While Using**: When the item the player is using matches any item predicate in this set, aim mode is activated.
+-   **Temporarily Enter First-Person While Using**: When the item the player is using matches any item predicate in this set, it temporarily switches to first person perspective.
+
+The item predicates in these sets come from 2 sources:
+
+* **Mod Configuration**: Item-patterns can be added in the mod's configuration file or through the configuration interface in game, and the mod will automatically parse them into item predicates.
+* **[Resource Packs](./ResourcePack.md)**: This includes mod's built-in resource pack, and any additional resource packs manually added by user.
+
+## Item Pattern {#item-pattern}
 
 An Item-Pattern is a human-edited string that can be parsed into an `ItemPredicate` to determine if an `ItemStack` matches the specified criteria.
 

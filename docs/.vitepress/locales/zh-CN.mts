@@ -10,7 +10,7 @@ export default {
 	description: "一个Minecraft模组 Leawind的第三人称 的文档",
 	themeConfig: {
 		nav: [
-			{ text: '🔬详细', link: `/${lang}/Details/` },
+			{ text: '🔬详细', link: `/${lang}/Details/ItemPredicate` },
 			{ text: '⚔️兼容性', link: `/${lang}/compatibility` },
 			{ text: '🕗更新日志', link: `/${lang}/changelog` },
 			{ text: '💰捐赠', link: `/${lang}/donate` },

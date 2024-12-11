@@ -10,7 +10,7 @@ export default {
 	description: "Documentation of minecraft mod Leawind's Thrid Person",
 	themeConfig: {
 		nav: [
-			{ text: '🔬Details', link: `/${lang}/Details/` },
+			{ text: '🔬Details', link: `/${lang}/Details/ItemPredicate` },
 			{ text: '⚔️Compatibility', link: `/${lang}/compatibility` },
 			{ text: '🕗Changelog', link: `/${lang}/changelog` },
 			{ text: '💰Donate', link: `/${lang}/donate` },
